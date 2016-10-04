@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerpustakaanModel", "PerpustakaanModel\PerpustakaanModel.csproj", "{208127FA-4A7D-4B04-BEDB-445D21D91DB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerpustakaanDAL", "PerpustakaanDAL\PerpustakaanDAL.csproj", "{58F0B7BA-7BE1-4C9F-BD6A-E53A61AB6674}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerpustakaanWeb", "PerpustakaanWeb\PerpustakaanWeb.csproj", "{F1893CB2-2709-43AB-AC3F-92F4ED7D1FFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{208127FA-4A7D-4B04-BEDB-445D21D91DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208127FA-4A7D-4B04-BEDB-445D21D91DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208127FA-4A7D-4B04-BEDB-445D21D91DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208127FA-4A7D-4B04-BEDB-445D21D91DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F0B7BA-7BE1-4C9F-BD6A-E53A61AB6674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F0B7BA-7BE1-4C9F-BD6A-E53A61AB6674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F0B7BA-7BE1-4C9F-BD6A-E53A61AB6674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F0B7BA-7BE1-4C9F-BD6A-E53A61AB6674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1893CB2-2709-43AB-AC3F-92F4ED7D1FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1893CB2-2709-43AB-AC3F-92F4ED7D1FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1893CB2-2709-43AB-AC3F-92F4ED7D1FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1893CB2-2709-43AB-AC3F-92F4ED7D1FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
