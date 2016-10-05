@@ -11,11 +11,14 @@ namespace PerpustakaanDAL
     {
         public List<MstBuku> GetAllBuku()
         {
-            var result = new List<MstBuku>();
-            using(var db = new PerpustakaanDbContext()){
 
-            } 
-            return result;
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstBuku.ToList();
+            }
+
         }
+
+
     }
 }
