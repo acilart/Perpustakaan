@@ -7,9 +7,10 @@ using PerpustakaanModel;
 using System.Data.Entity;
 namespace PerpustakaanDAL
 {
+  
     public class BukuDAL
     {
-        public List<MstBuku> GetAllBuku()
+        public static List<MstBuku> GetAllBuku()
         {
 
             using (var db = new PerpustakaanDbContext())
@@ -18,7 +19,6 @@ namespace PerpustakaanDAL
             }
 
         }
-
-
     }
 }
+        

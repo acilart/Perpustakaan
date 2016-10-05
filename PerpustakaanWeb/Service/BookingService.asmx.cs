@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PerpustakaanDAL;
+using PerpustakaanModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,6 +23,12 @@ namespace PerpustakaanWeb.Service
         public string HelloWorld()
         {
             return "Hello World";
+        }
+
+        [WebMethod]
+        public List<MstBuku> GetBuku()
+        {
+            return BukuDAL.GetAllBuku();
         }
     }
 }

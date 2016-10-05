@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,9 @@ namespace PerpustakaanModel
     public class TrBrwHeader
     {
         public int ID { get; set; }
+         [MaxLength(20)]
         public string NoRegistrasi { get; set; }
+         [MaxLength(20)]
         public string NoReferensi { get; set; }
         public Nullable<int> IDAnggota { get; set; }
         public Nullable<System.DateTime> TanggalPinjam { get; set; }

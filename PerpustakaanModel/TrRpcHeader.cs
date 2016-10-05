@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,9 @@ namespace PerpustakaanModel
     {
         public int ID { get; set; }
         public Nullable<int> IDAnggota { get; set; }
+           [MaxLength(20)]
         public string NoRegistrasi { get; set; }
+           [MaxLength(20)]
         public string NoReferensi { get; set; }
         public Nullable<System.DateTime> Tanggal { get; set; }
         public Nullable<int> CreatedBy { get; set; }

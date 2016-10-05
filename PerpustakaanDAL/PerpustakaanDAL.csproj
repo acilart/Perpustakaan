@@ -47,9 +47,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnggotaDAL.cs" />
+    <Compile Include="AutoNumberDAL.cs" />
     <Compile Include="BookingDAL.cs" />
     <Compile Include="BukuDAL.cs" />
+    <Compile Include="CabinetCellDAL.cs" />
+    <Compile Include="CabinetDAL.cs" />
+    <Compile Include="CabinetRowDAL.cs" />
+    <Compile Include="KecamatanDAL.cs" />
+    <Compile Include="KelurahanDAL.cs" />
+    <Compile Include="KotaDAL.cs" />
+    <Compile Include="LoginDAL.cs" />
+    <Compile Include="PetugasDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvinsiDAL.cs" />
+    <Compile Include="SumberBukuDAL.cs" />
+    <Compile Include="TipeIuranDAL.cs" />
+    <Compile Include="TrScnDetailDAL.cs" />
+    <Compile Include="TrScnHeaderDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PerpustakaanModel\PerpustakaanModel.csproj">

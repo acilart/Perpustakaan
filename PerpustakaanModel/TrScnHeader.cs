@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace PerpustakaanModel
     public class TrScnHeader
     {
         public int ID { get; set; }
+           [MaxLength(20)]
         public string NoRegistrasi { get; set; }
         public Nullable<int> IDAnggota { get; set; }
         public Nullable<int> CreatedBy { get; set; }

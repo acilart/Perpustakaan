@@ -56,6 +56,7 @@
     <Compile Include="MstKecamatan.cs" />
     <Compile Include="MstKelurahan.cs" />
     <Compile Include="MstKota.cs" />
+    <Compile Include="MstLogin.cs" />
     <Compile Include="MstOpsiPenggantian.cs" />
     <Compile Include="MstPenerbit.cs" />
     <Compile Include="MstPetugas.cs" />
@@ -80,6 +81,9 @@
     <Compile Include="TrScnDetail.cs" />
     <Compile Include="TrScnHeader.cs" />
     <Compile Include="TrStock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

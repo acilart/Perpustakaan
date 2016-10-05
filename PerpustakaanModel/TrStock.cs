@@ -10,6 +10,7 @@ namespace PerpustakaanModel
     [Table("T_R_STOK")]
     public class TrStock
     {
+        public int ID { get; set; }
         public int IDBuku { get; set; }
         public Nullable<bool> InStock { get; set; }
         public Nullable<int> CreatedBy { get; set; }
