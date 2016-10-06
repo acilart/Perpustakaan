@@ -256,6 +256,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Service\BookingService.asmx" />
+    <Content Include="Service\InputBukuService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
@@ -508,6 +509,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BookingService.asmx.cs">
       <DependentUpon>BookingService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\InputBukuService.asmx.cs">
+      <DependentUpon>InputBukuService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Site.Master.cs">
