@@ -163,17 +163,66 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="Anggota\Booking.aspx" />
+    <Content Include="Anggota\FormAnggotaOn.aspx" />
+    <Content Include="Anggota\ListPinjaman.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="dist\css\AdminLTE.css" />
+    <Content Include="dist\css\AdminLTE.min.css" />
+    <Content Include="dist\css\font\font-awesome.min.css" />
+    <Content Include="dist\css\ionicons.min.css" />
+    <Content Include="dist\css\skins\skin-black-light.css" />
+    <Content Include="dist\css\skins\skin-black-light.min.css" />
+    <Content Include="dist\css\skins\skin-black.css" />
+    <Content Include="dist\css\skins\skin-black.min.css" />
+    <Content Include="dist\css\skins\skin-blue-light.css" />
+    <Content Include="dist\css\skins\skin-blue-light.min.css" />
+    <Content Include="dist\css\skins\skin-blue.css" />
+    <Content Include="dist\css\skins\skin-blue.min.css" />
+    <Content Include="dist\css\skins\skin-green-light.css" />
+    <Content Include="dist\css\skins\skin-green-light.min.css" />
+    <Content Include="dist\css\skins\skin-green.css" />
+    <Content Include="dist\css\skins\skin-green.min.css" />
+    <Content Include="dist\css\skins\skin-purple-light.css" />
+    <Content Include="dist\css\skins\skin-purple-light.min.css" />
+    <Content Include="dist\css\skins\skin-purple.css" />
+    <Content Include="dist\css\skins\skin-purple.min.css" />
+    <Content Include="dist\css\skins\skin-red-light.css" />
+    <Content Include="dist\css\skins\skin-red-light.min.css" />
+    <Content Include="dist\css\skins\skin-red.css" />
+    <Content Include="dist\css\skins\skin-red.min.css" />
+    <Content Include="dist\css\skins\skin-yellow-light.css" />
+    <Content Include="dist\css\skins\skin-yellow-light.min.css" />
+    <Content Include="dist\css\skins\skin-yellow.css" />
+    <Content Include="dist\css\skins\skin-yellow.min.css" />
+    <Content Include="dist\css\skins\_all-skins.css" />
+    <Content Include="dist\css\skins\_all-skins.min.css" />
+    <Content Include="dist\js\app.js" />
+    <Content Include="dist\js\app.min.js" />
+    <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\pages\dashboard.js" />
+    <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Petugas\FormAnggotaOff.aspx" />
+    <Content Include="LoginAnggota.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Petugas\ListAnggota.aspx" />
+    <Content Include="Petugas\PembayaranBuku.aspx" />
+    <Content Include="Petugas\PembayaranDenda.aspx" />
+    <Content Include="Petugas\Penggantian.aspx" />
+    <Content Include="Petugas\InputBuku.aspx" />
+    <Content Include="Petugas\PenyimpananBuku.aspx" />
+    <Content Include="Petugas\TransaksiBooking.aspx" />
+    <Content Include="Petugas\TransaksiPeminjaman.aspx" />
+    <Content Include="Petugas\TransaksiPengembalian.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -329,6 +378,27 @@
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Anggota\Booking.aspx.cs">
+      <DependentUpon>Booking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Anggota\Booking.aspx.designer.cs">
+      <DependentUpon>Booking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Anggota\FormAnggotaOn.aspx.cs">
+      <DependentUpon>FormAnggotaOn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Anggota\FormAnggotaOn.aspx.designer.cs">
+      <DependentUpon>FormAnggotaOn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Anggota\ListPinjaman.aspx.cs">
+      <DependentUpon>ListPinjaman.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Anggota\ListPinjaman.aspx.designer.cs">
+      <DependentUpon>ListPinjaman.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -354,10 +424,87 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Petugas\FormAnggotaOff.aspx.cs">
+      <DependentUpon>FormAnggotaOff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\FormAnggotaOff.aspx.designer.cs">
+      <DependentUpon>FormAnggotaOff.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="LoginAnggota.aspx.cs">
+      <DependentUpon>LoginAnggota.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginAnggota.aspx.designer.cs">
+      <DependentUpon>LoginAnggota.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Petugas\ListAnggota.aspx.cs">
+      <DependentUpon>ListAnggota.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\ListAnggota.aspx.designer.cs">
+      <DependentUpon>ListAnggota.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\PembayaranBuku.aspx.cs">
+      <DependentUpon>PembayaranBuku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\PembayaranBuku.aspx.designer.cs">
+      <DependentUpon>PembayaranBuku.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\PembayaranDenda.aspx.cs">
+      <DependentUpon>PembayaranDenda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\PembayaranDenda.aspx.designer.cs">
+      <DependentUpon>PembayaranDenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\Penggantian.aspx.cs">
+      <DependentUpon>Penggantian.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\Penggantian.aspx.designer.cs">
+      <DependentUpon>Penggantian.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\InputBuku.aspx.cs">
+      <DependentUpon>InputBuku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\InputBuku.aspx.designer.cs">
+      <DependentUpon>InputBuku.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\PenyimpananBuku.aspx.cs">
+      <DependentUpon>PenyimpananBuku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\PenyimpananBuku.aspx.designer.cs">
+      <DependentUpon>PenyimpananBuku.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\TransaksiBooking.aspx.cs">
+      <DependentUpon>TransaksiBooking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\TransaksiBooking.aspx.designer.cs">
+      <DependentUpon>TransaksiBooking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\TransaksiPeminjaman.aspx.cs">
+      <DependentUpon>TransaksiPeminjaman.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\TransaksiPeminjaman.aspx.designer.cs">
+      <DependentUpon>TransaksiPeminjaman.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\TransaksiPengembalian.aspx.cs">
+      <DependentUpon>TransaksiPengembalian.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\TransaksiPengembalian.aspx.designer.cs">
+      <DependentUpon>TransaksiPengembalian.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BookingService.asmx.cs">
       <DependentUpon>BookingService.asmx</DependentUpon>
