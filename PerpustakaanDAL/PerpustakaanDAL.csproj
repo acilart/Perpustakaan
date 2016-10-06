@@ -53,10 +53,12 @@
     <Compile Include="CabinetCellDAL.cs" />
     <Compile Include="CabinetDAL.cs" />
     <Compile Include="CabinetRowDAL.cs" />
+    <Compile Include="KategoriBukuDAL.cs" />
     <Compile Include="KecamatanDAL.cs" />
     <Compile Include="KelurahanDAL.cs" />
     <Compile Include="KotaDAL.cs" />
     <Compile Include="LoginDAL.cs" />
+    <Compile Include="PenerbitDAL.cs" />
     <Compile Include="PetugasDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinsiDAL.cs" />

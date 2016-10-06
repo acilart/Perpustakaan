@@ -7,22 +7,23 @@ using System.Threading.Tasks;
 
 namespace PerpustakaanDAL
 {
-    public class CabinetRowDAL
+    public class PenerbitDAL
     {
-        public static List<MstCabinetRow> GetAllCabinetRow()
+        public static List<MstPenerbit> GetPenerbit()
         {
-            using (var db = new PerpustakaanDbContext())
+            using (var db= new PerpustakaanDbContext())
             {
-                return db.MstCabinetRow.ToList();
+                return db.MstPenerbit.ToList();
             }
         }
 
-        public static List<MstCabinetRow> GetAllCabinetRowByIdCabinet(int id)
+        public static MstPenerbit GetPenerbitByID(int id)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.MstCabinetRow.Where(n=>n.IDRak==id).ToList();
+                return db.MstPenerbit.FirstOrDefault(n=>n.ID == id);
             }
+
         }
     }
 }
