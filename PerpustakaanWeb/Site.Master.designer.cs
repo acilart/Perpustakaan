@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PerpustakaanWeb {
+namespace AjaxDemo.Web {
     
     
     public partial class SiteMaster {

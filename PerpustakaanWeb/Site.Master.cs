@@ -7,7 +7,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace PerpustakaanWeb
+namespace AjaxDemo.Web
 {
     public partial class SiteMaster : MasterPage
     {

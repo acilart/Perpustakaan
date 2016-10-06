@@ -1,4 +1,7 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PerpustakaanWeb.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="AjaxDemo.Web.SiteMaster" %>
+
+<!DOCTYPE html>
+
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
@@ -17,8 +20,8 @@
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
-<%--Framework Scripts--%>
-<asp:ScriptReference Name="MsAjaxBundle" />
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="respond" />
@@ -31,8 +34,8 @@
                 <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
                 <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
                 <asp:ScriptReference Name="WebFormsBundle" />
-<%--Site Scripts--%>
-</Scripts>
+                <%--Site Scripts--%>
+            </Scripts>
         </asp:ScriptManager>
 
         <div class="navbar navbar-inverse navbar-fixed-top">
