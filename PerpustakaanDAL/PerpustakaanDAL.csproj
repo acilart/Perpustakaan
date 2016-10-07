@@ -58,7 +58,7 @@
     <Compile Include="KelurahanDAL.cs" />
     <Compile Include="KotaDAL.cs" />
     <Compile Include="LoginDAL.cs" />
-    <Compile Include="PenerbitDAL.cs" />
+    <Compile Include="PengembalianDAL.cs" />
     <Compile Include="PetugasDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinsiDAL.cs" />
