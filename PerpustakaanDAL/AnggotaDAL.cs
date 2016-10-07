@@ -42,7 +42,6 @@ namespace PerpustakaanDAL
                 {
                     cek.ID = anggota.ID;
                     cek.Nama = anggota.Nama;
-                    cek.KodeAnggota = anggota.KodeAnggota;
                     cek.MasaBerlakuAnggota = anggota.MasaBerlakuAnggota;
                     cek.MasaBerlakuKartu = anggota.MasaBerlakuKartu;
                     cek.ModifiedBy = anggota.ModifiedBy;
@@ -53,9 +52,11 @@ namespace PerpustakaanDAL
                     cek.IDProvinsi = anggota.IDProvinsi;
                     cek.IDKota = anggota.IDKota;
                     cek.Alamat = anggota.Alamat;
+                    cek.Email = anggota.Email;
                 }
                 else
                 {
+                    anggota.KodeAnggota = AutoNumberDAL.KodeAnggotaAutoNumber();
                     anggota.CreatedOn = DateTime.Now;
                     anggota.MasaBerlakuKartu = DateTime.Now.AddMonths(3);
                     anggota.MasaBerlakuAnggota = DateTime.Now.AddYears(1);
@@ -97,11 +98,11 @@ namespace PerpustakaanDAL
             }
         }
 
-        public MstAnggota GetAnggotaByID(int id)
+        public static MstAnggota GetAnggotaByID(int ID)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                var cek = db.MstAnggota.FirstOrDefault(n => n.ID == id);
+                var cek = db.MstAnggota.FirstOrDefault(n => n.ID == ID);
                 if (cek != null)
                 {
                     return cek;

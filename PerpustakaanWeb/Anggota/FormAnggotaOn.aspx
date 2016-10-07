@@ -22,29 +22,26 @@
                     <input class="col-md-9 form-control" type="text" id="txt-alamat" placeholder="Alamat" />
                 </div>
                 <div class="form-group">
-                    <label class="col-md-3">Kecamatan </label>
-                    <select class="form-control" id="dkecamatan" style="width: 49%;">
-                        <option value="0">---pilih---</option>
-                    </select>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="IDKategori" data-valmsg-replace="true"></span>
-
-                </div>
-                <div class="form-group">
-                    <label class="col-md-3">Kota </label>
-                    <select class="form-control" id="dkota" style="width: 49%;">
-                        <option value="a">---pilih---</option>
-                        <option value="b">contoh 2</option>
-                        <option value="c">contoh 3</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label class="col-md-3">Provinsi</label>
                     <select class="form-control" id="dpropinsi" style="width: 49%;">
                         <option value="a">---pilih---</option>
-                        <option value="b">contoh 2</option>
-                        <option value="c">contoh 3</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-md-3">Kota </label>
+                    <select class="form-control" id="dkota" style="width: 49%;" disabled>
+                        <option value="0">---pilih---</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Kecamatan </label>
+                    <select class="form-control" id="dkecamatan" style="width: 49%;" disabled>
+                        <option value="0">---pilih---</option>
+                    </select>
+
+                </div>
+
             </div>
             <div class="form-horizontal col-md-6">
                 <div class="form-group">
@@ -141,6 +138,7 @@
             });
 
             loadPropinsi();
+
         });
 
 
@@ -151,9 +149,9 @@
             $("#txt-alamat").val('');
             $("#txt-nama").val('');
 
-            $("#dkecamatan").val('a');
-            $("#dkota").val('a');
-            $("#dpropinsi").val('a');
+            $("#dkecamatan").val('--pilih--');
+            $("#dkota").val('--pilih--');
+            $("#dpropinsi").val('--pilih--');
 
 
             $("#txt-email").val('');
@@ -164,12 +162,17 @@
 
         }
 
+
+
         function saveAnggota() {
             var anggotaa = {};
             anggotaa.NoTelepon = $("#txt-telp").val();
             anggotaa.Nama = $("#txt-nama").val();
             anggotaa.Alamat = $("#txt-alamat").val();
             anggotaa.Email = $("#txt-email").val();
+            anggotaa.IDProvinsi = $("#dpropinsi").val();
+            anggotaa.IDKota= $("#dkota").val();
+            anggotaa.IDKecamatan= $("#dkecamatan").val();
 
 
             $.ajax({
@@ -187,6 +190,20 @@
         }
 
 
+         
+        $("#dpropinsi").click(function () {
+
+            $("#dkota").removeAttr('disabled');
+            $("#dkecamatan").removeAttr('disabled');
+            loadKota();
+
+        });
+
+        $("#dkota").click(function () {
+
+            loadKecamatan();
+        });
+
         function loadPropinsi() {
 
             $.ajax({
@@ -196,14 +213,60 @@
                 dataType: "json",
                 success: function (id) {
                     var out = "";
-                    $.each(out.d, function (index, item) {
+                    $.each(id.d, function (index, item) {
 
-                        out += '<option value"' + item.ID + '">' + item.NamaProvinsi + '</option>';
+                        out += '<option value="' + item.ID + '">' + item.NamaProvinsi + '</option>';
                     });
                     $('#dpropinsi').html(out);
                 }
             });
+
         }
+
+
+        function loadKota() {
+
+            var propinsi = $("#dpropinsi").val();
+            $.ajax({
+                url: "../Service/AnggotaOnline.asmx/getKota",
+                data: '{id: ' + JSON.stringify(propinsi) + '}',
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (id) {
+                    var out = "";
+                    $.each(id.d, function (index, item) {
+
+                        out += '<option value="' + item.ID + '">' + item.NamaKota + '</option>';
+                    });
+                    $('#dkota').html(out);
+              
+                }
+            });
+        }
+
+        function loadKecamatan() {
+
+            var kota = $("#dkota").val();
+
+
+            $.ajax({
+                url: "../Service/AnggotaOnline.asmx/getKecamatan",
+                data: '{id:' + JSON.stringify(kota) + '}',
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (id) {
+                    var out = "";
+                    $.each(id.d, function (index, item) {
+
+                        out += '<option value="' + item.ID + '">' + item.NamaKecamatan + '</option>';
+                    });
+                    $('#dkecamatan').html(out);
+                }
+            });
+        }
+
 
         $('#btn-clear').click(function () {
             clearfield();
@@ -218,6 +281,7 @@
             if (password == cpassword) {
                 saveAnggota();
                 clearfield();
+                loadPropinsi();
 
             } else {
                 $("#txt-password").val('');
@@ -228,9 +292,6 @@
             return false;
 
         });
-
-
-
 
 
     </script>

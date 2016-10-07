@@ -17,7 +17,5 @@ namespace PerpustakaanDAL
                 return db.MstProvinsi.ToList();
             }
         }
-
-      
     }
 }
