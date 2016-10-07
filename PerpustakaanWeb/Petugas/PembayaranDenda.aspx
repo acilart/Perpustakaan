@@ -5,8 +5,7 @@
             <h2>Form Pengembalian</h2>
         </div>
         <div class="box-body">
-            <form action="/Anggota/Create" method="post">
-                <input name="__RequestVerificationToken" type="hidden" value="wcv9Q8y4GQ_x4bT7YRs85r6txf4MRvFtu3KUuz2Zf9jrA5dDYWSR46ZvsMmytRd1fCGU-m_R6wTCMy2A89rYe-54x__sqULvGAnS1GBxXfI1" />
+            <Form>
                 <div class="form-horizontal">
 
                     <div class="form-group">                       
