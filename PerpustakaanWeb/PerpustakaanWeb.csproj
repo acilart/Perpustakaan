@@ -257,8 +257,8 @@
     <Content Include="Global.asax" />
     <Content Include="Service\AnggotaOnline.asmx" />
     <Content Include="Service\BookingService.asmx" />
-    <Content Include="Service\InputBukuService.asmx" />
-    <Content Include="Service\ListAnggotaService.asmx" />
+    <Content Include="Service\PengembalianService.asmx" />
+    <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -523,6 +523,10 @@
     </Compile>
     <Compile Include="Service\ListAnggotaService.asmx.cs">
       <DependentUpon>ListAnggotaService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\PengembalianService.asmx.cs">
+      <DependentUpon>PengembalianService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Site.Master.cs">
