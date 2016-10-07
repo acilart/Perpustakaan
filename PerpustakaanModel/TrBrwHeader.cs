@@ -24,6 +24,8 @@ namespace PerpustakaanModel
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<bool> Status { get; set; }
+
+        public MstAnggota Anggota { get; set; }
     
     }
 }

@@ -34,5 +34,7 @@ namespace PerpustakaanModel
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
 
+
+
     }
 }
