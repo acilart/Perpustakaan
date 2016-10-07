@@ -36,17 +36,17 @@ namespace PerpustakaanWeb.Service
             return KategoriBukuDAL.GetKategoriByID(ID);
         }
 
-        [WebMethod]
-        public List<MstPenerbit> GetPenerbit()
-        {
-            return PenerbitDAL.GetPenerbit();
-        }
+        //[WebMethod]
+        //public List<MstPenerbit> GetPenerbit()
+        //{
+        //    return PenerbitDAL.GetPenerbit();
+        //}
 
-        [WebMethod]
-        public MstPenerbit GetPenerbitByID(int ID)
-        {
-            return PenerbitDAL.GetPenerbitByID(ID);
-        }
+        //[WebMethod]
+        //public MstPenerbit GetPenerbitByID(int ID)
+        //{
+        //    return PenerbitDAL.GetPenerbitByID(ID);
+        //}
 
         [WebMethod]
         public string AutoNumber()
