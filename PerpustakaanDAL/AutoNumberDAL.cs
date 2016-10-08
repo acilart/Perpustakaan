@@ -77,5 +77,29 @@ namespace PerpustakaanDAL
             }
             return tmp;
         }
+
+        public static string PenyimpananBukuNoRegAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrPlcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "PLC" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "PLC" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
     }
 }
