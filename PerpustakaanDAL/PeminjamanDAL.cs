@@ -1,19 +1,18 @@
-﻿using PerpustakaanModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using PerpustakaanModel;
 namespace PerpustakaanDAL
 {
-    public class SumberBukuDAL
+    public class PeminjamanDAL
     {
-        public List<MstSumberBuku> GetAllCabinet()
+        public TrBrwHeader GetHeaderByNore(string noReg)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.MstSumberBuku.ToList();
+                return db.TrBrwHeader.FirstOrDefault(n => n.NoRegistrasi == noReg);
             }
         }
     }

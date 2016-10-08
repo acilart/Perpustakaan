@@ -45,14 +45,40 @@ namespace PerpustakaanDAL
                 try
                 {
                     db.SaveChanges();
+                    return true;
                 }
                 catch (Exception)
                 {
-                    
-                    throw;
+                    return false;
+                    //throw;
                 }
             }
         }
+
+        public static List<MstBuku> GetBukuNonPlaced()
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstBuku.Where(n=>n.Aktif == false && n.Lokasi != null).ToList();
+            }
+        }
+        public  static List<MstBuku> GetBukuHilang()
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                 return db.MstBuku.Where(n=>n.Aktif == false && n.Lokasi == null).ToList();
+            }
+        }
+
+        public static MstBuku GetBukuByID(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstBuku.FirstOrDefault(n => n.ID == id);
+            }
+        }
+
+
     }
 }
         

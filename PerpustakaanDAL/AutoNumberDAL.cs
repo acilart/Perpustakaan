@@ -101,5 +101,102 @@ namespace PerpustakaanDAL
             }
             return tmp;
         }
+
+        public static string PengembalianBukuNoRegAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrReturnHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "RTR" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "RTR" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
+
+        public static string PembayaranNoRegAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrPmtBukuHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "PMT" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "PMT" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
+
+        public static string PeminjamanBukuNoRegAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrPlcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
+
+        public static string PenggantianBukuNoRegAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrPlcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
+
     }
 }

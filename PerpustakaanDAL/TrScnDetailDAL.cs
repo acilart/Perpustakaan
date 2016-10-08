@@ -8,5 +8,6 @@ namespace PerpustakaanDAL
 {
     public class TrScnDetailDAL
     {
+
     }
 }

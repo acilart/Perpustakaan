@@ -1,19 +1,18 @@
-﻿using PerpustakaanModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using PerpustakaanModel;
 namespace PerpustakaanDAL
 {
-    public class SumberBukuDAL
+    public class OpsiPenggantianDAL
     {
-        public List<MstSumberBuku> GetAllCabinet()
+        public static List<MstOpsiPenggantian> GetOpsi()
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.MstSumberBuku.ToList();
+                return db.MstOpsiPenggantian.ToList();
             }
         }
     }

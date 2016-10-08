@@ -58,7 +58,15 @@
     <Compile Include="KelurahanDAL.cs" />
     <Compile Include="KotaDAL.cs" />
     <Compile Include="LoginDAL.cs" />
+    <Compile Include="OpsiPenggantianDAL.cs" />
+    <Compile Include="Pembayaran.cs" />
+    <Compile Include="PembayaranBukuDAL.cs" />
+    <Compile Include="PeminjamanDAL.cs" />
+    <Compile Include="PenerbitDAL.cs" />
     <Compile Include="PengembalianDAL.cs" />
+    <Compile Include="Penggantian.cs" />
+    <Compile Include="PenggantianDAL.cs" />
+    <Compile Include="PenyimpananBukuDAL.cs" />
     <Compile Include="PetugasDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinsiDAL.cs" />
