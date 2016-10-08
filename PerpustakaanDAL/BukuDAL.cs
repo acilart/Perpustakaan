@@ -19,6 +19,40 @@ namespace PerpustakaanDAL
             }
 
         }
+
+        public static bool SimpanBuku(MstBuku buku)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstBuku.FirstOrDefault(n => n.ID == buku.ID);
+                if (cek != null)
+                {
+                    cek.IDKategori = buku.IDKategori;
+                    cek.IDPenerbit = buku.IDPenerbit;
+                    cek.JudulBuku = buku.JudulBuku;
+                    cek.ISBN = buku.ISBN;
+                    cek.Pengarang = buku.Pengarang;
+                    cek.Aktif = buku.Aktif;
+                    cek.Value = buku.Value;
+                    cek.IDSumberBuku = buku.IDSumberBuku;
+                }
+                else
+                {
+                    buku.Kode = AutoNumberDAL.KodeBukuAutoNumber();
+                    buku.Aktif = false;
+                    db.MstBuku.Add(buku);
+                }
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+        }
     }
 }
         
