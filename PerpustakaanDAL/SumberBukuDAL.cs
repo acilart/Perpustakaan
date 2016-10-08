@@ -8,5 +8,12 @@ namespace PerpustakaanDAL
 {
     public class SumberBukuDAL
     {
+        public List<MstSumberBuku> GetAllCabinet()
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstSumberBuku.ToList();
+            }
+        }
     }
 }
