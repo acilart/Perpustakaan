@@ -5,7 +5,7 @@
             <h2>Form Pengembalian</h2>
         </div>
         <div class="box-body">
-            <form>
+            <%--<form>--%>
                 
                 <div class="form-horizontal">
                     
@@ -118,13 +118,13 @@
                    </div>
                </div>
                <div class="col-md-12">
-                   <table class="table table-striped">
+                   <table class="table table-striped text-center">
                        <thead>
                            <tr>
                                <th>No</th>
                                <th>No Referensi</th>
                                <th>Nama Anggota</th>
-                              
+                               <th></th>                              
                            </tr>
                        </thead>
                        <tbody id="data-borrow">                           
@@ -159,9 +159,9 @@
                 var Icount = 0;
                 $.each(data.d, function (index, item) {
                     listborrow += '<tr>' +
-                        '<td>' + ++Icount + '<td>' +
-                        '<td>' + item.NoReferensi + '<td>' +
-                        '<td>' + item.NamaAnggota + '<td>' +
+                        '<td>' + ++Icount + '</td>' +
+                        '<td>' + item.NoReferensi + '</td>' +
+                        '<td>' + item.NamaAnggota + '</td>' +
                         '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
                              '</tr>'
                 });
@@ -189,11 +189,12 @@
                         var datekembali = new Date(parseInt((item.TanggalKembali).replace(/[^\d]/g, '')));
                        
                         $("#NoRef").val(item.NoReferensi);
-                        $("#NoReg").val(item.NoRegistrasi);
+                        
                         $("#Nama").val(item.NamaAnggota);
                         $("#TglPinjam").val(datepinjam);
                         $("#TglKembali").val(datekembali);
                         $("#TglDikembalikan").val(HariIni);
+                        LoadBukuPinjam();
                         $('#modal-borrow').modal('hide');                        
                     });;                   
                 }
@@ -202,7 +203,7 @@
 
         //fungsi untuk text box pencarian nomor referensi peminjaman
         $('#search-borrow').keyup(function () {
-            var searchValue = $('#txt-search').val();
+            var searchValue = $('#search-borrow').val();
             LoadDataSearch(searchValue);
         });
         //fungsi untuk mencari di pop up peminjaman
@@ -218,9 +219,9 @@
                     var Icount = 0;
                     $.each(data.d, function (index, item) {
                         listborrow += '<tr>' +
-                            '<td>' + ++Icount + '<td>' +
-                            '<td>' + item.NoReferensi + '<td>' +
-                            '<td>' + item.NamaAnggota + '<td>' +
+                            '<td>' + ++Icount + '</td>' +
+                            '<td>' + item.NoReferensi + '</td>' +
+                            '<td>' + item.NamaAnggota + '</td>' +
                             '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
                                  '</tr>'
                     });
@@ -229,6 +230,27 @@
             })
         }
 
+        //fungsi untuk menampilkan buku yang di pinjam
+        function LoadBukuPinjam(id) {
+            $.ajax({
+                url: '../Service/PengembalianService.asmx/GetBukuPinjam',
+                data: '{"id":"' + id + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    var listbuku = '';
+                    $.each(data.d, function (index, item) {
+                        listbuku += '<tr>' +
+                            '<td>' + item.KodeMstBuku + '</td>' +
+                            '<td>' + item.Judul + '</td>'+
+                            '</tr>'
+                    });
+                    $('#buku-borrow').html(listbuku);
+                }
+            })
+        }
+        
 
     </script>
     

@@ -257,6 +257,8 @@
     <Content Include="Global.asax" />
     <Content Include="Service\AnggotaOnline.asmx" />
     <Content Include="Service\BookingService.asmx" />
+    <Content Include="Service\InputBukuService.asmx" />
+    <Content Include="Service\ListAnggotaService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />

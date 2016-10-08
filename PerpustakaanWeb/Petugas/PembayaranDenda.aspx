@@ -1,17 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PembayaranDenda.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PembayaranDenda" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">
         <div class="box-header">
             <h2>Form Pengembalian</h2>
         </div>
         <div class="box-body">
-            <Form>
+           <%--<form>--%>
                 <div class="form-horizontal">
 
-                    <div class="form-group">                       
+                    <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
                         <div class="input-group col-md-10">
-                            <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly/>
+                            <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
                                 <button type="submit" name="search" id="search-btn" class="btn btn-flat" disabled>
@@ -24,7 +25,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoReg">No Registrasi</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="NoReg" name="NoReg" type="text" value="" readonly/>
+                            <input class="form-control text-box single-line" id="NoReg" name="NoReg" type="text" value="" readonly />
                         </div>
                     </div>
 
@@ -38,26 +39,26 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="TglPinjam">Tanggal Pinjam</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglPinjam" name="TglPinjam" type="date" value="" readonly />
+                            <input class="form-control text-box single-line" id="TglPinjam" name="TglPinjam" type="text" value="" readonly />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="TglKembali">Tanggal Kembali</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglKembali" name="TglKembali" type="date" value="" readonly />
+                            <input class="form-control text-box single-line" id="TglKembali" name="TglKembali" type="text" value="" readonly />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="TglDikembalikan">Tanggal Dikembalikan</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglDikembalikan" name="TglDikembalikan" type="date" value="" readonly />
+                            <input class="form-control text-box single-line" id="TglDikembalikan" name="TglDikembalikan" type="text" value="" readonly />
                         </div>
                     </div>
 
                 </div>
-            </form>
+            <%--</form>--%>
             <%--<div>
                 <a href="/Anggota">Back to List</a>
             </div>--%>
@@ -104,5 +105,5 @@
         </div>
     </div>
     <!-- /.box -->
-    
+
 </asp:Content>

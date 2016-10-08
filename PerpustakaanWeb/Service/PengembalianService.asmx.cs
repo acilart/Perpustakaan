@@ -42,5 +42,11 @@ namespace PerpustakaanWeb.Service
         {
             return PengembalianDAL.GetPeminjamanBySearch(Search);
         }
+
+        [WebMethod]
+        public List<PengembalianDAL> GetBukuPinjam(int id)
+        {
+            return PengembalianDAL.GetBukuPinjam(id);
+        }
     }
 }
