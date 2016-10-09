@@ -12,6 +12,7 @@ namespace PerpustakaanModel
     public class TrPlcDetail
     {
         public int ID { get; set; }
+        public int IDBuku { get; set; }
         public Nullable<int> HeaderID { get; set; }
 
         public string JudulBuku { get; set; }

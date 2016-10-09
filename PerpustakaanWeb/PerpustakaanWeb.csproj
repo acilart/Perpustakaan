@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PerpustakaanWeb</RootNamespace>
     <AssemblyName>PerpustakaanWeb</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,10 +45,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -76,6 +75,7 @@
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -206,6 +206,9 @@
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="List\contoh1.aspx" />
+    <Content Include="List\contoh2.aspx" />
     <Content Include="Petugas\FormAnggotaOff.aspx" />
     <Content Include="LoginAnggota.aspx" />
     <Content Include="packages.config" />
@@ -254,8 +257,8 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
     <Content Include="Service\AnggotaOnline.asmx" />
+    <Content Include="Service\AnggotaService.asmx" />
     <Content Include="Service\BookingService.asmx" />
     <Content Include="Service\InputBukuService.asmx" />
     <Content Include="Service\ListAnggotaService.asmx" />
@@ -429,15 +432,29 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="List\contoh1.aspx.cs">
+      <DependentUpon>contoh1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="List\contoh1.aspx.designer.cs">
+      <DependentUpon>contoh1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="List\contoh2.aspx.cs">
+      <DependentUpon>contoh2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="List\contoh2.aspx.designer.cs">
+      <DependentUpon>contoh2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Petugas\FormAnggotaOff.aspx.cs">
       <DependentUpon>FormAnggotaOff.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Petugas\FormAnggotaOff.aspx.designer.cs">
       <DependentUpon>FormAnggotaOff.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="LoginAnggota.aspx.cs">
       <DependentUpon>LoginAnggota.aspx</DependentUpon>
@@ -513,6 +530,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AnggotaOnline.asmx.cs">
       <DependentUpon>AnggotaOnline.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\AnggotaService.asmx.cs">
+      <DependentUpon>AnggotaService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service\BookingService.asmx.cs">

@@ -16,7 +16,7 @@ namespace PerpustakaanDAL
         public string NoReferensi { get; set; }
         public DateTime TanggalPinjam { get; set; }
         public DateTime TanggalKembali { get; set; }
-
+        public DateTime TanggalDikembalikan { get; set; }
        
         //ini property untuk tampilan di form pengembalian
         public int IDBuku { get; set; }

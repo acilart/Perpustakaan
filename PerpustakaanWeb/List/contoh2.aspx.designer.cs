@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PerpustakaanWeb {
+namespace PerpustakaanWeb.List {
     
     
-    public partial class Login {
+    public partial class contoh2 {
     }
 }

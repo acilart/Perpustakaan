@@ -62,6 +62,7 @@
     <Compile Include="Pembayaran.cs" />
     <Compile Include="PembayaranBukuDAL.cs" />
     <Compile Include="PeminjamanDAL.cs" />
+    <Compile Include="PendaftaranAnggotaDAL.cs" />
     <Compile Include="PenerbitDAL.cs" />
     <Compile Include="PengembalianDAL.cs" />
     <Compile Include="Penggantian.cs" />

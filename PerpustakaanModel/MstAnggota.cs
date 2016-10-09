@@ -18,6 +18,8 @@ namespace PerpustakaanModel
         public string KodeAnggota { get; set; }
         [MaxLength(50)]
         public string Nama { get; set; }
+        [MaxLength(50)]
+        public string Password { get; set; }
         public string Alamat { get; set; }
         public Nullable<int> IDProvinsi { get; set; }
         public Nullable<int> IDKota { get; set; }

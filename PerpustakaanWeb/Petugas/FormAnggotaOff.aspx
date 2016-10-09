@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.FormAnggotaOff" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaOff" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">
@@ -231,6 +231,35 @@
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
        
+        $('#btn-save').click(function () {
+            var anggota = {};
+            //anggota.ID = $("#AnggotaId").val();
+            anggota.KodeAnggota = $("#KodeAnggota").val();
+            anggota.Nama = $("#Nama").val();
+            anggota.Alamat = $("#Alamat").val();
+            anggota.IDProvinsi = $("#OptProvinsi").val();
+            anggota.IDKota = $("#OptKota").val();
+            anggota.IDKecamatan = $("#OptKecamatan").val();
+            anggota.IDKelurahan = $("#Kelurahan").val();
+            anggota.Email = $("#Email").val();
+            anggota.NoTelepon = $("#NoTelepon").val();
+            anggota.CreatedBy = $("#CreatedBy").val();
+            anggota.ModifiedBy = $("#ModifiedBy").val();
+
+            $.ajax({
+                url: '../Service/AnggotaService.asmx/SimpanAnggota',
+
+                data: '{anggota:' + JSON.stringify(anggota) + '}',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'JSON',
+                success: function (response) {
+                    alert("Member has been saved successfully.");
+                    window.location.reload();
+                }
+            });
+            return false;
+        });
 
     </script>
 

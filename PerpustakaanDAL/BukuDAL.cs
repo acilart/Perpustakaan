@@ -78,6 +78,20 @@ namespace PerpustakaanDAL
             }
         }
 
+        public static List<MstBuku> GetBukuAvailable()
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var list = new List<MstBuku>();
+                var buku = db.MstBuku.ToList();
+                var stok = db.TrStock.Where(n => n.InStock == true);
+                foreach (var item in stok)
+                {
+                    list.Add(buku.FirstOrDefault(n => n.ID == item.ID));
+                }
+                return list;
+            }
+        }
 
     }
 }

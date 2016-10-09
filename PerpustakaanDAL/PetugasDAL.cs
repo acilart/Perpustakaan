@@ -17,17 +17,5 @@ namespace PerpustakaanDAL
             }
         }
 
-        public static MstPetugas GetPropinsiByEmailPass(string email, string password)
-        {
-            using (var db = new PerpustakaanDbContext())
-            {
-                var cek = db.MstPetugas.FirstOrDefault(n => n.Email == email && n.Password == password);
-                if (cek != null)
-                {
-                    return cek;
-                }
-                return null;
-            }
-        }
     }
 }
