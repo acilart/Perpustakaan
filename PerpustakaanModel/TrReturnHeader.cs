@@ -18,8 +18,10 @@ namespace PerpustakaanModel
         public string NoReferensi { get; set; }
         public Nullable<int> IDAnggota { get; set; }
         public Nullable<System.DateTime> TanggalPinjam { get; set; }
+
         public Nullable<System.DateTime> TanggalKembali { get; set; }
         public Nullable<System.DateTime> TanggalDikembalikan { get; set; }
+        
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
