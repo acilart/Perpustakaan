@@ -13,9 +13,11 @@ namespace PerpustakaanDAL
             var tmp = "";
             using (var db = new PerpustakaanDbContext())
             {
+
                 var date = DateTime.Now.ToString("yyyy");
                 var cek = db.MstAnggota.Where(n => n.KodeAnggota.Contains(date)).ToList();
                 if (cek.Count > 0)
+
                 {
                     var item = cek[cek.Count - 1];
                     var urut = item.KodeAnggota.Substring(item.KodeAnggota.Length - 5, 5);
