@@ -10,7 +10,7 @@ namespace PerpustakaanDAL
     public class LoginDAL
     {
 
-        public MstPetugas GetPetugasByEmailPass(string email, string password)
+        public static MstPetugas GetPetugasByEmailPass(string email, string password)
         {
             using (var db = new PerpustakaanDbContext())
             {
@@ -23,11 +23,11 @@ namespace PerpustakaanDAL
             }
         }
 
-        public MstAnggota GetAnggotaByEmail(string email, string password)
+        public static MstAnggota GetAnggotaByEmail(string email, string password)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                var cek = db.MstAnggota.FirstOrDefault(n => n.Email == email && n.Password == password);
+                var cek = db.MstAnggota.FirstOrDefault(n => n.Email == email);
                 if (cek != null)
                 {
                     return cek;
