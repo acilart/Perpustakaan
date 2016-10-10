@@ -29,7 +29,6 @@ namespace PerpustakaanWeb.Service
         [WebMethod]
         public bool simpanAnggota(MstAnggota anggota)
         {
-
             return AnggotaDAL.SimpanAnggota(anggota);
         }
 

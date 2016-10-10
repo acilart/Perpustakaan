@@ -64,9 +64,19 @@ namespace PerpustakaanWeb.Service
         {
             return KecamatanDAL.GetAllKecamatanbyKotaID(id);
         }
-        
-  
+        [WebMethod]
 
+        public bool hapusAnggota(int id) {
+
+            return AnggotaDAL.DeleteAnggota(id);
+        }
+
+        [WebMethod]
+        public bool updateAnggota(MstAnggota anggota)
+        {
+
+            return AnggotaDAL.SimpanAnggota(anggota);
+        }
 
     }
 }
