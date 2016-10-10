@@ -58,6 +58,7 @@
     <Compile Include="KecamatanDAL.cs" />
     <Compile Include="KelurahanDAL.cs" />
     <Compile Include="KotaDAL.cs" />
+    <Compile Include="LemeariDAL.cs" />
     <Compile Include="LoginDAL.cs" />
     <Compile Include="OpsiPenggantianDAL.cs" />
     <Compile Include="Pembayaran.cs" />
@@ -78,6 +79,10 @@
     <Compile Include="TrScnHeaderDAL.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Perpustakaan.ViewModel\Perpustakaan.ViewModel.csproj">
+      <Project>{69ec4599-3011-4b4e-8b76-7e049940ae99}</Project>
+      <Name>Perpustakaan.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PerpustakaanModel\PerpustakaanModel.csproj">
       <Project>{208127fa-4a7d-4b04-bedb-445d21d91db8}</Project>
       <Name>PerpustakaanModel</Name>

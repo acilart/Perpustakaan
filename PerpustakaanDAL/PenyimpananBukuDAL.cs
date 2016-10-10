@@ -36,6 +36,7 @@ namespace PerpustakaanDAL
                         ModifiedOn = DateTime.Now
                     };
                     listStock.Add(stok);
+
                     #region Update Status Buku
                     var buku = db.MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
                     if (buku != null)
@@ -43,6 +44,7 @@ namespace PerpustakaanDAL
                         buku.Aktif = true;
                     }
                     #endregion
+
                     #region Update Kolom Rak
                     var cek = db.MstCabinetCell.FirstOrDefault(n => n.ID == buku.Lokasi);
                     if (cek != null)
@@ -51,7 +53,7 @@ namespace PerpustakaanDAL
                         cek.Kosong -= 1;
                     }
                     #endregion
-                    db.SaveChanges();
+      
                 }
                 db.TrPlcDetail.AddRange(details);
                 db.TrStock.AddRange(listStock);

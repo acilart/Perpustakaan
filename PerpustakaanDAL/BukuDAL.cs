@@ -70,7 +70,7 @@ namespace PerpustakaanDAL
             }
         }
 
-        public static MstBuku GetBukuByID(int id)
+        public MstBuku GetBukuByID(int id)
         {
             using (var db = new PerpustakaanDbContext())
             {
@@ -92,6 +92,7 @@ namespace PerpustakaanDAL
                 return list;
             }
         }
+
 
     }
 }

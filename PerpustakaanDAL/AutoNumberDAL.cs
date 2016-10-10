@@ -158,7 +158,7 @@ namespace PerpustakaanDAL
             using (var db = new PerpustakaanDbContext())
             {
                 var date = DateTime.Now.ToString("yyyyMM");
-                var cek = db.TrPlcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+                var cek = db.TrBrwHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
 
                 if (cek.Count > 0)
                 {
@@ -182,7 +182,7 @@ namespace PerpustakaanDAL
             using (var db = new PerpustakaanDbContext())
             {
                 var date = DateTime.Now.ToString("yyyyMM");
-                var cek = db.TrPlcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
+                var cek = db.TrRpcHeader.Where(n => n.NoRegistrasi.Contains(date)).ToList();
 
                 if (cek.Count > 0)
                 {
@@ -190,7 +190,7 @@ namespace PerpustakaanDAL
                     var urut = item.NoRegistrasi.Substring(item.NoRegistrasi.Length - 4, 4);
                     var i = int.Parse(urut) + 1;
                     var zero = urut.Substring(0, urut.Length - i.ToString().Length);
-                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                    tmp = "RPC" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
                 }
                 else
                 {

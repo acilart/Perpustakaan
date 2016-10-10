@@ -185,7 +185,8 @@ namespace PerpustakaanDAL
                 #region Insert Detail Pengembalian
                 foreach (var item in detail)
                 {
-                    var buku = BukuDAL.GetBukuByID(item.IDBuku);
+                    var dal = new BukuDAL();
+                    var buku = dal.GetBukuByID(item.IDBuku);
                     item.HeaderID = id;
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;

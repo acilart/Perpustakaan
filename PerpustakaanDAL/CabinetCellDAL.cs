@@ -17,6 +17,14 @@ namespace PerpustakaanDAL
             }
         }
 
+        public MstCabinetCell GetCellByID( int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstCabinetCell.FirstOrDefault(n=>n.ID == id);
+            }
+        }
+
         public static List<MstCabinetCell> GetCabineCellAvailableByIdRow(int id)
         {
             using (var db=new PerpustakaanDbContext())

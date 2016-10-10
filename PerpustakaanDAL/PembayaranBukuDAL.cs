@@ -11,17 +11,19 @@ namespace PerpustakaanDAL
         public static List<Pembayaran> GetPembayaranByID(int id)
         {
             var list = new List<Pembayaran>();
+           
             using (var db = new PerpustakaanDbContext())
             {
                 var rpcHeader = db.TrRpcHeader.FirstOrDefault(n => n.ID == id);//ambil header penggantian
                 var pmtHeader = db.TrPmtBukuHeader.FirstOrDefault(n => n.NoReferensi == rpcHeader.NoRegistrasi);//ambil header pembayaran sesuai no registrasi yang ada di header penggantian
-                if (pmtHeader != null)//cek apakah data header pemayaran ada atau tidak
+                if (pmtHeader != null)//cek apakah data header pembayaran ada atau tidak
                 {
 
                     var pmtDetail = db.TrPmtBukuDetail.Where(n => n.HeaderID == pmtHeader.ID);//cek pembayaran detail sesuai id header pembayaran
                     foreach (var detail in pmtDetail)
                     {
-                        var buku = BukuDAL.GetBukuByID(detail.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
+                        var bukuDal = new BukuDAL();
+                        var buku = bukuDal.GetBukuByID(detail.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
                         int bayarSebelum = 0;
                         int bayarKe = 0;
                         int sisa = 0;
@@ -61,8 +63,8 @@ namespace PerpustakaanDAL
                     var detailRpc = db.TrRpcDetail.Where(n => n.HeaderID == id);
                     foreach (var item in detailRpc)
                     {
-
-                        var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
+                        
+                        var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n=>n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
                         var pembayar = new Pembayaran()
                          {
                              IDBuku = buku.ID,

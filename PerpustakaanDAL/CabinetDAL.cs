@@ -16,5 +16,15 @@ namespace PerpustakaanDAL
                 return db.MstCabinet.ToList();
             }
         }
+
+        public MstCabinet GetCabinetByID(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                return db.MstCabinet.FirstOrDefault(n=>n.ID == id);
+            }
+        }
+
+        
     }
 }

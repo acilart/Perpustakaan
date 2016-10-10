@@ -64,7 +64,7 @@ namespace PerpustakaanDAL
             }
         }
 
-        public Penggantian GetPenggantianByID(int id)
+        public static Penggantian GetPenggantianByID(int id)
         {
             using (var db = new PerpustakaanDbContext())
             {
