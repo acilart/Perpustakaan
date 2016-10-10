@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace PerpustakaanWeb
+namespace PerpustakaanWeb.Petugas
 {
     public partial class FormAnggotaOff : System.Web.UI.Page
     {

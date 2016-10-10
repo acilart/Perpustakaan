@@ -6,8 +6,7 @@
             <h2>FORM PENDAFTARAN ANGGOTA</h2>
         </div>
         <div class="box-body">
-            <form action="/Anggota/Create" method="post">
-                <input name="__RequestVerificationToken" type="hidden" value="wcv9Q8y4GQ_x4bT7YRs85r6txf4MRvFtu3KUuz2Zf9jrA5dDYWSR46ZvsMmytRd1fCGU-m_R6wTCMy2A89rYe-54x__sqULvGAnS1GBxXfI1" />
+            <form>
                 <div class="form-horizontal">
 
                     <div class="form-group">
@@ -231,35 +230,7 @@
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
        
-        $('#btn-save').click(function () {
-            var anggota = {};
-            //anggota.ID = $("#AnggotaId").val();
-            anggota.KodeAnggota = $("#KodeAnggota").val();
-            anggota.Nama = $("#Nama").val();
-            anggota.Alamat = $("#Alamat").val();
-            anggota.IDProvinsi = $("#OptProvinsi").val();
-            anggota.IDKota = $("#OptKota").val();
-            anggota.IDKecamatan = $("#OptKecamatan").val();
-            anggota.IDKelurahan = $("#Kelurahan").val();
-            anggota.Email = $("#Email").val();
-            anggota.NoTelepon = $("#NoTelepon").val();
-            anggota.CreatedBy = $("#CreatedBy").val();
-            anggota.ModifiedBy = $("#ModifiedBy").val();
-
-            $.ajax({
-                url: '../Service/AnggotaService.asmx/SimpanAnggota',
-
-                data: '{anggota:' + JSON.stringify(anggota) + '}',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'JSON',
-                success: function (response) {
-                    alert("Member has been saved successfully.");
-                    window.location.reload();
-                }
-            });
-            return false;
-        });
+        
 
     </script>
 

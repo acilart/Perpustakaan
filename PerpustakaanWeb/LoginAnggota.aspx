@@ -27,7 +27,7 @@
             <p class="login-box-msg">Sign in to start your session</p>
 
 
-            <form action="#" method="post">
+            <form id="formLogin">
                 <select class="form-control" id="dlogin">
                     <option value="Petugas">Petugas</option>
                     <option value="Anggota">Anggota</option>
@@ -53,13 +53,13 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" id="login" onclick="??????" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
 
-            <a href="#">I forgot my password</a><br>
+            <a href="#">I forgot my password</a><br/>
             <a href="register.html" class="text-center">Register a new membership</a>
 
         </div>
@@ -72,31 +72,52 @@
 
         //---------------------------------LOGIN------------------------------//
 
-        $('#dlogin').change(function () {
+        //$("#login").submit(function (e) {
+        //    e.preventDefault();
+        //    var LogId = $('#dlogin').val();
+
+        //    if (LogId == 'Petugas') {
+        //        cekPassPetugas();
+        //    }
+        //    else {
+        //        cekPassAnggota();
+        //    }
+        //})
+
+        $("#formLogin").submit(function (e) {
+            e.preventDefault();
             var LogId = $('#dlogin').val();
 
             if (LogId == 'Petugas') {
+                //console.log('petugas');
                 cekPassPetugas();
             }
             else {
+                //console.log('anggota');
                 cekPassAnggota();
             }
         })
 
         function cekPassPetugas() {
+            //var obj = jQuery.parseJSON('{"name":"John"}');
+            //data: obj;
+
             var username = $("#email-id").val();
             var password = $("#pass-id").val();
+            var param = { email: username, password: password};
+
             $.ajax({
                 url: '../Service/LoginService.asmx/GetPetugasByEmailPass',
-                data: '"username":"' + username + '"password":"' + password + '"}',
+                data: JSON.stringify(param),
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    if (data.d) {
-                        location.href = "~/Anggota/FormAnggotaOff";
+                    if (data.d != null) {
+                        location.href = "/Petugas/FormAnggotaOff";
                     } else {
-                        location.href = "www.gmail.com";
+                        location.href = "/LoginAnggota";
+                        alert("Username/Password salah");
                     }
                 }
             });
@@ -105,17 +126,19 @@
         function cekPassAnggota() {
             var username = $("#email-id").val();
             var password = $("#pass-id").val();
+            var param = { email: username, password: password };
             $.ajax({
                 url: '../Service/LoginService.asmx/GetAnggotaByEmail',
-                data: '"username":"' + username + '"password":"' + password + '"}',
+                data: JSON.stringify(param),
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.d) {
-                        location.href = "~/Anggota/FormAnggotaOn";
+                        location.href = "/Anggota/FormAnggotaOn";
                     } else {
-                        location.href = "www.gmail.com";
+                        location.href = "/LoginAnggota";
+                        alert("Username/Password salah");
                     }
                 }
             });

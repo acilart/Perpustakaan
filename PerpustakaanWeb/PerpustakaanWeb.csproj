@@ -262,6 +262,7 @@
     <Content Include="Service\BookingService.asmx" />
     <Content Include="Service\InputBukuService.asmx" />
     <Content Include="Service\ListAnggotaService.asmx" />
+    <Content Include="Service\LoginService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
@@ -546,6 +547,10 @@
     </Compile>
     <Compile Include="Service\ListAnggotaService.asmx.cs">
       <DependentUpon>ListAnggotaService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\LoginService.asmx.cs">
+      <DependentUpon>LoginService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service\PengembalianService.asmx.cs">
