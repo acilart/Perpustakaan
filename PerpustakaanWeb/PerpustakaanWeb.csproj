@@ -584,6 +584,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Perpustakaan.ViewModel\Perpustakaan.ViewModel.csproj">
+      <Project>{69ec4599-3011-4b4e-8b76-7e049940ae99}</Project>
+      <Name>Perpustakaan.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PerpustakaanDAL\PerpustakaanDAL.csproj">
       <Project>{58f0b7ba-7be1-4c9f-bd6a-e53a61ab6674}</Project>
       <Name>PerpustakaanDAL</Name>

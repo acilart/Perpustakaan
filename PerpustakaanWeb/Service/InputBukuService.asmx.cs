@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using PerpustakaanDAL;
 using PerpustakaanModel;
+using Perpustakaan.ViewModel;
 namespace PerpustakaanWeb.Service
 {
     /// <summary>
@@ -36,22 +37,80 @@ namespace PerpustakaanWeb.Service
             return KategoriBukuDAL.GetKategoriByID(ID);
         }
 
-        //[WebMethod]
-        //public List<MstPenerbit> GetPenerbit()
-        //{
-        //    return PenerbitDAL.GetPenerbit();
-        //}
+        [WebMethod]
+        public List<MstPenerbit> GetPenerbit()
+        {
+            return PenerbitDAL.GetPenerbit();
+        }
 
-        //[WebMethod]
-        //public MstPenerbit GetPenerbitByID(int ID)
-        //{
-        //    return PenerbitDAL.GetPenerbitByID(ID);
-        //}
+        [WebMethod]
+        public MstPenerbit GetPenerbitByID(int ID)
+        {
+            return PenerbitDAL.GetPenerbitByID(ID);
+        }
 
         [WebMethod]
         public string AutoNumber()
         {
             return AutoNumberDAL.KodeAnggotaAutoNumber();
+        }
+
+        [WebMethod]
+        public List<LemariViewModel> GetLemariAvailable()
+        {
+            var dal = new LemariDAL();
+            return dal.GetLemariAvailable();
+        }
+
+        [WebMethod]
+        public LemariViewModel GetLemariByIDCell(int ID)
+        {
+            var dal = new LemariDAL();
+            return dal.GetLemariByIDCell(ID);
+        }
+
+        [WebMethod]
+        public bool SimpanLemari()
+        {
+            var dal = new LemariDAL();
+            return dal.InisialisasiDataLemari();
+        }
+
+        [WebMethod]
+        public bool SimpanBuku(MstBuku buku)
+        {
+            return BukuDAL.SimpanBuku(buku);
+        }
+
+        [WebMethod]
+        public List<MstOpsiPenggantian> GetOpsiPenggaintian()
+        {
+            return OpsiPenggantianDAL.GetOpsi();
+        }
+
+        [WebMethod]
+        public List<Penggantian> GetPenggantianBuku()
+        {
+           return PenggantianDAL.GetPenggantianBuku();
+        }
+
+        [WebMethod]
+        public List<Penggantian> GetPenggantianTunai()
+        {
+            return PenggantianDAL.GetPenggantianTunai();
+        }
+
+
+        [WebMethod]
+        public Penggantian GetPenggantianByID(int id)
+        {
+            return PenggantianDAL.GetPenggantianByID(id);
+        }
+
+        [WebMethod]
+        public List<MstBuku> GetBukuNonPlaced()
+        {
+            return BukuDAL.GetBukuNonPlaced();
         }
     }
 }
