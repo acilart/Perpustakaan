@@ -25,5 +25,8 @@ namespace PerpustakaanModel
         public Nullable<decimal> Value { get; set; }
         public Nullable<int> IDSumberBuku { get; set; }
     
+        [NotMapped]
+        public string LokasiD { get; set; }
+
     }
 }
