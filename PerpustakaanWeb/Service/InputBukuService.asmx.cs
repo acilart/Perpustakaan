@@ -26,6 +26,13 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod]
+        public MstBuku GetBukuByID(int ID)
+        {
+            var dal = new BukuDAL();
+            return dal.GetBukuByID(ID);
+        }
+
+        [WebMethod]
         public List<MstKategori> GetKategori()
         {
             return KategoriBukuDAL.GetAllKategori();
@@ -102,15 +109,27 @@ namespace PerpustakaanWeb.Service
 
 
         [WebMethod]
-        public Penggantian GetPenggantianByID(int id)
+        public Penggantian GetPenggantianByID(int ID)
         {
-            return PenggantianDAL.GetPenggantianByID(id);
+            return PenggantianDAL.GetPenggantianByID(ID);
         }
 
         [WebMethod]
         public List<MstBuku> GetBukuNonPlaced()
         {
             return BukuDAL.GetBukuNonPlaced();
+        }
+        [WebMethod]
+        public List<MstBuku> GetBukuHilangByIDPenggantianHeader(int ID)
+        {
+            return PenyimpananBukuDAL.GetBukuHilangByIDPenggantianHeader(ID);
+        }
+
+        [WebMethod]
+        public List<MstSumberBuku> GetSumberBuku()
+        {
+            var dal = new SumberBukuDAL();
+            return dal.GetAllSumberBuku();
         }
     }
 }

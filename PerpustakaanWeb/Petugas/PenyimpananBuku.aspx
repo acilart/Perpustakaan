@@ -15,8 +15,6 @@
                         <div class="col-md-10">
                             <td>
                                 <select class="form-control" data-val="true" id="sumber" name="sumber">
-                                    <option value="">Penggantian</option>
-                                    <option value="">Buku Baru</option>
                                 </select></td>
                         </div>
                     </div>
@@ -42,7 +40,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Tgl">Tanggal</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Tgl" name="Tgl" type="date" value="" readonly />
+                            <asp:TextBox runat="server" class="form-control text-box single-line" ID="Tgl" name="Tgl" type="date" value="" ReadOnly="true" />
                         </div>
                     </div>
 
@@ -59,29 +57,22 @@
         <!-- /.box-header -->
         <div class="box-body">
             <table class="table table-bordered">
-                <tr>
-                    <th style="width: 10%">Kode Buku</th>
-                    <th style="width: 35%">Judul Buku</th>
-                    <th style="width: 20%">ISBN</th>
-                    <th style="width: 15%">Pengarang</th>
-                    <th style="width: 10%">Nilai Buku(Rp)</th>
-                    <th style="width: 10%">Lokasi</th>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Buku 002</td>
-                    <td>12300098765232</td>
-                    <td>Pengarang Buku 002</td>
-                    <td>85000</td>
-                    <td>A-B1-K1</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Kode Buku</th>
+                        <th style="width: 35%">Judul Buku</th>
+                        <th style="width: 20%">ISBN</th>
+                        <th style="width: 15%">Pengarang</th>
+                        <th style="width: 10%">Nilai Buku(Rp)</th>
+                        <th style="width: 10%">Lokasi</th>
+                    </tr>
+                </thead>
+                <tbody id="data-buku-penggantian">
+                </tbody>
+
             </table>
         </div>
         <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
     </div>
     <!-- /.box -->
 
@@ -90,51 +81,41 @@
     <%--JIKA INPUT BUKU BARU--%>
     <div class="box">
         <div class="box-header with-border">
-            <input type="submit" value="Insert" class="btn btn-primary" />
+            <input value="Insert" class="btn btn-primary" data-toggle="modal" data-target="#modal-buku" />
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th style="width: 10%">Kode Buku</th>
-                    <th style="width: 35%">Judul Buku</th>
-                    <th style="width: 20%">ISBN</th>
-                    <th style="width: 15%">Pengarang</th>
-                    <th style="width: 10%">Nilai Buku(Rp)</th>
-                    <th style="width: 10%">Lokasi</th>
-                </tr>
-                <tr>
-                    <td>999</td>
-                    <td>Buku 002</td>
-                    <td>12300098765232</td>
-                    <td>Pengarang Buku 002</td>
-                    <td>85000</td>
-                    <td>A-B1-K1</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>Jumlah</td>
-                    <td></td>
-                    <td></td>
-                    <td>85000</td>
-                    <td></td>
-                </tr>
+            <table class="table table-bordered" id="tabel-buku">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Kode Buku</th>
+                        <th style="width: 25%">Judul Buku</th>
+                        <th style="width: 20%">ISBN</th>
+                        <th style="width: 15%">Pengarang</th>
+                        <th style="width: 10%">Nilai Buku(Rp)</th>
+                        <th style="width: 10%">Lokasi</th>
+                        <th style="width: 10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="data-buku-baru">
+                </tbody>
             </table>
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
             <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input id="btn-save" value="Save" class="btn btn-primary" />
         </div>
     </div>
     <!-- /.box -->
-    <!-- Modal Dialog-->
+
+    <!-- Modal Penggantian-->
     <div id="modal-penggantian" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Data Lokasi</h4>
+                    <h4 class="modal-title">Data Penggantian Buku</h4>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -146,7 +127,43 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="data-lokasi">
+                            <tbody id="data-penggantian">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Modal Buku-->
+    <div id="modal-buku" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Data Buku</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-striped table-bordered table-responsive col-md-12">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%">Kode Buku</th>
+                                    <th style="width: 35%">Judul Buku</th>
+                                    <th style="width: 20%">ISBN</th>
+                                    <th style="width: 15%">Pengarang</th>
+                                    <th style="width: 10%">Nilai Buku(Rp)</th>
+                                    <th style="width: 10%">Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-buku">
                             </tbody>
                         </table>
                     </div>
@@ -163,8 +180,194 @@
 
     <script src="../Scripts/jquery-1.10.2.js"></script>
     <script src="../Scripts/bootstrap.js"></script>
-
     <script>
+        function loadDataPenggantian() {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetPenggantianBuku',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                        '<td>' + item.NoRegistrasi + '</td>' +
+                        '<td>' + item.NamaAnggota + '</td>' +
+                        '<td>' + item.Tanggal + '</td>' +
+                       ' <td> <input type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="PilihPenggantian(' + item.ID + ')" /></td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-penggantian').html(listProp);
+                }
+            });
+        }
+
+        function PilihPenggantian(ID) {
+            loadBukuPenggantian(ID);
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetPenggantianByID',
+                data: '{ID:' + ID + '}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'JSON',
+                type: 'POST',
+                success: function (penggantian) {
+                    $('#NoRef').val(penggantian.d.NoRegistrasi);
+                    $("#Tanggal").val(penggantian.d.Tanggal);
+                }
+            });
+
+        }
+
+        function loadBukuPenggantian(ID) {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetBukuHilangByIDPenggantianHeader',
+                data: '{ID:' + ID + '}',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                        '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.ISBN + '</td>' +
+                       '<td>' + item.Pengarang + '</td>' +
+                        '<td>' + item.Value + '</td>' +
+                        '<td>' + item.LokasiD + '</td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-buku-penggantian').html(listProp);
+                }
+            });
+        }
+
+        function loadBukuBaru(ID) {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetBukuByID',
+                data: '{ID:' + ID + '}',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                        '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.ISBN + '</td>' +
+                       '<td>' + item.Pengarang + '</td>' +
+                        '<td>' + item.Value + '</td>' +
+                        '<td><label id="'+ item.Lokasi + '" class="form-control">' + item.LokasiD + '</label></td>' +
+                         ' <td> <input id="' + item.ID + '" type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="HapusBuku(' + item.ID + ')" /></td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-buku-baru').html(listProp);
+                }
+            });
+        }
+
+        function loadDataSumberBuku() {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetSumberBuku',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<option value="' + item.ID + '">' + item.Deskripsi + '</option>';
+
+                    });
+
+                    $('#sumber').html(listProp);
+                }
+            });
+        }
+
+        $('#btn-save').click(function () {
+            var list = [];
+            var header = {};
+            buku.IDSumberBuku = $("#sumber").val();
+            buku.Tanggal = $("#IDPenerbit").val();
+            buku.NoReferensi = $("#NoRef").val();
+           
+
+            $("#tabel-buku").find('> tbody > tr').each(function () {
+                var data = {
+                    IDBuku: 0,
+                    JudulBuku: "",
+                    ISBN:"",
+                    Lokasi: 0,
+                    NilaiBuku: 0
+                   
+                };
+
+                data.IDBuku = $(this).find('td:nth-child(6)').find('input[type=button]').id;
+                data.JudulBuku = $(this).find('td:nth-child(1)').text();
+                data.ISBN = $(this).find('td:nth-child(2)').text();
+                data.Pengarang = $(this).find('td:nth-child(3)').text();
+                data.Lokasi = $(this).find('td:nth-child(5)').find('label').id;
+                data.pembayaran = $(this).find('td:nth-child(6)').find('input[type=text]').val();
+                data.completed = $(this).find('td:nth-child(7)').find('input[type=checkbox]').val();
+
+                list.push(data);
+
+            });
+
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/SimpanBuku',
+                type: 'POST',
+                data: '{buku:' + JSON.stringify(buku) + '}',
+                contentType: 'application/json; charset=utf-8',
+                datatype: "json",
+                success: function (response) {
+                    alert("Data Buku '" + $("#JudulBuku").val() + "' Berhasil Disimpan..");
+                    window.location.reload();
+                }
+            });
+        })
+
+        function loadDataBuku() {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetBukuNonPlaced',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                       '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.ISBN + '</td>' +
+                       '<td>' + item.Pengarang + '</td>' +
+                        '<td>' + item.Value + '</td>' +
+                        '<td>' + item.LokasiD + '</td>' +
+                       ' <td> <input type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="PilihBuku(' + item.ID + ')" /></td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-buku').html(listProp);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            loadDataSumberBuku();
+            loadDataPenggantian();
+        });
 
     </script>
 </asp:Content>

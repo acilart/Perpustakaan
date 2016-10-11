@@ -11,7 +11,7 @@ namespace PerpustakaanWeb.Petugas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Tgl.Text = DateTime.Now.ToString("dd MMM yyyy");
         }
     }
 }
