@@ -54,6 +54,7 @@
     <Compile Include="CabinetCellDAL.cs" />
     <Compile Include="CabinetDAL.cs" />
     <Compile Include="CabinetRowDAL.cs" />
+    <Compile Include="IuranDAL.cs" />
     <Compile Include="KategoriBukuDAL.cs" />
     <Compile Include="KecamatanDAL.cs" />
     <Compile Include="KelurahanDAL.cs" />

@@ -11,5 +11,7 @@ namespace PerpustakaanDAL
         public string NoRegistrasi { get; set; }
         public string NamaAnggota { get; set; }
         public DateTime Tanggal { get; set; }
+
+
     }
 }

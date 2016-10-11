@@ -9,6 +9,7 @@ namespace PerpustakaanDAL
 {
     public class PenyimpananBukuDAL
     {
+       
         public static bool SimpanPlcHeader(TrPlcHeader header, List<TrPlcDetail> details)
         {
             using (var db=new PerpustakaanDbContext())
@@ -84,11 +85,14 @@ namespace PerpustakaanDAL
                     var buku = db.MstBuku.FirstOrDefault(x => x.ID == item.IDBuku);
                     if (buku != null)
                     {
+                        var dal = new LemariDAL();
+                        buku.LokasiD = dal.GetLemariByIDCell(Convert.ToInt16(buku.Lokasi)).Lokasi;
                         list.Add(buku);
                     }
                 }
                 return list;
             }
         }
+
     }
 }

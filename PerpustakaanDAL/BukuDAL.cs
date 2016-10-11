@@ -59,7 +59,13 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.MstBuku.Where(n=>n.Aktif == false && n.Lokasi != null).ToList();
+                var list =  db.MstBuku.Where(n=>n.Aktif == false && n.Lokasi != null).ToList();
+                foreach (var item in list)
+                {
+                      var dal = new LemariDAL();
+                        item.LokasiD = dal.GetLemariByIDCell(Convert.ToInt16(item.Lokasi)).Lokasi;
+                }
+                return list;
             }
         }
         public  static List<MstBuku> GetBukuHilang()
@@ -74,7 +80,14 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.MstBuku.FirstOrDefault(n => n.ID == id);
+                var buku =  db.MstBuku.FirstOrDefault(n => n.ID == id);
+                if (buku != null)
+                {
+                    var dal = new LemariDAL();
+                    buku.LokasiD = dal.GetLemariByIDCell(Convert.ToInt16(buku.Lokasi)).Lokasi;
+                    return buku;
+                }
+                return null;
             }
         }
 
