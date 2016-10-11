@@ -19,6 +19,11 @@ namespace PerpustakaanModel
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
-    
+
+        [NotMapped]
+        public Nullable<decimal> JumlahBayar { get; set; }
+
+        [NotMapped]
+        public int PembayaranKe { get; set; }
     }
 }

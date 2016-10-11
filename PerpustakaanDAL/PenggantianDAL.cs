@@ -89,5 +89,41 @@ namespace PerpustakaanDAL
             }
         }
 
+        public bool SimpanPenggantian(TrRpcHeader header, List<TrRpcDetail> details, List<TrReturnDetail> detailReturn)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var listHeader = db.TrPlcHeader.ToList();
+                var id = listHeader[listHeader.Count - 1].ID + 1;
+                header.NoRegistrasi = AutoNumberDAL.PenggantianBukuNoRegAutoNumber();
+                header.ID = id;
+                header.CreatedOn = DateTime.Now;
+                header.ModifiedOn = DateTime.Now;
+                db.TrRpcHeader.Add(header);
+                foreach (var item in details)
+                {
+                    item.HeaderID = id;
+                    item.CreatedOn = DateTime.Now;
+                    item.ModifiedOn = DateTime.Now;
+                }
+                db.TrRpcDetail.AddRange(details);
+                foreach (var item in detailReturn)
+                {
+                    item.SudahDiganti = true;
+                }
+                try
+                {
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            
+        }
+
     }
 }

@@ -11,7 +11,7 @@ namespace PerpustakaanDAL
         public static List<Pembayaran> GetPembayaranByID(int id)
         {
             var list = new List<Pembayaran>();
-           
+
             using (var db = new PerpustakaanDbContext())
             {
                 var rpcHeader = db.TrRpcHeader.FirstOrDefault(n => n.ID == id);//ambil header penggantian
@@ -63,8 +63,8 @@ namespace PerpustakaanDAL
                     var detailRpc = db.TrRpcDetail.Where(n => n.HeaderID == id);
                     foreach (var item in detailRpc)
                     {
-                        
-                        var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n=>n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
+
+                        var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
                         var pembayar = new Pembayaran()
                          {
                              IDBuku = buku.ID,
@@ -84,15 +84,104 @@ namespace PerpustakaanDAL
             return list;
         }
 
-        public static bool SimpanPembayaran(TrPmtBukuHeader header,List<TrPmtBukuDetail> details, List<TrPmtBukuSettlement> settle)
+        public static bool SimpanPembayaran(TrPmtBukuHeader header, List<TrPmtBukuDetail> details)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                #region Header Pembayaran
+
+                var cekHeader = db.TrPmtBukuHeader.FirstOrDefault(n => n.ID == header.ID);
+                if (cekHeader == null)
+                {
+                    #region Header Pembayaran Baru
+                    var listHeader = db.TrPmtBukuHeader.ToList();
+                    var id = listHeader[listHeader.Count - 1].ID + 1;
+                    header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
+                    header.ID = id;
+                    header.CreatedOn = DateTime.Now;
+                    header.ModifiedOn = DateTime.Now;
+                    db.TrPmtBukuHeader.Add(header);
+                    #endregion
+                    #region Pembayaran Detail & settlement baru
+                    var listDetail = db.TrPmtBukuDetail.ToList();
+                    var idDetail = listDetail[listDetail.Count - 1].ID;
+                    foreach (var item in details)
+                    {
+                        idDetail += 1;
+                        item.HeaderID = id;
+                        item.CreatedOn = DateTime.Now;
+                        item.ModifiedOn = DateTime.Now;
+                        var sett = new TrPmtBukuSettlement()
+                        {
+                            IDPMTDetail = idDetail,
+                            Jumlah = item.JumlahBayar,
+                            CreatedOn = DateTime.Now,
+                            ModifiedOn = DateTime.Now,
+                            PembayaranKe = 1,
+                        };
+                        db.TrPmtBukuSettlement.Add(sett);
+                        db.TrPmtBukuDetail.Add(item);
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    #region Update Pembayaran Header
+                    cekHeader.ModifiedOn = DateTime.Now;
+                    #endregion
+                    #region Update Detail Pembayaran
+                    var pmtDetail = db.TrPmtBukuDetail.Where(n => n.HeaderID == cekHeader.ID);
+                    foreach (var item in pmtDetail)
+                    {
+                        var cekDetail = details.FirstOrDefault(n => n.ID == item.ID);
+                        if (cekDetail != null)
+                        {
+
+                            var sett = db.TrPmtBukuSettlement.Where(n => n.IDPMTDetail == item.ID).ToList();
+                            var sum = sett.Sum(n => n.Jumlah);
+                            item.ModifiedOn = DateTime.Now;
+                            if (sum + item.JumlahBayar == item.Value)
+                            {
+                                item.IsCompleted = true;
+                            }
+                            else
+                            {
+                                item.IsCompleted = false;
+                            }
+                    #endregion
+                            #region Tabah Pembayaran Settlement
+                            var settlement = new TrPmtBukuSettlement()
+                            {
+                                IDPMTDetail = item.ID,
+                                Jumlah = item.JumlahBayar,
+                                PembayaranKe = sett.Count + 1,
+                                CreatedOn = DateTime.Now,
+                                ModifiedOn = DateTime.Now,
+
+                            };
+                            db.TrPmtBukuSettlement.Add(settlement);
+
+
+                        }
+
+                    }
+                            #endregion
+                }
+                #region Eksekusi
+                try
+                {
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                    throw;
+                }
                 #endregion
+             
 
             }
-            return false;
         }
     }
 }

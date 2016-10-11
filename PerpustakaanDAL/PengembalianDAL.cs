@@ -12,7 +12,6 @@ namespace PerpustakaanDAL
     {
         public string NamaAnggota { get; set; }
         public int ID { get; set; }
-
         public string NoReferensi { get; set; }
         public DateTime TanggalPinjam { get; set; }
         public DateTime TanggalKembali { get; set; }
@@ -25,6 +24,7 @@ namespace PerpustakaanDAL
         public string Judul { get; set; }
         public string KodeMstBuku { get; set; }
         public int denda { get; set; }
+        
         //ini untuk nampilin table peminjaman
         public static List<PengembalianDAL> GetPeminjaman()
         {
@@ -35,8 +35,7 @@ namespace PerpustakaanDAL
                           join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                           select new
                           {
-                              ID = Brw.ID,
-                              NoRegistrasi = Brw.NoRegistrasi,
+                              ID = Brw.ID,                             
                               NoReferensi = Brw.NoReferensi,
                               NamaAnggota = cat.Nama,
                               TanggalPinjam = Brw.TanggalPinjam,
@@ -51,7 +50,7 @@ namespace PerpustakaanDAL
                               TanggalPinjam = Convert.ToDateTime(x.TanggalPinjam),
                               TanggalKembali = Convert.ToDateTime(x.TanggalKembali)
                           }).ToList();
-                //return (courses.ToList());
+                
                 //result = db.TrBrwHeader.ToList();
             }
             return result;
@@ -68,8 +67,7 @@ namespace PerpustakaanDAL
                               join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                               select new
                               {
-                                  ID = Brw.ID,
-                                  NoRegistrasi = Brw.NoRegistrasi,
+                                  ID = Brw.ID,                                 
                                   NoReferensi = Brw.NoReferensi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
@@ -107,7 +105,6 @@ namespace PerpustakaanDAL
                               join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                               select new
                               {
-                                  NoRegistrasi = Brw.NoRegistrasi,
                                   NoReferensi = Brw.NoReferensi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
@@ -138,10 +135,11 @@ namespace PerpustakaanDAL
             List<PengembalianDAL> result = new List<PengembalianDAL>();
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
+                
                 var header = db.TrBrwHeader.FirstOrDefault(n => n.ID == id);
                 var detail = db.TrBrwDetail.Where(n => n.HeaderID == id);
                 foreach (var item in detail)
-                {
+                {                    
                     var ts = new TimeSpan();
                     ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
                     var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
@@ -152,9 +150,9 @@ namespace PerpustakaanDAL
                         IsKehilangan = false,
                         Terlambat = ts.Days,
                         KodeMstBuku = buku.Kode,
-                        denda = ts.Days * 5000
+                        denda = ts.Days * 5000,                        
                     };
-                    result.Add(pengembalian);
+                    result.Add(pengembalian);                    
                 }
             }
             return result;
@@ -177,6 +175,7 @@ namespace PerpustakaanDAL
                 var id = db.TrReturnHeader.ToList().Count + 1;
                 header.ID = id;
                 header.ModifiedOn = DateTime.Now;
+                header.NoReferensi = AutoNumberDAL.PenggantianBukuNoRegAutoNumber();
                 header.NoRegistrasi = AutoNumberDAL.PengembalianBukuNoRegAutoNumber();
                 header.CreatedOn = DateTime.Now;
                 header.TanggalDikembalikan = DateTime.Now;

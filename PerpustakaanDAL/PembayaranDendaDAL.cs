@@ -46,8 +46,6 @@ namespace PerpustakaanDAL
             }
             return result;
         }
-
-
         public static List<PembayaranDendaDAL> GetPengembalianBySearch(string search)
         {
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
@@ -110,6 +108,42 @@ namespace PerpustakaanDAL
                     list.Add(dal);
                 }
                 return list;
+            }
+        }
+
+        public bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var listHeader = db.TrPlcHeader.ToList();
+                var id = listHeader[listHeader.Count - 1].ID + 1;
+                header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
+                header.ID = id;
+                header.CreatedOn = DateTime.Now;
+                header.ModifiedOn = DateTime.Now;
+                db.TrDendaHeader.Add(header);
+                foreach (var item in details)
+                {
+                    item.HeaderID = id;
+                    item.CreatedOn = DateTime.Now;
+                    item.ModifiedOn = DateTime.Now;
+                }
+                db.TrDendaDetail.AddRange(details);
+                var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == header.ID);
+                if (cek != null)
+                {
+                    cek.SudahDibayar = 1;
+                }
+                try
+                {
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                    throw;
+                }
             }
         }
     }

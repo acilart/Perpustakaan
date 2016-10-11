@@ -260,6 +260,7 @@
     <Content Include="Service\AnggotaOnline.asmx" />
     <Content Include="Service\AnggotaService.asmx" />
     <Content Include="Service\BookingService.asmx" />
+    <Content Include="Service\DendaService.asmx" />
     <Content Include="Service\InputBukuService.asmx" />
     <Content Include="Service\ListAnggotaService.asmx" />
     <Content Include="Service\LoginService.asmx" />
@@ -539,6 +540,10 @@
     </Compile>
     <Compile Include="Service\BookingService.asmx.cs">
       <DependentUpon>BookingService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\DendaService.asmx.cs">
+      <DependentUpon>DendaService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service\InputBukuService.asmx.cs">
