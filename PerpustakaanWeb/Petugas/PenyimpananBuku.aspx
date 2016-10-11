@@ -265,8 +265,10 @@
                         '<td>' + item.ISBN + '</td>' +
                        '<td>' + item.Pengarang + '</td>' +
                         '<td>' + item.Value + '</td>' +
-                        '<td><label id="'+ item.Lokasi + '" class="form-control">' + item.LokasiD + '</label></td>' +
-                         ' <td> <input id="' + item.ID + '" type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="HapusBuku(' + item.ID + ')" /></td>' +
+                        '<td>' + item.LokasiD + '</td>' +
+                       '<td><input type="hidden" id="lokasi" value="' + item.Lokasi + '"/></td>' +
+                       '<td><input type="hidden" id="idbuku" value="' + item.ID + '"/></td>' +
+                         ' <td> <input type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="HapusBuku(' + item.ID + ')" /></td>' +
                 '</tr>';
 
                     });
@@ -302,36 +304,36 @@
             buku.NoReferensi = $("#NoRef").val();
            
 
-            $("#tabel-buku").find('> tbody > tr').each(function () {
+            $("#data-buku-baru tr").each(function () {
                 var data = {
                     IDBuku: 0,
                     JudulBuku: "",
                     ISBN:"",
                     Lokasi: 0,
+                    Pengarang:"",
                     NilaiBuku: 0
                    
                 };
 
-                data.IDBuku = $(this).find('td:nth-child(6)').find('input[type=button]').id;
-                data.JudulBuku = $(this).find('td:nth-child(1)').text();
-                data.ISBN = $(this).find('td:nth-child(2)').text();
-                data.Pengarang = $(this).find('td:nth-child(3)').text();
-                data.Lokasi = $(this).find('td:nth-child(5)').find('label').id;
-                data.pembayaran = $(this).find('td:nth-child(6)').find('input[type=text]').val();
-                data.completed = $(this).find('td:nth-child(7)').find('input[type=checkbox]').val();
-
+                data.IDBuku = $(this).find('td:nth-child(6)').find('input[type=hiden]').val();
+                data.JudulBuku = $(this).find('td:nth-child(2)').text();
+                data.ISBN = $(this).find('td:nth-child(3)').text();
+                data.Pengarang = $(this).find('td:nth-child(4)').text();
+                data.Lokasi = $(this).find('td:nth-child(7)').find('input[type=hiden]').val();
+                data.NilaiBuku = $(this).find('td:nth-child(5)').val();
                 list.push(data);
 
             });
 
+            var param = { header: header, details: list };
             $.ajax({
                 url: '../Service/InputBukuService.asmx/SimpanBuku',
                 type: 'POST',
-                data: '{buku:' + JSON.stringify(buku) + '}',
+                data: JSON.stringify(param),
                 contentType: 'application/json; charset=utf-8',
                 datatype: "json",
                 success: function (response) {
-                    alert("Data Buku '" + $("#JudulBuku").val() + "' Berhasil Disimpan..");
+                    alert("Data Penyimpanan Berhasil Disimpan..");
                     window.location.reload();
                 }
             });
@@ -362,6 +364,29 @@
                     $('#data-buku').html(listProp);
                 }
             });
+        }
+
+        function PilihBuku(ID) {
+            loadBukuPenggantian(ID);
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetBukuByID',
+                data: '{ID:' + ID + '}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'JSON',
+                type: 'POST',
+                success: function (penggantian) {
+                    listProp += '<tr>' +
+                       '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.ISBN + '</td>' +
+                       '<td>' + item.Pengarang + '</td>' +
+                        '<td>' + item.Value + '</td>' +
+                        '<td>' + item.LokasiD + '</td>' +
+                       ' <td> <input type="button" class="btn btn-danger" value="Hapus" id="btnEdit" onClick="HapusBuku(' + item.ID + ')" /></td>' +
+                '</tr>';
+                }
+            });
+            $('#data-buku-baru').html(listProp);
         }
 
         $(document).ready(function () {

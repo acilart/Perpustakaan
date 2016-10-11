@@ -78,7 +78,7 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-               // var listCab = db.MstCabinet.ToList();
+                var listCab = db.MstCabinet.ToList();
                 var listRow = db.MstCabinetRow.ToList();
                 var listCell = new List<MstCabinetCell>();
                 string[] array3 = { "A", "B", "C", "D" };
@@ -126,7 +126,7 @@ namespace PerpustakaanDAL
 
 
                // db.MstCabinet.AddRange(listCab);
-                //db.MstCabinetRow.AddRange(listRow);
+               //db.MstCabinetRow.AddRange(listRow);
                 db.MstCabinetCell.AddRange(listCell);
                 try
                 {

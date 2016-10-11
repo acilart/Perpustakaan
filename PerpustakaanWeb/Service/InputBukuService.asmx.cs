@@ -131,5 +131,11 @@ namespace PerpustakaanWeb.Service
             var dal = new SumberBukuDAL();
             return dal.GetAllSumberBuku();
         }
+
+        [WebMethod]
+        public bool SimpanPenyimpananBuku(TrPlcHeader header, List<TrPlcDetail> details)
+        {
+            return PenyimpananBukuDAL.SimpanPlcHeader(header, details);
+        }
     }
 }
