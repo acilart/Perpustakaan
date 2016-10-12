@@ -157,6 +157,50 @@ namespace PerpustakaanDAL
             }
         }
 
+
+        public static List<MstAnggota> searchAnggotaByNama(string nama)
+        {
+
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstAnggota.Where(n => n.Nama.Contains(nama)).ToList();
+                return cek;
+
+            }
+
+
+
+        }
+
+        public static List<MstAnggota> searchAnggotaByTelp(string telp)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstAnggota.Where(n => n.NoTelepon.Contains(telp)).ToList();
+                return cek;
+            }
+        }
+
+        public static List<MstAnggota> searchAnggotaByKode(string kode)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstAnggota.Where(n => n.KodeAnggota.Contains(kode)).ToList();
+                return cek;
+            }
+
+        }
+
+        public static List<MstAnggota> searchAnggotaByEmail(string email)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstAnggota.Where(n => n.Email.Contains(email)).ToList();
+                return cek;
+            }
+
+        }
+
         public static MstAnggota GetAnggotaBySearch(string kode, string nama)
         {
             using (var db = new PerpustakaanDbContext())

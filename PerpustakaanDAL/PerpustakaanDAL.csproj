@@ -51,6 +51,8 @@
     <Compile Include="AnggotaDAL.cs" />
     <Compile Include="AutoNumberDAL.cs" />
     <Compile Include="BookingDAL.cs" />
+    <Compile Include="BorrowDetailDAL.cs" />
+    <Compile Include="BorrowHeaderDAL.cs" />
     <Compile Include="BukuDAL.cs" />
     <Compile Include="CabinetCellDAL.cs" />
     <Compile Include="CabinetDAL.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="KelurahanDAL.cs" />
     <Compile Include="KotaDAL.cs" />
     <Compile Include="LemeariDAL.cs" />
+    <Compile Include="ListPeminjamanDAL.cs" />
     <Compile Include="LoginDAL.cs" />
     <Compile Include="OpsiPenggantianDAL.cs" />
     <Compile Include="Pembayaran.cs" />

@@ -20,6 +20,7 @@ namespace PerpustakaanDAL
 
         }
 
+
         public static bool SimpanBuku(MstBuku buku)
         {
             using (var db = new PerpustakaanDbContext())
@@ -90,7 +91,8 @@ namespace PerpustakaanDAL
                 return null;
             }
         }
-
+        
+    
         public static List<MstBuku> GetBukuAvailable()
         {
             using (var db = new PerpustakaanDbContext())
@@ -106,6 +108,14 @@ namespace PerpustakaanDAL
             }
         }
 
+        public static MstBuku GetBukuPinjam(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var stop = db.MstBuku.FirstOrDefault(n => n.ID == id);
+                return stop;
+            }
+        }
 
     }
 }
