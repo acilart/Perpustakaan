@@ -12,6 +12,7 @@ namespace PerpustakaanDAL
     {
         public string NamaAnggota { get; set; }
         public int ID { get; set; }
+        public Nullable<int> IDAnggota { get; set; }
         public string NoReferensi { get; set; }
         public DateTime TanggalPinjam { get; set; }
         public DateTime TanggalKembali { get; set; }
@@ -35,7 +36,7 @@ namespace PerpustakaanDAL
                           join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                           select new
                           {
-                              ID = Brw.ID,                             
+                              ID = Brw.ID,                              
                               NoReferensi = Brw.NoReferensi,
                               NamaAnggota = cat.Nama,
                               TanggalPinjam = Brw.TanggalPinjam,
@@ -44,7 +45,7 @@ namespace PerpustakaanDAL
                           }).ToList().
                           Select(x => new PengembalianDAL()
                           {
-                              ID = x.ID,
+                              ID = x.ID,                              
                               NoReferensi = x.NoReferensi,
                               NamaAnggota = x.NamaAnggota,
                               TanggalPinjam = Convert.ToDateTime(x.TanggalPinjam),
@@ -67,7 +68,8 @@ namespace PerpustakaanDAL
                               join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                               select new
                               {
-                                  ID = Brw.ID,                                 
+                                  ID = Brw.ID,
+                                  IDAnggota = Brw.IDAnggota,
                                   NoReferensi = Brw.NoReferensi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
@@ -81,6 +83,7 @@ namespace PerpustakaanDAL
                     var dal = new PengembalianDAL()
                     {
                         ID = item.ID,
+                        IDAnggota = item.IDAnggota,
                         NoReferensi = item.NoReferensi,
                         NamaAnggota = item.NamaAnggota,
                         TanggalPinjam = Convert.ToDateTime(Convert.ToDateTime(item.TanggalPinjam).ToShortDateString()),
@@ -172,13 +175,26 @@ namespace PerpustakaanDAL
             using (var db = new PerpustakaanDbContext())
             {
                 #region Insert Header Pengembalian
-                var id = db.TrReturnHeader.ToList().Count + 1;
-                header.ID = id;
+                int id = 1;
+                var listHeader = db.TrReturnHeader.ToList();
+                if (listHeader.Count > 0)
+                {
+                    id = listHeader[listHeader.Count - 1].ID + 1;
+                }
+                header.IDAnggota = header.IDAnggota;
                 header.ModifiedOn = DateTime.Now;
-                header.NoReferensi = AutoNumberDAL.PenggantianBukuNoRegAutoNumber();
                 header.NoRegistrasi = AutoNumberDAL.PengembalianBukuNoRegAutoNumber();
                 header.CreatedOn = DateTime.Now;
+                header.TanggalPinjam = header.TanggalPinjam;
+                header.TanggalKembali = header.TanggalKembali;
                 header.TanggalDikembalikan = DateTime.Now;
+                //untuk denda
+                var ts = new TimeSpan();
+                ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
+                if (ts.Days > 0)
+                {
+                    header.Denda = true ; //ada denda
+                }
                 db.TrReturnHeader.Add(header);
                 #endregion
                 #region Insert Detail Pengembalian
@@ -187,8 +203,11 @@ namespace PerpustakaanDAL
                     var dal = new BukuDAL();
                     var buku = dal.GetBukuByID(item.IDBuku);
                     item.HeaderID = id;
+                    item.IDBuku = item.IDBuku;
+                    item.LaporKehilangan = item.LaporKehilangan;
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
+                    item.Denda = header.Denda;
                     if (item.LaporKehilangan == false)
                     {
                         using (var dbStock = new PerpustakaanDbContext())

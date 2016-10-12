@@ -9,16 +9,21 @@ namespace PerpustakaanDAL
 {
     public class PenyimpananBukuDAL
     {
-       
+
         public static bool SimpanPlcHeader(TrPlcHeader header, List<TrPlcDetail> details)
         {
-            using (var db=new PerpustakaanDbContext())
+            using (var db = new PerpustakaanDbContext())
             {
                 #region Simpan Header Penyimpanan Buku
+                int id = 1;
                 var listHeader = db.TrPlcHeader.ToList();
-                var id = listHeader[listHeader.Count - 1].ID + 1;
+                if(listHeader.Count > 0)
+                {
+                    id = listHeader[listHeader.Count - 1].ID + 1;
+                }
                 header.NoRegistrasi = AutoNumberDAL.PenyimpananBukuNoRegAutoNumber();
                 header.ID = id;
+                header.Tanggal = DateTime.Now;
                 header.CreatedOn = DateTime.Now;
                 header.ModifiedOn = DateTime.Now;
                 db.TrPlcHeader.Add(header);
@@ -54,7 +59,7 @@ namespace PerpustakaanDAL
                         cek.Kosong -= 1;
                     }
                     #endregion
-      
+
                 }
                 db.TrPlcDetail.AddRange(details);
                 db.TrStock.AddRange(listStock);
@@ -70,7 +75,7 @@ namespace PerpustakaanDAL
                     throw;
                 }
                 #endregion
-               
+
             }
         }
 
@@ -82,7 +87,8 @@ namespace PerpustakaanDAL
                 var list = new List<MstBuku>();
                 foreach (var item in detail)
                 {
-                    var buku = db.MstBuku.FirstOrDefault(x => x.ID == item.IDBuku);
+                    var dalBuku = new BukuDAL();
+                    var buku = dalBuku.GetBukuByID(Convert.ToInt16(item.IDBuku));
                     if (buku != null)
                     {
                         var dal = new LemariDAL();

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Entity;
 
 namespace PerpustakaanDAL
 {
@@ -123,6 +124,35 @@ namespace PerpustakaanDAL
                 }
             }
             
+        }
+
+        public static List<Penggantian> GetPengembalian()
+        {
+            List<Penggantian> result = new List<Penggantian>();
+            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
+            {
+                
+                 
+                result =(from Rtr in db.TrReturnHeader
+                             join nama in db.MstAnggota on Rtr.IDAnggota equals nama.ID
+                             
+                             select new
+                             {
+                                 ID = Rtr.ID,
+                                 NoRegistrasi = Rtr.NoRegistrasi,
+                                 NamaAnggota = nama.Nama,
+                                 Tanggal =DateTime.Now
+                             }).ToList().
+                                 Select(x=> new Penggantian()
+                                 {
+                                     ID = x.ID,
+                                     NoRegistrasi = x.NoRegistrasi,
+                                     NamaAnggota =x.NamaAnggota,
+                                     Tanggal = x.Tanggal
+                                 }).ToList();
+                
+            }
+            return result;
         }
 
     }

@@ -13,11 +13,9 @@ namespace PerpustakaanDAL
         public string NoReferensi { get; set; }
         public string NamaAnggota { get; set; }
         public DateTime TanggalPinjam { get; set; }
-
+        public Nullable<int> IDAnggota { get; set; }
         public DateTime TanggalKembali { get; set; }
-
         public DateTime TanggalDikembalikan { get; set; }
-
         public static List<PembayaranDendaDAL> GetPengembalian()
         {
             List<PembayaranDendaDAL> result = new List<PembayaranDendaDAL>();
@@ -87,6 +85,7 @@ namespace PerpustakaanDAL
                               select new
                               {
                                   ID = rtr.ID,
+                                  IDAnggota = rtr.IDAnggota,
                                   Noreferensi = rtr.NoReferensi,
                                   NamaAnggota = nama.Nama,
                                   TanggalPinjam = rtr.TanggalPinjam,
@@ -99,6 +98,7 @@ namespace PerpustakaanDAL
                     var dal = new PembayaranDendaDAL()
                     {
                         ID = item.ID,
+                        IDAnggota = item.IDAnggota,
                         NoReferensi = item.Noreferensi,
                         NamaAnggota = item.NamaAnggota,
                         TanggalPinjam = Convert.ToDateTime(item.TanggalPinjam),
@@ -111,6 +111,7 @@ namespace PerpustakaanDAL
             }
         }
 
+
         public bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
         {
             using (var db = new PerpustakaanDbContext())
@@ -118,13 +119,16 @@ namespace PerpustakaanDAL
                 var listHeader = db.TrPlcHeader.ToList();
                 var id = listHeader[listHeader.Count - 1].ID + 1;
                 header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
-                header.ID = id;
+                header.ID = id;                
+                header.IDAnggota = header.IDAnggota;                
                 header.CreatedOn = DateTime.Now;
                 header.ModifiedOn = DateTime.Now;
                 db.TrDendaHeader.Add(header);
                 foreach (var item in details)
                 {
                     item.HeaderID = id;
+                    item.IDBuku = item.IDBuku;
+                    item.Jumlah = item.Jumlah;
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
                 }

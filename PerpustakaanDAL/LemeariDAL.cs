@@ -62,7 +62,9 @@ namespace PerpustakaanDAL
                             var lemari = new LemariViewModel()
                             {
                                 IDCell = cell.ID,
-                                Deskripsi = "Lemari " + cab.Kode + ", Baris " + row.Kode + ", Kolom " + cell.Kode
+                                Deskripsi = "Lemari " + cab.Kode + ", Baris " + row.Kode + ", Kolom " + cell.Kode,
+                                Lokasi = cab.Kode + ", " + row.Kode + ", " + cell.Kode
+                                
                             };
                             return lemari;
                         }
@@ -125,8 +127,8 @@ namespace PerpustakaanDAL
                 }
 
 
-               // db.MstCabinet.AddRange(listCab);
-               //db.MstCabinetRow.AddRange(listRow);
+             //   db.MstCabinet.AddRange(listCab);
+              //  db.MstCabinetRow.AddRange(listRow);
                 db.MstCabinetCell.AddRange(listCell);
                 try
                 {
