@@ -10,13 +10,18 @@
         <div class="panel-body">
 
             <div class="form-horizontal">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <select class="form-control" id="searchby">
-                        <option value="value">Nama Anggota</option>
+                        <option value="kode">Kode Anggota</option>
+                        <option value="nama">Nama Anggota</option>
+                        <option value="alamat">Alamat</option>
+                        <option value="telp">no Telp</option>
+                        <option value="email">Email</option>
+
                     </select>
                 </div>
 
-                <div class="form-group col-md-10">
+                <div class="form-group col-md-8 col-md-offset-1">
                     <input class="form-control" type="text" id="txt-search" placeholder="search" />
 
                 </div>
@@ -67,7 +72,7 @@
                     </select>
                     <label>Kota </label>
                     <select class="form-control" id="dkota" style="width: 64%;">
-                        <option value="z">---pilih---</option>
+                        <option value="0">---pilih---</option>
                     </select>
                     <label>Kecamatan </label>
                     <select class="form-control" id="dkecamatan" style="width: 64%;">
@@ -78,9 +83,9 @@
                     <label>No Telepon </label>
                     <input type="text" id="txt-telp" class="form-control" placeholder="No Telepon" maxlength="12" />
                     <label>Masa Berlaku Kartu </label>
-                    <input type="text" id="txt-masa-berlaku-kartu" class="form-control" placeholder="a"/>
+                    <input type="text" id="txt-masa-berlaku-kartu" class="form-control" placeholder="a" readonly="readonly"/>
                     <label>Masa Berlaku Anggota </label>
-                    <input type="text" id="txt-masa-berlaku-anggota" class="form-control" placeholder="a"/>
+                    <input type="text" id="txt-masa-berlaku-anggota" class="form-control" placeholder="a" readonly="readonly"/>
 
                 </div>
 
@@ -97,10 +102,13 @@
 
         var dprovinsi;
         var dkota;
+        var dkecamatan;
+
         var tempID;
         var tempMasaBerlakuKartu;
         var tempMasaBerlakuAnggota;
-
+        var SavedateKartu;
+        var SavedateAnggota;
 
         $(document).ready(function () {
             LoadAnggota();
@@ -147,19 +155,31 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (anggota) {
 
-                    
-                    var dateKartu = convertDate(anggota.d.MasaBerlakuKartu);
-                    var dateAnggota = convertDate(anggota.d.MasaBerlakuAnggota);
+                    SavedateAnggota = convertDateSave(anggota.d.MasaBerlakuAnggota);
+                    SavedateKartu = convertDateSave(anggota.d.MasaBerlakuKartu);
+
+                    var dateKartu = convertDateShow(anggota.d.MasaBerlakuKartu);
+                    var dateAnggota = convertDateShow(anggota.d.MasaBerlakuAnggota);
+
                     tempID = anggota.d.ID,
                     $('#txt-masa-berlaku-kartu').val(dateKartu),
                     $('#txt-masa-berlaku-anggota').val(dateAnggota),
+
+
                     $('#txt-nama').val(anggota.d.Nama),
+                    $('#txt-alamat').val(anggota.d.Alamat),
+                    $('#txt-telp').val(anggota.d.NoTelepon),
                     $('#txt-email').val(anggota.d.Email),
+
                     dpropinsi = anggota.d.IDProvinsi,
                     loadPropinsi(dpropinsi),
+
                     dkota = anggota.d.IDKota,
-                    loadKota(dkota),
-                    loadKecamatan(anggota.d.IDKecamatan)
+                    loadKota(dkota)
+
+                    dkecamatan = anggota.d.IDKecamatan,
+                    loadKecamatan(dkecamatan)
+                 
                 }
             });
 
@@ -167,7 +187,18 @@
         }
 
 
-        function convertDate(tanggal) {
+        function convertDateShow(tanggal) {
+
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+       
+        function convertDateSave(tanggal) {
 
             var dateString = tanggal.substr(6);
             var currentTime = new Date(parseInt(dateString));
@@ -177,7 +208,7 @@
             var date = year + "-" + month + "-" + day;
             return date;
         }
-            
+
        function hapusAnggotaByID(ID) {
 
             $.ajax({
@@ -200,15 +231,18 @@
 
         function editAnggota() {
             var anggota = {};
-
-
-            
-
-            anggota.MasaBerlakuKartu = $('#txt-masa-berlaku-kartu').val();
-            anggota.MasaBerlakuAnggota = $('#txt-masa-berlaku-anggota').val();
-            anggota.ID = tempID;
             anggota.KodeAnggota = $('#txt-kode-anggota').val();
             anggota.Nama = $('#txt-nama').val();
+            anggota.Alamat = $('#txt-alamat').val();
+            anggota.IDProvinsi = $('#dpropinsi').val();
+            anggota.IDKota= $('#dkota').val();
+            anggota.IDKecamatan = $('#dkecamatan').val();
+            anggota.Email = $('#txt-email').val();
+            anggota.NoTelepon= $('#txt-telp').val();
+            anggota.MasaBerlakuKartu = SavedateKartu;
+            anggota.MasaBerlakuAnggota = SavedateAnggota;
+            anggota.ID = tempID;
+          
             anggota.Email = $('#txt-email').val();
             
 
@@ -223,7 +257,7 @@
                     LoadAnggota();
                 }
             });
-
+            $('#modal-edit').modal('hide');
         }
 
 
@@ -233,7 +267,6 @@
 
             $.ajax({
                 url: "../Service/ListAnggotaService.asmx/getPropinsi",
-
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 dataType: "json",
@@ -248,48 +281,42 @@
             });
         }
 
+      
         function loadKota(ID) {
 
-            if (ID == null) {
-
+            if (ID == null ) {
                 dpropinsi = $("#dpropinsi").val();
             }
 
             $.ajax({
                 url: "../Service/ListAnggotaService.asmx/getKota",
-                data: "{id: " + dpropinsi + "}",
+                data: '{id: '+ dpropinsi +'}',
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 dataType: "json",
                 success: function (id) {
                     var out = "";
-                    
                     $.each(id.d, function (index, item) {
 
                         out += '<option value="' + item.ID + '">' + item.NamaKota + '</option>';
                     });
-
-                    if (ID == null) {
-                        $('#dkota').html(out);
-                    } else {
-                        $('#dkota').html(out).val(ID);
-
-                    }
-                    
+                    $('#dkota').html(out).val(ID);
                 }
             });
         }
 
+
+
         function loadKecamatan(ID) {
 
             if (ID == null) {
-
                 dkota = $("#dkota").val();
             }
 
+
             $.ajax({
                 url: "../Service/ListAnggotaService.asmx/getKecamatan",
-                data: "{id: " + dkota + "}",
+                data: '{id: ' + dkota + '}',
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 dataType: "json",
@@ -299,21 +326,141 @@
 
                         out += '<option value="' + item.ID + '">' + item.NamaKecamatan + '</option>';
                     });
-                    if (ID == null) {
-                        $('#dkecamatan').html(out);
-                    } else {
-                        $('#dkecamatan').html(out).val(ID);
-
-                    }
-
+                    $('#dkecamatan').html(out).val(ID);
                 }
             });
         }
 
-        $("#dpropinsi").click(function () {
-            loadKota(),
 
-            
+
+
+        
+        function searchAnggotaByNama(nama) {
+            $.ajax({
+
+                url: '../Service/ListAnggotaService.asmx/searchAnggotaByNama',
+                data: '{"nama":"' + nama + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeAnggota + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + item.Alamat + '</td>'
+                            + '<td>' + item.NoTelepon + '</td>'
+                            + '<td>' + item.Email + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
+                            + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
+                        '</tr>'
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+        }
+
+        function searchAnggotaByTelp(telp) {
+            $.ajax({
+
+                url: '../Service/ListAnggotaService.asmx/searchAnggotaByTelp',
+                data: '{"telp":"' + telp + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeAnggota + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + item.Alamat + '</td>'
+                            + '<td>' + item.NoTelepon + '</td>'
+                            + '<td>' + item.Email + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
+                            + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
+                        '</tr>'
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+        }
+
+        function searchAnggotaByKode(kode) {
+
+            $.ajax({
+
+                url: '../Service/ListAnggotaService.asmx/searchAnggotaByKode',
+                data: '{"kode":"' + kode + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeAnggota + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + item.Alamat + '</td>'
+                            + '<td>' + item.NoTelepon + '</td>'
+                            + '<td>' + item.Email + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
+                            + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
+                        '</tr>'
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+        }
+
+        function searchAnggotaByEmail(email) {
+
+            $.ajax({
+
+                url: '../Service/ListAnggotaService.asmx/searchAnggotaByEmail',
+                data: '{"email":"' + email + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeAnggota + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + item.Alamat + '</td>'
+                            + '<td>' + item.NoTelepon + '</td>'
+                            + '<td>' + item.Email + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
+                            + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
+                        '</tr>'
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+        }
+
+
+
+        $("#dpropinsi").click(function () {
+            loadKota();
             loadKecamatan();
         }).change(function () {
             loadKota();
@@ -324,6 +471,18 @@
             loadKecamatan();
         }).change(function () {
             loadKecamatan();
+        });
+
+        $("#txt-search").keyup(function () {
+
+            if ($("#searchby").val() == 'nama')
+                searchAnggotaByNama($("#txt-search").val());
+            else if ($("#searchby").val() == 'telp')
+                searchAnggotaByTelp($("#txt-search").val());
+            else if ($("#searchby").val() == 'email')
+                searchAnggotaByEmail($("#txt-search").val());
+            else if ($("#searchby").val() == 'kode')
+                searchAnggotaByKode($("#txt-search").val());
         });
 
 

@@ -171,6 +171,45 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Zebra_Datepicker-master\changelog.txt" />
+    <Content Include="Content\Zebra_Datepicker-master\documentation.txt" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\bootstrap.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\css\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\css\shCoreDefault.css" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\shBrushJScript.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\shBrushXml.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\shCore.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\shLegacy.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\public\javascript\XRegExp.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\metallic.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\css\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\css\reset.css" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\css\style.css" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\images\close.png" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\javascript\core.js" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\javascript\index.html" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\public\javascript\jquery-1.12.0.js" />
+    <Content Include="Content\Zebra_Datepicker-master\Gruntfile.js" />
+    <Content Include="Content\Zebra_Datepicker-master\license.txt" />
+    <Content Include="Content\Zebra_Datepicker-master\public\css\bootstrap.css" />
+    <Content Include="Content\Zebra_Datepicker-master\public\css\default.css" />
+    <Content Include="Content\Zebra_Datepicker-master\public\css\metallic.css" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\calendar-disabled.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\calendar.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\metallic\default-date.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\metallic\disabled-date.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\metallic\header.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\metallic\selected-date.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\images\themes.png" />
+    <Content Include="Content\Zebra_Datepicker-master\public\javascript\zebra_datepicker.js" />
+    <Content Include="Content\Zebra_Datepicker-master\public\javascript\zebra_datepicker.src.js" />
+    <Content Include="Content\Zebra_Datepicker-master\readme.txt" />
     <Content Include="dist\css\AdminLTE.css" />
     <Content Include="dist\css\AdminLTE.min.css" />
     <Content Include="dist\css\font\font-awesome.min.css" />
@@ -218,6 +257,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <Content Include="Content\Zebra_Datepicker-master\.gitignore" />
+    <Content Include="Content\Zebra_Datepicker-master\.npmignore" />
+    <Content Include="Content\Zebra_Datepicker-master\bower.json" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\GPL-LICENSE" />
+    <Content Include="Content\Zebra_Datepicker-master\examples\libraries\syntaxhighlighter\MIT-LICENSE" />
+    <Content Include="Content\Zebra_Datepicker-master\package.json" />
+    <Content Include="Content\Zebra_Datepicker-master\README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Petugas\ListAnggota.aspx" />
     <Content Include="Petugas\PembayaranBuku.aspx" />
@@ -256,6 +302,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Scripts\zebra_datepicker.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -265,6 +312,7 @@
     <Content Include="Service\DendaService.asmx" />
     <Content Include="Service\InputBukuService.asmx" />
     <Content Include="Service\ListAnggotaService.asmx" />
+    <Content Include="Service\ListPinjamanService.asmx" />
     <Content Include="Service\LoginService.asmx" />
     <Content Include="Service\PeminjamanService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
@@ -561,6 +609,10 @@
     </Compile>
     <Compile Include="Service\ListAnggotaService.asmx.cs">
       <DependentUpon>ListAnggotaService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\ListPinjamanService.asmx.cs">
+      <DependentUpon>ListPinjamanService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service\LoginService.asmx.cs">

@@ -53,11 +53,7 @@ namespace PerpustakaanWeb.Service
             return KotaDAL.GetAllKotaByProvID(id);
         }
 
-        [WebMethod]
-        public List<MstKota> getKota1()
-        {
-            return KotaDAL.GetAllKota();
-        }
+       
 
         [WebMethod]
         public List<MstKecamatan> getKecamatan(int id)
@@ -77,6 +73,37 @@ namespace PerpustakaanWeb.Service
 
             return AnggotaDAL.SimpanAnggota(anggota);
         }
+
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByNama(string nama)
+        {
+
+            return AnggotaDAL.searchAnggotaByNama(nama);
+        }
+
+        
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByTelp(string telp)
+        {
+
+            return AnggotaDAL.searchAnggotaByTelp(telp);
+        }
+
+
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByKode(string kode)
+        {
+
+            return AnggotaDAL.searchAnggotaByKode(kode);
+        }
+
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByEmail(string email)
+        {
+
+            return AnggotaDAL.searchAnggotaByEmail(email);
+        }
+
 
     }
 }

@@ -1,74 +1,202 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListPinjaman.aspx.cs" Inherits="PerpustakaanWeb.Anggota.ListPinjaman" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="box">
-        <div class="box-header with-border">
+    
+     <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">List Peminjaman</h1>
+        </div>
+        <div class="panel-body">
 
-            <div class="box-header">
-                <div class="col-md-10">
-                <h3 class="box-title">History Buku</h3>
-                
-                    <select class="form-control" data-val="true" id="idFilter" name="Filter" style="width: 150px;">
-                        <option value="">Nama Anggota</option>
+            <div class="form-horizontal">
+                <div class="form-group col-md-3">
+                    <select class="form-control" id="searchby">
+                        <option value="kode">No Registrasi</option>
+                        <option value="nama">Nama Anggota</option>
+                       
+
                     </select>
                 </div>
 
-                <div class="box-tools">
-                    
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
+                <div class="form-group col-md-8 col-md-offset-1">
+                    <input class="form-control" type="text" id="txt-search" placeholder="search" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>No</td>
+                                <td>No Regristrasi</td>
+                                <td>Nama</td>
+                                <td>Tgl Pinjam</td>
+                                <td>Tgl Kembali</td>
+                                <td>Jumlah Buku</td>
+                                <td>View Detail</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-list-anggota">
+                        </tbody>
+
+                    </table>
                 </div>
             </div>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th style="width: 5%">No</th>
-                    <th style="width: 10%">No. Registrasi</th>
-                    <th style="width: 35%">Nama Anggota</th>
-                    <th style="width: 10%">Tanggal Pinjam</th>
-                    <th style="width: 10%">Tanggal Kembali</th>
-                    <th style="width: 10%">Jumlah Buku</th>
-                    <th style="width: 10%">View Detail</th>
-                </tr>
-                <tr>
-                    <td>1.</td>
-                    <td>Update software</td>
-                    <td>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-red">55%</span></td>
-                </tr>
-                <tr>
-                    <td>2.</td>
-                    <td>Clean database</td>
-                    <td>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-yellow">70%</span></td>
-                </tr>
-            </table>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
+    </div>
+
+
+ <%--  modalpopout--%>
+
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Anggota</h4>
+                </div>
+                <div class="modal-body">
+
+                         <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>No</td>
+                                <td>Kode Buku</td>
+                                <td>Judul Buku</td>
+                                <td>Terlambat (Hari)</td>
+                                <td>Denda (Rp)</td>
+                       
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-list-detail">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Kembalikan</button>
+                    <button type="button" class="btn btn-primary">Tutup</button>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- /.box -->
+
+ <%--  akhir modalpopout--%>
+
+
+    <script>
+        $(document).ready(function () {
+            LoadList();
+            
+        });
+
+        function LoadList() {
+            $.ajax({
+                url: '../Service/ListPinjamanService.asmx/getList',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.NoRegistrasi + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + convertDate(item.TglKembali) + '</td>'
+                            + '<td>' + convertDate(item.TglPinjam) + '</td>'
+                            + '<td>' + item.JumlahBuku + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID('+item.ID+')></td>'
+                        '</tr>'
+                     
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+        }
+        
+        function getDataByID(ID) {
+
+
+            $.ajax({
+                url: '../Service/ListPinjamanService.asmx/getListDetail',
+                data: '{"ID":"' + JSON.stringify(ID) + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeBuku + '</td>'
+                            + '<td>' + item.JudulBuku + '</td>'
+                            + '<td>' +  + '</td>'
+                            + '<td>' +  + '</td>'
+                  
+                         '</tr>'
+                    });
+                    $('#modal-edit').modal('show');
+                    $('#tbl-list-detail').html(listProp);
+                }
+            });
+
+            
+        }
+
+        function searchByNama(nama) {
+              $.ajax({
+                url: '../Service/ListPinjamanService.asmx/searchByNama',
+                data: '{"nama":"' + nama + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.NoRegistrasi + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + convertDate(item.TglKembali) + '</td>'
+                            + '<td>' + convertDate(item.TglPinjam) + '</td>'
+                            + '<td>' + item.JumlahBuku + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + item.ID + ')></td>'
+                        '</tr>'
+                        
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+
+        }
+
+
+
+        function convertDate(tanggal) {
+
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+
+        $('#txt-search').keypress(function () {
+            searchByNama($('#txt-search').val())
+        });
+    </script>
+    
 </asp:Content>

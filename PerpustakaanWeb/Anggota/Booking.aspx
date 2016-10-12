@@ -1,100 +1,102 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Booking.aspx.cs" Inherits="PerpustakaanWeb.Anggota.Booking" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="box box-info">
-        <div class="box-header">
-            <h2>Booking</h2>
+    <link href="../Content/Zebra_Datepicker-master/public/css/metallic.css" rel="stylesheet" />
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Booking Buku Online</h2>
         </div>
-        <div class="box-body">
-            <form action="#" method="post">
-                <input name="__RequestVerificationToken" type="hidden" value="wcv9Q8y4GQ_x4bT7YRs85r6txf4MRvFtu3KUuz2Zf9jrA5dDYWSR46ZvsMmytRd1fCGU-m_R6wTCMy2A89rYe-54x__sqULvGAnS1GBxXfI1" />
-                <div class="form-horizontal">
+        <div class="panel-body">
+            <div class="form-horizontal col-md-9 col-md-offset-3">
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="NamaAnggota">Nama Anggota</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="NoBooking">No Booking</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="NoBooking" name="NoBooking" type="text" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="NoBooking" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="TglBooking">Tanggal Booking</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglBooking" name="TglBooking" type="date" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="TglBooking" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="TglPinjam">Tanggal Pinjam</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglPinjam" name="TglPinjam" type="date" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="TglPinjam" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Create" class="btn btn-default" />
-                        </div>
-                    </div>                   
+                <div class="form-group">
+                    <label class="col-md-3">Nama </label>
+                    <input class="col-md-9 form-control" type="text" id="txt-nama" placeholder="Nama" readonly="readonly" />
                 </div>
-            </form>
-        </div>
+                <div class="form-group">
+                    <label class="col-md-3">No Booking</label>
+                    <input class="col-md-9 form-control" type="text" id="txt-no-booking" placeholder="no Booking" />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Tgl Booking</label>
+                    <input class="col-md-9 form-control" type="text" id="txt-tgl-booking" readonly="readonly" />
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3">Tgl Pinjam</label>
+                    <input class="col-md-9 form-control tgl-pinjam" type="text" id="txt-tgl-pinjam" placeholder="No Booking" />
+                </div>
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group col-md-2">
+                    <input type="button" id="btn-tambah" class="btn btn-primary" value="Tambah Booking"/>
+                </div>
+                <table class="table table-bordered col-md-8">
+                    <thead>
+                        <tr>
+                            <td>Kode Buku</td>
+                            <td>Judul Buku</td>
+                            <td>Pengarang</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-list-booking">
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">List Buku Pinjaman</h3>
-            <input type="submit" value="Tambah" class="btn btn-primary" style="float: right;" />
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th style="width: 13%">Kode Buku</th>
-                    <th style="width: 50%">Judul Buku</th>
-                    <th style="width: 20%">Pengarang</th>
-                    <th style="width: 12%">Action</th>
-                </tr>
-                <tr>
-                    <td>001</td>
-                    <td>Buku 001</td>
-                    <td>Pengarang 001</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Buku 002</td>
-                    <td>Pengarang 002</td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
+       
+
+       
+      
     </div>
-    <!-- /.box -->
+
+   
+    <script src="../Content/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
+
+    <script>
+
+        var currentdates;
+
+        $('#txt-tgl-pinjam').Zebra_DatePicker({
+            format: 'd-m-Y',
+
+
+            direction: [currentdates, false]
+        });
+
+        function CurrentDate() {
+
+            
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+            currentdate = year + "-" + month + "-" + day;
+            $("#txt-tgl-booking").val(date);
+        }
+
+        $(document).ready(function () {
+            CurrentDate();
+
+            // assuming the controls you want to attach the plugin to
+            // have the "datepicker" class set
+            $('input.datepicker').Zebra_DatePicker();
+
+        });
 
 
 
-    <%--MODAL BOOKING BUKU POPUP--%>
+
+
+
+    </script>
+
+    
 </asp:Content>
