@@ -23,7 +23,7 @@
 				<td>12312312</td>
 				<td>80000</td>
 				<td>3</td>
-				<td><input type="text" name="bayar"></td>
+				<td><input type="hidden" name="bayar" value="bbb"></td>
 				<td><input id="cb002" type="checkbox" name=""></td>
 			</tr>
 			<tr>
@@ -32,7 +32,7 @@
 				<td>12312312</td>
 				<td>7777000</td>
 				<td>3</td>
-				<td><input type="text" name="bayar"></td>
+				<td><input type="hidden" name="bayar" value="aaa"></td>
 				<td><input id="cb003" type="checkbox" name=""></td>
 			</tr>
 		</tbody>
@@ -49,18 +49,18 @@
 		    var data = {
 		        completed: false
 		    };
-		    var cek = $('#cb' + $(this).find("td:nth-child(1)").text()).is(":checked")
+		    var cek = $('#cb' + $(this).find("td:nth-child(1)").text()).is(":checked");
             data.kode = $(this).find("td:nth-child(1)").text();
 			data.judul = $(this).find("td:nth-child(2)").text();
 			data.nilai = $(this).find("td:nth-child(3)").text();
 			data.pemb_sebelum = $(this).find("td:nth-child(4)").text();
 			data.sisa = $(this).find("td:nth-child(5)").text();
-			data.pembayaran = $(this).find("td:nth-child(6)").find("input[type=text]").val();
+			data.pembayaran = $(this).find("td:nth-child(6)").find("input[type=hidden]").val();
 		    //data.completed = $(this).find("td:nth-child(7)").find("input[type=checkbox]").attr("checked");
 			data.completed = cek;
 			list.push(data);
 		});
-		alert(list[0].completed);
+		alert(list[0].pembayaran);
 		console.log(list);
 	}
 </script>

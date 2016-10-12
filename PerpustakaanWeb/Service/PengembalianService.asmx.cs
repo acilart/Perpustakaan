@@ -48,5 +48,11 @@ namespace PerpustakaanWeb.Service
         {
             return PengembalianDAL.GetBukuPinjam(id);
         }
+
+        [WebMethod]
+        public bool SimpanPengembalian(TrReturnHeader header, List<TrReturnDetail> detail)
+        {
+            return PengembalianDAL.SimpanPengembalian(header, detail);
+        }
     }
 }

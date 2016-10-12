@@ -34,5 +34,11 @@ namespace PerpustakaanWeb.Service
         {
             return PembayaranDendaDAL.GetPengembalianBySearch(search);
         }
+        
+        [WebMethod]
+        public List<PembayaranDendaDAL> GetPeminjamanById(int id)
+        {
+            return PembayaranDendaDAL.GetPeminjamanById(id);
+        }
     }
 }

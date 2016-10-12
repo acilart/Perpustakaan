@@ -8,6 +8,7 @@
         <div class="box-body">
            <%--<form>--%>
                 <div class="form-horizontal">
+                    <input id="DendaID" type="hidden"/>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
                         <div class="input-group col-md-10">
@@ -100,8 +101,7 @@
                     </button>
                     <h4> Data Pengembalian Buku</h4>
                 </div>
-                <div class="modal-body">
-                    <input id="RtrID" type="hidden"/>
+                <div class="modal-body">                    
                     <div class="row">
                         <div class="col-md-4">
                             <input type="text" id="search-rtr" class="form-control" />
@@ -188,6 +188,64 @@
             })
         }
 
+        //fungsi button choose
+        function Choose(ID) {
+            $.ajax({
+                url: '../Service/DendaService.asmx/GetPeminjamanById',
+                data: '{"id":"' + ID + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    var listrtr = "";
+                    var Icount = 0;
+                    $.each(data.d, function (index, item) {
+                        var datepinjam = new Date(parseInt((item.TanggalPinjam).replace(/[^\d]/g, '')));
+                        var datekembali = new Date(parseInt((item.TanggalKembali).replace(/[^\d]/g, '')));
+                        var datedikembalikan = new Date(parseInt((item.TanggalDikembalikan).replace(/[^\d]/g, '')));
+                        $("#PMTID").val(item.IDAnggota);
+                        $("#NoRef").val(item.NoReferensi);
+                        $("#Nama").val(item.NamaAnggota);
+                        $("#TglPinjam").val(datepinjam);
+                        $("#TglKembali").val(datekembali);
+                        $("#TglDikembalikan").val(datekembali);
+                        $('#modal-rtr').modal('hide');
+                    })
+                }
+            })
+        }
 
+        //load buku yg dipinjam
+        function LoadBukuPinjam(id) {
+            $.ajax({
+                url: '../Service/PengembalianService.asmx/GetBukuPinjam',
+                data: '{"id":"' + id + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+
+                success: function (data) {
+                    var listbuku = '';
+                    var totaldenda = 0;
+                    $.each(data.d, function (index, item) {
+                        listbuku += '<tr>' +
+                            '<td>' + item.KodeMstBuku + '</td>' +
+                            '<td>' + item.Judul + '</td>' +                            
+                            '<td>' + item.Terlambat + '</td>' +
+                            '<td>' + item.denda + '</td>' +
+                            '</tr>';
+                        totaldenda = (totaldenda + item.denda)
+                    });
+                    $('#buku-borrow').html(listbuku);
+                    $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td>' + totaldenda + '</td></tr>');
+                }
+            })
+        }
+
+        //fungsi simpan
+        //function SaveDenda() {
+        //    var header = {};
+        //    header.
+        //}
     </script>    
 </asp:Content>

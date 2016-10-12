@@ -9,7 +9,7 @@
             <form>
 
                 <div class="form-horizontal">
-
+                    <input id="ReturnID" type="hidden" />
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
                         <div class="input-group col-md-10">
@@ -76,6 +76,7 @@
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
+                        <th class="hidden">ID BUKU</th>
                         <th style="width: 10%" class="text-center">Kode Buku</th>
                         <th style="width: 60%" class="text-center">Judul Buku</th>
                         <th style="width: 10%" class="text-center">Laporan Kehilangan</th>
@@ -83,14 +84,15 @@
                         <th style="width: 10%" class="text-center">Denda(Rp)</th>
                     </tr>
                 </thead>
-                <tbody id="buku-borrow">                   
+                <tbody id="buku-borrow">
+                                       
                 </tbody>
             </table>
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
             <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input value="Save" class="btn btn-primary" onclick="SavePengembalian()" />
         </div>
     </div>
     <!-- /.box -->
@@ -105,7 +107,7 @@
                     <h4>Data Peminjaman Buku</h4>
                 </div>
                 <div class="modal-body">
-                    <input id="borrowID" type="hidden" />
+                    
                     <div class="row">
                         <div class="col-md-4">
                             <input type="text" id="search-borrow" class="form-control" />
@@ -122,6 +124,7 @@
                                 </tr>
                             </thead>
                             <tbody id="data-borrow">
+                                
                             </tbody>
                         </table>
                     </div>
@@ -181,7 +184,7 @@
                       
                         var datepinjam = new Date(parseInt((item.TanggalPinjam).replace(/[^\d]/g, '')));
                         var datekembali = new Date(parseInt((item.TanggalKembali).replace(/[^\d]/g, '')));
-                       
+                        $("#ReturnID").val(item.IDAnggota);
                         $("#NoRef").val(item.NoReferensi);                        
                         $("#Nama").val(item.NamaAnggota);
                         $("#TglPinjam").val(datepinjam);
@@ -237,25 +240,74 @@
                     var totaldenda = 0;
                     $.each(data.d, function (index, item) {
                         listbuku += '<tr>' +
+                            
                             '<td>' + item.KodeMstBuku + '</td>' +
                             '<td>' + item.Judul + '</td>' +
-                            '<td> <input type="checkbox" id="checkhilang" value="option1">' + '</td>' +
+                            '<td><input type="checkbox" id="cb' + item.IDBuku + '">' + '</td>' + //value satu untuk kehilangan buku
                             '<td>' + item.Terlambat + '</td>' +
                             '<td>' + item.denda + '</td>' +
+                            '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
                             '</tr>' ;
                         totaldenda = (totaldenda + item.denda)
                     });
                     $('#buku-borrow').html(listbuku);
-                    $('#buku-borrow').append('<tr><td></td><td>jumlah</td><td></td><td></td><td>' + totaldenda + '</td></tr>');                  
+                    $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td></td><td>' + totaldenda + '</td></tr>');                  
                 }
             })
         }
         
-        //blm bisa cek
-        //$('#checkhilang').click(function () {
-        //    if ($(this).is(':checked') == true) {
-        //        alert("sssss");
-        //    } else alert("hhhh");
+        function isiHiddenField(Id) {                      
+            $('#checkhilang').val("True");
+        }
+
+        
+
+        //fungsi simpan
+        function SavePengembalian() {
+            var header = {};
+            header.IdAnggota = $("#ReturnID").val();
+            header.NoReferensi = $('#NoRef').val();
+            var list = [];        
+
+            $("#buku-borrow tr").each(function () {
+                var data = {
+                    
+                };
+                var cek = $('#cb' + $(this).find("td:nth-child(6)").find("input[type=hidden]").val()).is(":checked");
+                data.IDBuku = $(this).find('td:nth-child(6)').find("input[type=hidden]").val();
+                data.SudahDiganti = false;
+                data.SudahDibayar = false;
+                if ($(this).find("td:nth-child(5)").text() != 0) {
+                    data.Denda = true;
+                }
+                else {
+                    data.Denda = false;
+                }
+                data.LaporKehilangan = cek;
+                list.push(data);
+            });
+            var param = { header: header, detail: list };
+            $.ajax({
+                url: '../Service/PengembalianService.asmx/SimpanPengembalian',
+                data: JSON.stringify(param),
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (response) {
+                    alert("Transaksi Pengembalian Berhasil Disimpan");
+                }
+            })
+            
+        }
+
+        //checkbox
+        //$(document).ready(function () {
+        //    $('#checkhilang').change(function () {
+        //        if ($(this).prop('checked')) {
+        //            alert("hai");
+        //        }
+        //    })
+
         //})
 
 
