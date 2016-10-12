@@ -383,7 +383,7 @@
                         $("#MasaBerlakuAnggota").val(dateAnggota.format("dd-MMM-yyyy"));
 
                     });
-                    $('#hidden').show();
+                    //$('#hidden').show();
                 }
 
             });
