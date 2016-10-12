@@ -85,7 +85,7 @@ namespace PerpustakaanDAL
                 #endregion
 
             }
-            return false;
+          
         }
     }
 }
