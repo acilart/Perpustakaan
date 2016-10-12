@@ -322,6 +322,7 @@
                             '<td>' + item.JudulBuku + '</td>' +
                             '<td>' + item.Pengarang + '</td>' +
                             "<td><input type='button' value='Delete' class='btn btn-danger' onclick='hapusBuku(" + item.ID + ")'/></td>" +
+                            '<td><input type="hidden" value="' + item.d.ID + '"/></td>' +
                             "</tr>";
                         $("#data-buku").append(newBook);
                         return true;
@@ -393,6 +394,43 @@
         $('#search-btn').click(function () {
             $('#modal-anggota').modal('show');
         });
+
+        $('#confirm').click(function () {
+           
+            var list = [];
+            var header = {};
+            header.IDSumberBuku = $("#sumber").val();
+            header.Tanggal = $("#IDPenerbit").val();
+            header.NoReferensi = $("#NoRef").val();
+
+
+            $("#data-buku-baru tr").each(function () {
+                var data = {};
+
+                data.IDBuku = $(this).find('td:nth-child(8)').find("input[type=hidden]").val();
+                data.JudulBuku = $(this).find('td:nth-child(2)').text();
+                data.ISBN = $(this).find('td:nth-child(3)').text();
+                data.Pengarang = $(this).find('td:nth-child(4)').text();
+                data.Lokasi = $(this).find('td:nth-child(7)').find("input[type=hidden]").val();
+                data.NilaiBuku = $(this).find('td:nth-child(5)').text();
+                list.push(data);
+
+            });
+
+            var param = { header: header, details: list };
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/SimpanPenyimpananBuku',
+                type: 'POST',
+                data: JSON.stringify(param),
+                contentType: 'application/json; charset=utf-8',
+                datatype: "json",
+                success: function (response) {
+                    alert("Data Penyimpanan Berhasil Disimpan..");
+                    window.location.reload();
+                }
+            });
+        });
+
 
 
         //$('#txt-anggotaS').keyup(function () {

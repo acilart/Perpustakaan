@@ -27,12 +27,12 @@ namespace PerpustakaanWeb.Service
         }
 
         //Buat input Baru
-        [WebMethod]
-        public List<IuranViewModel> GetIuranNonDenda()
-        {
-            var dal = new IuranDAL();
-            return dal.GetIuranNonDenda();
-        }
+        //[WebMethod]
+        //public List<IuranViewModel> GetIuranNonDenda()
+        //{
+        //    var dal = new IuranDAL();
+        //    return dal.GetIuranNonDenda();
+        //}
 
 
         [WebMethod]

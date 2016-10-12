@@ -314,9 +314,9 @@
     <Content Include="Service\ListAnggotaService.asmx" />
     <Content Include="Service\ListPinjamanService.asmx" />
     <Content Include="Service\LoginService.asmx" />
+    <Content Include="Service\PembayaranBuku.asmx" />
     <Content Include="Service\PeminjamanService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
-    <Content Include="Service\PenggantianService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Bundle.config" />
@@ -619,16 +619,17 @@
       <DependentUpon>LoginService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Service\PembayaranBuku.asmx.cs">
+      <DependentUpon>PembayaranBuku.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Service\PeminjamanService.asmx.cs">
       <DependentUpon>PeminjamanService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+
     <Compile Include="Service\PengembalianService.asmx.cs">
       <DependentUpon>PengembalianService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Service\PenggantianService.asmx.cs">
-      <DependentUpon>PenggantianService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Site.Master.cs">

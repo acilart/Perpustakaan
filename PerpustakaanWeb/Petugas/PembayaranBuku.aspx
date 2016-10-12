@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    <div class="box box-info">
      <div class="box-header">
-        <h2>Form Penggantian</h2>
+        <h2>Form Pembayaran Buku</h2>
     </div>
     <div class="box-body">
         <form>
@@ -11,11 +11,11 @@
 
                 <div class="form-group">
                     <label class="control-label col-md-2" for="NoRef">No Referensi</label>
-                    <div class="input-group col-md-10">
+                    <div class="input-group col-md-3">
                         <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                         <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                         <span class="input-group-btn">
-                            <button type="button" name="search" id="search-btn" class="btn btn-primary">Search</button>
+                            <button type="button" name="search" id="search-btn" class="btn btn-primary glyphicon glyphicon-search"  data-toggle="modal" data-target="#modal-ref"></button>
                         </span>
                     </div>
                 </div>
@@ -56,7 +56,8 @@
                     <h4>No Referensi</h4>
                 </div>
                 <div class="modal-body">
-                    <input id="IDNoRef" type="hidden" />
+                  
+                     <input id="IDNoRef" type="hidden" />
 
                     <div class="row">
                         <br />
@@ -66,7 +67,7 @@
                                     <input type="text" id="txt-NoRef" class="form-control" />
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" id="search-NoRef" class="btn btn-default">Search</button>
+                                    <button type="button" id="search-NoRef" data-toggle="modal" data-target="#modal-buku" class="btn btn-default">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -76,8 +77,9 @@
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
-                                    <th>No Referensi</th>
-                                    <th>Pilih</th>
+                                    <th>NoRegistrasi</th>
+                                    <th>NamaAnggota</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="data-NoRef">
@@ -100,6 +102,7 @@
         <!-- /.box-header -->
         <div class="box-body">
             <table class="table table-bordered">
+                <thead>
                 <tr>
                     <th>Kode Buku</th>
                     <th>Judul Buku</th>
@@ -110,28 +113,8 @@
                     <th>Pembayaran</th>
                     <th>Completed</th>
                 </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Buku 002</td>
-                    <td>12300098765232</td>
-                    <td>85000</td>
-                    <td>50000</td>
-                    <td>35000</td>
-                    <td>
-                        <input type="text" value="35000" /></td>
-                    <td>
-                        <input type="checkbox" /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>Jumlah</td>
-                    <td></td>
-                    <td>85000</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    </thead>
+               <tbody id="data-pembayaran-detail"></tbody>
             </table>
         </div>
         <!-- /.box-body -->
@@ -141,4 +124,73 @@
         </div>
     </div>
     <!-- /.box -->
+     <script src="../Scripts/jquery-1.10.2.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script>
+        function loadDataPenggantian() {
+            $.ajax({
+                url: '../Service/PembayaranBuku.asmx/GetPenggantian',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                        '<td>' + item.NoRegistrasi + '</td>' +
+                        '<td>' + item.NamaAnggota + '</td>' +
+                        '<td>' + item.Tanggal + '</td>' +
+                       ' <td> <input type="button" class="btn btn-successs" value="Pilih" data-dismiss="modal" id="btnEdit" onClick="PilihPenggantian(' + item.ID + ')" /></td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-NoRef').html(listProp);
+                }
+            });
+        }
+        function PilihPenggantian(ID) {
+            loadBukuPenggantian(ID);
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetPenggantianByID',
+                data: '{ID:' + ID + '}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'JSON',
+                type: 'POST',
+                success: function (penggantian) {
+                    $('#NoRef').val(penggantian.d.NoRegistrasi);
+                    $("#Tanggal").val(penggantian.d.Tanggal);
+                }
+            });
+
+        }
+        function loadBukuPenggantian(ID) {
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/GetBukuHilangByIDPenggantianHeader',
+                data: '{ID:' + ID + '}',
+                type: 'POST',
+                dataType: 'JSON',
+
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnu) {
+                    var listProp = "";
+                    $.each(dataAnu.d, function (index, item) {
+                        listProp += '<tr>' +
+                        '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.ISBN + '</td>' +
+                       '<td>' + item.Pengarang + '</td>' +
+                        '<td>' + item.Value + '</td>' +
+                        '<td>' + item.LokasiD + '</td>' +
+                '</tr>';
+
+                    });
+
+                    $('#data-pembayaran-detail').html(listProp);
+                }
+            });
+        }
+
+    </script>
 </asp:Content>
