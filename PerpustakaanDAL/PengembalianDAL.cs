@@ -95,8 +95,6 @@ namespace PerpustakaanDAL
             }
             //return new List<PengembalianDAL>();          
         }
-
-
         public static List<PengembalianDAL> GetPeminjamanBySearch(string Search)
         {
 
@@ -130,8 +128,6 @@ namespace PerpustakaanDAL
                 return list;
             }
         }
-
-
         //untuk mendapatkan buku yang dipinjam oleh anggota
         public static List<PengembalianDAL> GetBukuPinjam(int id)
         {
@@ -226,6 +222,13 @@ namespace PerpustakaanDAL
                             {
                                 cell.Terisi += 1;
                                 cell.Kosong -= 1;
+                            }
+                            #endregion
+
+                            #region Update Status Buku
+                            if (buku != null)
+                            {
+                                buku.Aktif = true;
                             }
                             #endregion
                             try
