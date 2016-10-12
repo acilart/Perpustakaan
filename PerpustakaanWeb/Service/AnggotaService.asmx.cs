@@ -1,4 +1,5 @@
-﻿using PerpustakaanDAL;
+﻿using Perpustakaan.ViewModel;
+using PerpustakaanDAL;
 using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,44 @@ namespace PerpustakaanWeb.Service
             return "Hello World";
         }
 
+        //Buat input Baru
         [WebMethod]
-        public List<MstTipeIuran> GetIuranNonDenda()
+        public List<IuranViewModel> GetIuranNonDenda()
         {
-            var dal = new TipeIuranDAL();
-            return dal.GetAllIuranNonDenda();
+            var dal = new IuranDAL();
+            return dal.GetIuranNonDenda();
         }
+
+
+        [WebMethod]
+        public List<MstProvinsi> GetAllPropinsi()
+        {
+            return ProvinsiDAL.GetAllPropinsi();
+        }
+
+        [WebMethod]
+        public List<MstKota> GetAllKotaByProvID(int id)
+        {
+            return KotaDAL.GetAllKotaByProvID(id);
+        }
+
+        [WebMethod]
+         public List<MstKecamatan> GetAllKecByKotaID(int id)
+        {
+            return KecamatanDAL.GetAllKecamatanbyKotaID(id);
+        }
+
+        [WebMethod]
+        public bool SimpanAnggota(MstAnggota anggota)
+        {
+            return AnggotaDAL.SimpanAnggota(anggota);
+        }
+
+        //[WebMethod]
+        //public List<IuranViewModel> GetIuranById(int id)
+        //{
+        //    return IuranDAL.GetIuranNonDendaByIdAnggota(id);
+        //}
 
     }
 }

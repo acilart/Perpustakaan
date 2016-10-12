@@ -18,6 +18,10 @@
 
 </head>
 <body class="hold-transition login-page">
+
+    <%--1.SESSION
+    2.LOGOUT--%>
+
     <div class="login-box">
         <div class="login-logo">
             <a href="../../index2.html"><b>Admin</b>LTE</a>
@@ -71,18 +75,6 @@
     <script>
 
         //---------------------------------LOGIN------------------------------//
-
-        //$("#login").submit(function (e) {
-        //    e.preventDefault();
-        //    var LogId = $('#dlogin').val();
-
-        //    if (LogId == 'Petugas') {
-        //        cekPassPetugas();
-        //    }
-        //    else {
-        //        cekPassAnggota();
-        //    }
-        //})
 
         $("#formLogin").submit(function (e) {
             e.preventDefault();

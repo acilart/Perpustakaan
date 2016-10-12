@@ -1,22 +1,43 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaOff" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormAnggotaEdit.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    
-    <%--1.SIMPAN ANGGOTA (TERMASUK GENERATE KODE ANGGOTA, GENERATE NO REGISTRASI, SAVE LIST IURAN)
-        2.VALIDASI FORM--%>
-    
+    <style>
+        .box-body {
+            display: none;
+        }
+    </style>
+
+ <%--   1.SEARCH ANGGOTA
+    2.PILIH ANGGOTA BY ID
+    3.TAMPIL ANGGOTA BY ID
+    4.TAMPIL EDIT ANGGOTA DAN IURAN
+    5.SIMPAN EDIT ANGGOTA
+     6. VALIDASI FORM--%>
+
     <div class="box box-info">
         <div class="box-header">
-            <h2>FORM PENDAFTARAN ANGGOTA</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" id="txt-anggotaS" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" id="search-anggota" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>UBAH DATA ANGGOTA</h2>
         </div>
-        <div class="box-body">
+        <div class="box-body" id="hidden">
             <form action="#" method="post" id="formAnggota">
                 <div class="form-horizontal">
                     <input id="AnggotaId" type="hidden">
                     <div class="form-group">
                         <label class="control-label col-md-2" for="KodeAnggota">Kode Anggota</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly/>
+                            <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="KodeAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -89,17 +110,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="NoReg">No Registrasi</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" id="No Reg" name="NoReg" type="date" value="" readonly/>
-                            <span class="field-validation-valid text-danger" data-valmsg-for="NoREG" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="control-label col-md-2" for="MasaBerlakuKartu">Masa Berlaku Kartu</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field MasaBerlakuKartu must be a date." data-val-required="The MasaBerlakuKartu field is required." id="MasaBerlakuKartu" name="MasaBerlakuKartu" type="date" value="" readonly />
+                            <input class="form-control text-box single-line" data-val="true" id="MasaBerlakuKartu" name="MasaBerlakuKartu" type="date" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuKartu" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -107,15 +120,15 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="MasaBerlakuAnggota">Masa Berlaku Anggota</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field MasaBerlakuAnggota must be a date." data-val-required="The MasaBerlakuAnggota field is required." id="MasaBerlakuAnggota" name="MasaBerlakuAnggota" type="date" value="" readonly/>
+                            <input class="form-control text-box single-line" data-val="true" id="MasaBerlakuAnggota" name="MasaBerlakuAnggota" type="date" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
-<%--                    <div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-md-2" for="CreatedOn">CreatedOn</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field CreatedOn must be a date." id="CreatedOn" name="CreatedOn" type="date" value="" />
+                            <input class="form-control text-box single-line" data-val="true" id="CreatedOn" name="CreatedOn" type="date" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="CreatedOn" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -123,7 +136,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="CreatedBy">CreatedBy</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-number="The field CreatedBy must be a number." id="CreatedBy" name="CreatedBy" type="number" value="" />
+                            <input class="form-control text-box single-line" data-val="true" id="CreatedBy" name="CreatedBy" type="number" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="CreatedBy" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -142,8 +155,52 @@
                             <input class="form-control text-box single-line" data-val="true" data-val-number="The field ModifiedBy must be a number." id="ModifiedBy" name="ModifiedBy" type="number" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="ModifiedBy" data-valmsg-replace="true"></span>
                         </div>
-                    </div>--%>
+                    </div>
 
+                    <%--MODAL ANGGOTA POPUP--%>
+                    <div class="modal" id="modal-anggota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span></button>
+                                    <h4>Daftar Anggota Perpustakaan</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input id="anggotaID" type="hidden" />
+
+                                    <div class="row">
+                                        <br />
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="text" id="txt-anggota" class="form-control" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" id="search-anggotaS" class="btn btn-primary">Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <table class="table table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Kode Anggota</th>
+                                                    <th>Nama Anggota</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="data-anggota">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <%--MODAL POP UP IURAN--%>
 
@@ -201,75 +258,38 @@
     <script>
 
         //---------------------------------DROPDOWN DAERAH------------------------------//
-        function loadDataPropinsi() {
-            $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllPropinsi',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataProp) {
-                    var listProp = "";
-                    listProp += '<option value="-1">--Pilih Propinsi--</option>'
-                    $.each(dataProp.d, function (index, item) {
-                        listProp += '<option value="' + item.ID + '">' +
-                            item.NamaProvinsi + '</option>'
-                    });
-                    $('#OptProvinsi').html(listProp);
-                }
-            });
-        }
-
-        function loadKotaByIdProp(propid) {
-            $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllKotaByProvID',
-                data: '{"id":"' + propid + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataKota) {
-                    var ListKota = "";
-                    ListKota += '<option value="-1">--Pilih Kota--</option>'
-                    $.each(dataKota.d, function (index, item) {
-                        ListKota += '<option value="' + item.ID + '">' +
-                            item.NamaKota + '</option>'
-                    });
-                    $('#OptKota').html(ListKota);
-                }
-
-            });
-        }
-
-        function loadKecByIdKota(kotaid) {
-            $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllKecByKotaID',
-                data: '{"id":"' + kotaid + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataKecamatan) {
-                    var ListKec = "";
-                    ListKec += '<option value="-1">--Pilih Kecamatan--</option>'
-                    $.each(dataKecamatan.d, function (index, item) {
-                        ListKec += '<option value="' + item.ID + '">' +
-                            item.NamaKecamatan + '</option>'
-                    });
-                    $('#OptKecamatan').html(ListKec);
-                }
-
-            });
-        }
 
 
-        $('#OptProvinsi').change(function () {
-            var PropId = $('#OptProvinsi').val();
-            loadKotaByIdProp(PropId);
+
+        //---------------------------------SEARCH------------------------------//
+        $('#search-anggota').click(function () {
+            var searchValue = $('#txt-anggotaS').val();
+            loadSearchAnggota(searchValue);
         });
 
-        $('#OptKota').change(function () {
-            var KotaId = $('#OptKota').val();
-            loadKecByIdKota(KotaId);
-        });
+        function loadSearchAnggota(searchValue) {
+            $.ajax({
+                url: '../Service/PeminjamanService.asmx/GetAnggotaBySearch',
+                data: JSON.stringify(param),
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnggota) {
+                    var listAnggota = "";
+                    var iCount = 0;
+                    $.each(dataAnggota.d, function (index, item) {
+                        listAnggota += '<tr>' +
+                                '<td>' + ++iCount + '</td>' +
+                                '<td>' + item.KodeAnggota + '</td>' +
+                                '<td>' + item.Nama + '</td>' +
+                                '<td><div class="row"><div class="col-md-5"><input type="button" value="Select" class="btn btn-default" onclick="edit(' + item.ID + ')"/></div></div></td>' +
+                            '</tr>'
+                    });
 
+                    $('#data-anggota').html(listAnggota);
+                }
+            });
+        }
 
         //---------------------------------INSERT------------------------------//
 
@@ -317,22 +337,12 @@
             anggota.CreatedBy = $("#CreatedBy").val();
             anggota.ModifiedBy = $("#ModifiedBy").val();
             var iuran = {};
-            iuran.TipeIuran = [];
-            iuran.MasaBerlaku = [];
-            iuran.Jumlah = [];
-
-            //ambil data dari tabel setiap cellnya
-            $('#data-iuran-modal tr').each(function () {
-                iuran.TipeIuran.push($(this).find("td:nth-child(1)").text()); // cari td pertama, dan text disimpan kedalam tipe iuran
-                iuran.MasaBerlaku.push($(this).find("td:nth-child(2)").text());
-                iuran.Jumlah.push($(this).find("td:nth-child(3)").text());
-            })
-            
+            iuran.TipeIuran = $()
 
             $.ajax({
-                url: '../Service/AnggotaService.asmx/SimpanAnggota2',
+                url: '../Service/AnggotaService.asmx/SimpanAnggota',
 
-                data: '{anggota:' + JSON.stringify(anggota) + ',iuran:' + JSON.stringify(iuran) +'}',
+                data: '{anggota:' + JSON.stringify(anggota) + '}',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'JSON',
@@ -346,21 +356,43 @@
 
         //---------------------------------EDIT IURAN------------------------------//
 
+        function edit(id) {
+            $.ajax({
+                url: '../Services/AnggotaService.asmx/GetAnggotaById',
+                data: '{"id":"' + id + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataAnggota) {
+                    var listAnggota = "";
+                    var iCount = 0;
+                    $.each(dataAnggota.d, function (index, item) {
+                        var dateKartu = new Date(parseInt((item.MasaBerlakuKartu).replace(/[^\d]/g, '')));
+                        var dateAnggota = new Date(parseInt((item.MasaBerlakuAnggota).replace(/[^\d]/g, '')));
+                        listAnggota += '<tr>' +
+                        $("#KodeAnggota").val(item.KodeAnggota);
+                        $("#Nama").val(item.Nama);
+                        $("#Alamat").val(item.Alamat);
+                        $("#OptProvinsi").val(item.IDProvinsi);
+                        $("#OptKota").val(item.IDKota);
+                        $("#OptKecamatan").val(item.IDKecamatan);
+                        $("#Kelurahan").val(item.IDKelurahan);
+                        $("#Email").val(item.Email);
+                        $("#NoTelepon").val(item.NoTelepon);
+                        $("#MasaBerlakuKartu").val(dateKartu.format("dd-MMM-yyyy"));
+                        $("#MasaBerlakuAnggota").val(dateAnggota.format("dd-MMM-yyyy"));
 
+                    });
+                    $('#hidden').show();
+                }
+
+            });
+        }
 
         $(document).ready(function () {
-
-            var dateAnggota = new Date();
-            var dateKartu = new Date();
-            var dateA = dateAnggota.setDate(dateAnggota.getDate() + 90);
-            var dateK = dateKartu.setMonth(dateKartu.getMonth() + 12);
-
-            $(MasaBerlakuKartu).val(dateKartu.format("dd-MMM-yyyy"));
-            $(MasaBerlakuAnggota).val(dateAnggota.format("dd-MMM-yyyy"));
             loadIuran();
             loadDataPropinsi();
         });
 
     </script>
-
 </asp:Content>
