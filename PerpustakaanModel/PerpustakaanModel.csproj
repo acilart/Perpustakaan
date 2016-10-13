@@ -64,6 +64,8 @@
     <Compile Include="MstTipeIuran.cs" />
     <Compile Include="PerpustakaanDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrBookingDetail.cs" />
+    <Compile Include="TrBookingHeader.cs" />
     <Compile Include="TrBrwDetail.cs" />
     <Compile Include="TrBrwHeader.cs" />
     <Compile Include="TrDendaDetail.cs" />

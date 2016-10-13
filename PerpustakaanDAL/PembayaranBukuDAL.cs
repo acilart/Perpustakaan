@@ -16,10 +16,13 @@ namespace PerpustakaanDAL
             {
                 var rpcHeader = db.TrRpcHeader.FirstOrDefault(n => n.ID == id);//ambil header penggantian
                 var pmtHeader = db.TrPmtBukuHeader.FirstOrDefault(n => n.NoReferensi == rpcHeader.NoRegistrasi);//ambil header pembayaran sesuai no registrasi yang ada di header penggantian
+               
+             
                 if (pmtHeader != null)//cek apakah data header pembayaran ada atau tidak
                 {
-
-                    var pmtDetail = db.TrPmtBukuDetail.Where(n => n.HeaderID == pmtHeader.ID);//cek pembayaran detail sesuai id header pembayaran
+                     #region Jika Pembayaran Sudah Dilakukan Sebelumnya
+                
+                    var pmtDetail = db.TrPmtBukuDetail.Where(n => n.HeaderID == pmtHeader.ID && n.IsCompleted == false);//cek pembayaran detail sesuai id header pembayaran
                     foreach (var detail in pmtDetail)
                     {
                         var bukuDal = new BukuDAL();
@@ -34,7 +37,6 @@ namespace PerpustakaanDAL
                             bayarSebelum += Convert.ToDouble(settle.Jumlah);
                             bayarKe += 1;
                         }
-                        bayarKe += 1;
                         sisa = Convert.ToDouble(detail.Value) - bayarSebelum;
                         if (sisa == 0)
                         {
@@ -59,9 +61,11 @@ namespace PerpustakaanDAL
                         list.Add(pembayar);
                     }
                     return list;
+                     #endregion
                 }
                 else
                 {
+                    #region Belum Melakukan Pembayaran
                     var detailRpc = db.TrRpcDetail.Where(n => n.HeaderID == id);
                     foreach (var item in detailRpc)
                     {
@@ -72,19 +76,20 @@ namespace PerpustakaanDAL
                         }
                         var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
                         var pembayar = new Pembayaran()
-                         {
-                             IDBuku = buku.ID,
-                             Bayar = 0,
-                             Completed = false,
-                             ISBN = buku.ISBN,
-                             JudulBuku = buku.JudulBuku,
-                             KodeBuku = buku.Kode,
-                             NilaiBuku = nilai + 5000,
-                             PembayaranSebelumnya = 0,
-                             Sisa = nilai + 5000
-                         };
+                        {
+                            IDBuku = buku.ID,
+                            Bayar = 0,
+                            Completed = false,
+                            ISBN = buku.ISBN,
+                            JudulBuku = buku.JudulBuku,
+                            KodeBuku = buku.Kode,
+                            NilaiBuku = nilai + 5000,
+                            PembayaranSebelumnya = 0,
+                            Sisa = nilai + 5000
+                        };
                         list.Add(pembayar);
                     }
+                    #endregion
                 }
             }
             return list;

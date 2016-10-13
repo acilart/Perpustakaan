@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace PerpustakaanDAL
 {
@@ -14,10 +15,11 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
+                // Menambah Data TrPlcHeader Ke Database
                 #region Simpan Header Penyimpanan Buku
                 int id = 1;
                 var listHeader = db.TrPlcHeader.ToList();
-                if(listHeader.Count > 0)
+                if (listHeader.Count > 0)
                 {
                     id = listHeader[listHeader.Count - 1].ID + 1;
                 }
@@ -32,6 +34,8 @@ namespace PerpustakaanDAL
                 foreach (var item in details)
                 {
                     item.HeaderID = id;
+                    //item.CreatedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
+                    //item.ModifiedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
                     var stok = new TrStock()

@@ -23,6 +23,7 @@ namespace PerpustakaanDAL
                 {
                     //ini untuk ngedaftarain session diisi oleh email (nilai default)
                     HttpContext.Current.Session["Email"] = email;
+                    HttpContext.Current.Session["ID"] = cek.ID;
                     return cek;
                 }
                 return null;

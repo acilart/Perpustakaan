@@ -47,6 +47,8 @@ namespace PerpustakaanModel
         public virtual DbSet<TrScnDetail> TrScnDetail { get; set; }
         public virtual DbSet<TrScnHeader> TrScnHeader { get; set; }
         public virtual DbSet<TrStock> TrStock { get; set; }
+        public virtual DbSet<TrBookingHeader> TrBookingHeader { get; set; }
+        public virtual DbSet<TrBookingDetail> TrBookingDetail { get; set; }
     }
 
 }
