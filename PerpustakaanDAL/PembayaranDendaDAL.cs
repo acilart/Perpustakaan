@@ -92,6 +92,7 @@ namespace PerpustakaanDAL
                         var pembayaran = new PembayaranDendaDAL()
                     {
                         ID = cek.ID,
+                        IDAnggota = cek.IDAnggota,
                         NamaAnggota = anggota.Nama,
                         NoReferensi = cek.NoReferensi,
                         TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam),
@@ -108,13 +109,19 @@ namespace PerpustakaanDAL
         }
 
 
-        public bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
+        public static bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
         {
             using (var db = new PerpustakaanDbContext())
             {
-                var listHeader = db.TrPlcHeader.ToList();
-                var id = listHeader[listHeader.Count - 1].ID + 1;
-                header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
+                var listHeader = db.TrDendaHeader.ToList();
+                int id = 1;
+                if (listHeader.Count > 0)
+                {
+                    id = listHeader[listHeader.Count - 1].ID + 1;
+                }
+
+                header.NoRegistrasi = AutoNumberDAL.PembayaranDendaNoRegAutoNumber();
+                header.NoReferensi = header.NoReferensi;
                 header.ID = id;                
                 header.IDAnggota = header.IDAnggota;                
                 header.CreatedOn = DateTime.Now;
@@ -122,13 +129,19 @@ namespace PerpustakaanDAL
                 db.TrDendaHeader.Add(header);
                 foreach (var item in details)
                 {
-                    item.HeaderID = id;
-                    item.IDBuku = item.IDBuku;
-                    item.Jumlah = item.Jumlah;
-                    item.CreatedOn = DateTime.Now;
-                    item.ModifiedOn = DateTime.Now;
+                    var dal = new BukuDAL();
+                    var buku = dal.GetBukuByID(item.IDBuku);
+                    if (buku!= null)
+                    {
+                        item.HeaderID = id;
+                        item.IDBuku = item.IDBuku;
+                        item.Jumlah = item.Jumlah;
+                        item.CreatedOn = DateTime.Now;
+                        item.ModifiedOn = DateTime.Now;
+                        db.TrDendaDetail.Add(item);
+                    }                                                        
                 }
-                db.TrDendaDetail.AddRange(details);
+                
                 var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == header.ID);
                 if (cek != null)
                 {
