@@ -19,18 +19,16 @@ namespace PerpustakaanDAL
             }
         }
 
-        //public List<TrBrwHeader> GetAllByNama(int ID)
-        //{
-        //    using (var db = new PerpustakaanDbContext())
-        //    {
+        public static TrBrwHeader GetDataById(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.TrBrwHeader.FirstOrDefault(n => n.ID == id);
 
-        //        var cek = db.TrBrwHeader.Where(n => n.IDAnggota == ID).ToList();
-        //        return cek;
-
-           
-        //    }
-        //}
-
+                return cek;
+            }
+        }
+        
 
     }
 }

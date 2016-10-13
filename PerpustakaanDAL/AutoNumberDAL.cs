@@ -194,11 +194,37 @@ namespace PerpustakaanDAL
                 }
                 else
                 {
-                    tmp = "BRW" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                    tmp = "RPC" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
                 }
             }
             return tmp;
         }
+
+
+        public static string BookingBukuAutoNumber()
+        {
+            var tmp = "";
+            using (var db = new PerpustakaanDbContext())
+            {
+                var date = DateTime.Now.ToString("yyyyMM");
+                var cek = db.TrBookingHeader.Where(n => n.BookingNo.Contains(date)).ToList();
+
+                if (cek.Count > 0)
+                {
+                    var item = cek[cek.Count - 1];
+                    var urut = item.BookingNo.Substring(item.BookingNo.Length - 4, 4);
+                    var i = int.Parse(urut) + 1;
+                    var zero = urut.Substring(0, urut.Length - i.ToString().Length);
+                    tmp = "BOOK" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + zero + i;
+                }
+                else
+                {
+                    tmp = "BOOK" + DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM") + "0001";
+                }
+            }
+            return tmp;
+        }
+
 
     }
 }

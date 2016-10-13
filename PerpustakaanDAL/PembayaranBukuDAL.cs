@@ -118,6 +118,7 @@ namespace PerpustakaanDAL
                     header.ModifiedOn = DateTime.Now;
                     db.TrPmtBukuHeader.Add(header);
                     #endregion
+                
                     #region Pembayaran Detail & settlement baru
                     var listDetail = db.TrPmtBukuDetail.ToList();
                     int idDetail = 0;

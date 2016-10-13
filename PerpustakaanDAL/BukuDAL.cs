@@ -102,7 +102,12 @@ namespace PerpustakaanDAL
                 var stok = db.TrStock.Where(n => n.InStock == true);
                 foreach (var item in stok)
                 {
-                    list.Add(buku.FirstOrDefault(n => n.ID == item.ID));
+                    var cek = buku.FirstOrDefault(n => n.ID == item.ID);
+                    if (cek != null) 
+                    {
+                        list.Add(cek);
+                    }
+                    
                 }
                 return list;
             }
@@ -116,6 +121,22 @@ namespace PerpustakaanDAL
                 return stop;
             }
         }
+
+        public static MstBuku GetBukuAvailableByID(int id)
+        
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstBuku.FirstOrDefault(n => n.ID == id);
+                if (cek !=null)
+                {
+                    return cek;
+                }
+                return null;
+            }
+        }
+
+
 
     }
 }
