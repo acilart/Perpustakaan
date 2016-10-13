@@ -311,7 +311,7 @@
                 data.Pengarang = $(this).find('td:nth-child(4)').text();
                 data.Lokasi = $(this).find('td:nth-child(7)').find("input[type=hidden]").val();
                 data.NilaiBuku = $(this).find('td:nth-child(5)').text();
-               
+                list.push(data);
             });
 
             var param = { header: header, details: list };
