@@ -1,0 +1,136 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteMasterAnggota.master.cs" Inherits="PerpustakaanWeb.SiteMasterAnggota" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpustakaan</title>
+    <%--<webopt:bundlereference runat="server" path="~/Content/css" />--%>
+    <%--<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />--%>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/font/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link href="/css/ionicons.min.css" rel="stylesheet">
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/dist/css/AdminLTE.css" rel="stylesheet" />
+    <link href="/dist/css/skins/_all-skins.css" rel="stylesheet" />
+    <script src="/dist/js/jquery-1.9.1.js"></script>
+    <script src="/dist/js/bootstrap.min.js"></script>
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+    <%--DATEPICKER BELUM MASUK--%>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <form runat="server">
+            <asp:ScriptManager runat="server">
+                <Scripts>
+                    <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                    <%--Framework Scripts--%>
+                    <asp:ScriptReference Name="MsAjaxBundle" />
+                    <asp:ScriptReference Name="jquery" />
+                    <asp:ScriptReference Name="bootstrap" />
+                    <asp:ScriptReference Name="respond" />
+                    <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                    <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                    <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                    <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                    <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                    <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                    <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                    <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                    <asp:ScriptReference Name="WebFormsBundle" />
+                    <%--Site Scripts--%>
+                </Scripts>
+            </asp:ScriptManager>
+
+            <%--HEAD--%>
+            <header class="main-header">
+                <a class="logo" href="#"></a>
+                <nav class="navbar navbar-static-top">
+                    <a class="sidebar-toggle" href="#" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle Navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu"></div>
+                </nav>
+            </header>
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="pull-left image"></div>
+                        <div class="pull-left info"></div>
+                    </div>
+                    <form class="sidebar-form" action="#" method="get">
+                        <div class="input-group"></div>
+                    </form>
+
+                    <%--MENU NAVIGASI ANGGOTA--%>
+                    <ul class="sidebar-menu" id="menuAnggota">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li class="active treeview">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i><span>Menu Utama</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a href="/Anggota/Booking"><i class="fa fa-circle-o"></i>Booking</a></li>
+                                <li><a href="/Anggota/ListPinjaman"><i class="fa fa-circle-o"></i>History Pinjaman</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+
+            <div class="content-wrapper" style="min-height: initial;">
+                <section class="content-header">
+                    <h1>Dashboard
+                        <small>Control panel</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="active">Dashboard</li>
+                    </ol>
+                </section>
+                <%--MAIN CONTENT--%>
+                <section class="content">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </section>
+            </div>
+            <%--<div class="container body-content">--%>
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b>
+                    2.3.6
+                </div>
+                <strong>Copyright © 2014-2016
+                    <a href="http://almsaeedstudio.com">Almsaeed Studio</a>
+                    .
+                </strong>
+                All rights reserved. 
+            </footer>
+            <aside class="control-sidebar control-sidebar-dark">
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs"></ul>
+                <div class="tab-content"></div>
+            </aside>
+            <%--</div>--%>
+        </form>
+
+        <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/app.min.js"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="../js/pages/dashboard.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="../js/demo.js"></script>
+    </div>
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using PerpustakaanDAL;
+﻿using Perpustakaan.ViewModel;
+using PerpustakaanDAL;
 using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace PerpustakaanWeb.Service
             return "Hello World";
         }
 
+        //[WebMethod]
+        //public List<TrBrwHeader> GetAllHeader()
+        //{
+        //    return PeminjamanDAL.GetAllHeader();
+        //}
         [WebMethod]
         public List<MstAnggota> GetAllAnggota()
         {
@@ -32,10 +38,15 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod]
-        public MstAnggota GetAnggotaById(int id)
+        public MstAnggota GetAnggotaByID(int id)
         {
             return AnggotaDAL.GetAnggotaByID(id);
         }
+        //[WebMethod]
+        //public BrwHeaderViewModel GetPeminjamanByID(int id)
+        //{
+        //    return PeminjamanDAL.GetPeminjamanByID(id);
+        //}
 
         [WebMethod]
         public List<MstBuku> GetBukuAvailable()
@@ -44,15 +55,15 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod]
-        public List<MstBuku> GetAllBuku()
-        {
-            return BukuDAL.GetAllBuku();
-        }
-
-        [WebMethod]
         public MstBuku GetBukuByID(int id)
         {
             return new BukuDAL().GetBukuByID(id);
+        }
+
+        [WebMethod]
+        public bool SimpanPeminjaman(TrBrwHeader header, List<TrBrwDetail> details)
+        {
+            return new PeminjamanDAL().SimpanPeminjaman(header, details);
         }
 
     }

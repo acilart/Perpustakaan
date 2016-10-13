@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListPinjaman.aspx.cs" Inherits="PerpustakaanWeb.Anggota.ListPinjaman" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterAnggota.Master" AutoEventWireup="true" CodeBehind="ListPinjaman.aspx.cs" Inherits="PerpustakaanWeb.Anggota.ListPinjaman" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
      <div class="panel panel-primary">

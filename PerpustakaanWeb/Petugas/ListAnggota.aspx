@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListAnggota.aspx.cs" Inherits="PerpustakaanWeb.Petugas.ListAnggota" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="ListAnggota.aspx.cs" Inherits="PerpustakaanWeb.Petugas.ListAnggota" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -97,8 +97,10 @@
         </div>
     </div>
 
-
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
     <script>
+    
 
         var dprovinsi;
         var dkota;

@@ -20,7 +20,8 @@
 <body class="hold-transition login-page">
 
     <%--1.SESSION
-    2.LOGOUT--%>
+    2.LOGOUT
+    3.HOME--%>
 
     <div class="login-box">
         <div class="login-logo">
@@ -63,8 +64,7 @@
                 </div>
             </form>
 
-            <a href="#">I forgot my password</a><br/>
-            <a href="register.html" class="text-center">Register a new membership</a>
+            <a href="/Anggota/FormAnggotaOn" class="text-center">Register a new membership</a>
 
         </div>
         <!-- /.login-box-body -->
@@ -72,7 +72,28 @@
     <!-- /.login-box -->
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../dist/js/jquery.validate.js"></script>
     <script>
+
+        $().ready(function () {
+            $("#formLogin").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        password:true
+                    },
+                },
+                messages: {
+                    email: "Please enter a valid email address",
+                    password: "Username/Password incorrect",
+                }
+
+            })
+        })
 
         //---------------------------------LOGIN------------------------------//
 
@@ -81,19 +102,14 @@
             var LogId = $('#dlogin').val();
 
             if (LogId == 'Petugas') {
-                //console.log('petugas');
                 cekPassPetugas();
             }
             else {
-                //console.log('anggota');
                 cekPassAnggota();
             }
         })
 
         function cekPassPetugas() {
-            //var obj = jQuery.parseJSON('{"name":"John"}');
-            //data: obj;
-
             var username = $("#email-id").val();
             var password = $("#pass-id").val();
             var param = { email: username, password: password};
@@ -106,7 +122,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.d != null) {
-                        location.href = "/Petugas/FormAnggotaOff";
+                        location.href = "/Petugas/Home";
                     } else {
                         location.href = "/LoginAnggota";
                         alert("Username/Password salah");
@@ -127,7 +143,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.d) {
-                        location.href = "/Anggota/FormAnggotaOn";
+                        location.href = "/Anggota/Home";
                     } else {
                         location.href = "/LoginAnggota";
                         alert("Username/Password salah");
@@ -135,6 +151,7 @@
                 }
             });
         }
+
 
     </script>
 </body>

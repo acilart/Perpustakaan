@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="InputBuku.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PenyimpananBuku" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="InputBuku.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PenyimpananBuku" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">

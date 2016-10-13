@@ -1,23 +1,25 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="TransaksiPeminjaman.aspx.cs" Inherits="PerpustakaanWeb.Petugas.TransaksiPeminjaman" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <%--1.AMBIL DATA NO REGISTRASI DAN NO REFERENSI
-    2.AMBIL VALUE DARI CHECKBOX DAN DI CONFIRM
-    3.SAVE KE TABEL ANGGOTA, BRW HEADER, DAN BRW DETAIL (TERMASUK UPDATE STOCK)
-    4.VALIDASI FORM--%>
+    <%--
+    2.VALIDASI CHECKBOX BUKU, YANG SUDAH TERPILIH TIDAK ADA DI TABEL
+    3.VALIDASI ANGGOTA PUNYA KARTU ATAU NGGA
+        3. BUTTON HAPUS
+        4. BUTTON CLEAR
+    4.VALIDASI FORM, SEBELUM SUBMIT DATA HARUS TERISI SEMUA--%>
 
     <div class="box box-info">
         <div class="box-header">
             <h2>Form Peminjaman</h2>
         </div>
         <div class="box-body">
-            <form id="formAnggota" method="post">
+            <form id="formAnggota">
                 <div class="form-horizontal">
-
+                    <input id="BorrowID" type="hidden" />
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Nama">Nama</label>
                         <div class="input-group col-md-10">
-                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" value="" readonly />
+                            <input class="form-control text-box single-line required" id="Nama" name="Nama" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
                                 <button type="button" name="search" id="search-btn" class="btn btn-flat">
@@ -31,13 +33,6 @@
                         <label class="control-label col-md-2" for="NoReg">No Registrasi</label>
                         <div class="col-md-10">
                             <input class="form-control text-box single-line" id="NoReg" name="NoReg" type="text" value="" readonly />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="NoRef">No Referensi</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                         </div>
                     </div>
 
@@ -56,7 +51,7 @@
                     </div>
 
                 </div>
-                <input type="button" id="btn-tambah" value="Tambah Pinjaman" class="btn btn-primary" />
+                <input type="button" id="btn-tambah" value="Tambah Buku" class="btn btn-primary" />
             </form>
 
         </div>
@@ -65,17 +60,16 @@
      <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">List Buku Pinjaman</h3>
-            <input type="submit" value="Tambah" class="btn btn-primary" style="float: right;" />
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <table class="table table-bordered">
                 <tr>
-                    <th style="width: 5%">No</th>
-                    <th style="width: 13%">Kode Buku</th>
-                    <th style="width: 50%">Judul Buku</th>
-                    <th style="width: 20%">Pengarang</th>
-                    <th style="width: 12%">Action</th>
+                    <th>No</th>
+                    <th>Kode Buku</th>
+                    <th>Judul Buku</th>
+                    <th>Pengarang</th>
+                    <th>Action</th>
                 </tr>
                 <tr id="contoh">
                     
@@ -83,10 +77,10 @@
             </table>
         </div>
         <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
-            <ul class="pagination pagination-sm no-margin pull-right">
+        <div class="box-footer clearfix" style="float:right;">
+            <input type="button" value="Clear" class="btn btn-primary" />
+            <input type="button" value="Save" class="btn btn-primary" onclick="simpanBuku()"/>
+            <ul class="pagination pagination-sm no-margin pull-right" style="float:left;">
                 <li><a href="#">&laquo;</a></li>
                 <li><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
@@ -128,7 +122,6 @@
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
-                                    <th>Kode Anggota</th>
                                     <th>Nama Anggota</th>
                                     <th></th>
                                 </tr>
@@ -184,8 +177,8 @@
                     </div>
                     <div class="row">
                         <div class="box-footer clearfix" style="float:right;">
-                            <input type="button" value="Cancel" class="btn btn-primary" />
-                            <input type="button" id="confirm" value="Confirm" class="btn btn-primary" />
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="confirm" class="btn btn-primary" onclick="pilihBuku()" data-dismiss="modal">Ok</button>
                         </div>
                         </div>
                     </div>
@@ -196,27 +189,25 @@
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../dist/js/jquery.validate.js"></script>
     <script>
+
+        $('#btn-tambah').click(function () {
+            $("#formAnggota").validate({
+                rules: {
+                    Nama: "required"
+                },
+                messages: {
+                    Nama: "Please choose Anggota for Nama"
+                }
+
+            })
+        });
+
         $(document).ready(function () {
             LoadAnggota();
             LoadBuku();
-
         });
-
-        $("#formAnggota").submit(function (e) {
-            e.preventDefault();
-            var LogId = $('#dlogin').val();
-
-            if (LogId == 'Petugas') {
-                //console.log('petugas');
-                cekPassPetugas();
-            }
-            else {
-                //console.log('anggota');
-                cekPassAnggota();
-            }
-        })
-
 
         //------------------------DAFTAR ANGGOTA-----------------------//
         function LoadAnggota() {
@@ -229,38 +220,37 @@
                     var listAnggota = '';
                     $.each(data.d, function (index, item) {
                         listAnggota += '<tr>' +
-                            '<td>' + item.KodeAnggota + '</td>' +
+                            '<td><input type="hidden" value="' + item.ID + '"/></td>' +
                             '<td>' + item.Nama + '</td>' +
                             '<td><div class="row"><div class="col-md-5"><input type="button" value="Select" class="btn btn-default" onclick="pilih(' + item.ID + ')"/></div></div></td>' +
                             '</tr>'
                     });
                     $("#data-anggota").html(listAnggota);
+
                 }
             });
         };
 
         function pilih(id) {
-            $.ajax({
-                url: '../Service/PeminjamanService.asmx/GetAnggotaById',
-                data: '{id: ' + id + '}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    var AnggotaById = '';
-                    var tglPinjam = new Date();
-                    var tglKembali = new Date();
-                    var date = tglKembali.setDate(tglKembali.getDate() + 3);
-                    AnggotaById += '<tr>' +
-                    $("#Nama").val(data.d.Nama);
-                    //$("#NoReg").val(item.NoRegistrasi);
-                    //$("#NoRef").val(item.NoReferensi);
-                    $("#TglPinjam").val(tglPinjam);
-                    $("#TglKembali").val(tglKembali);
 
+            $.ajax({
+                url: '../Service/PeminjamanService.asmx/GetAnggotaByID',
+                type: 'POST',
+                data: '{"id":"' + id + '"}',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+
+                        var datePinjam = new Date();
+                        var dateKembali = new Date();
+                        var dateK = dateKembali.setDate(dateKembali.getDate() + 3);
+                        $("#Nama").val(data.d.Nama);
+                        $("#TglPinjam").val(datePinjam.format("dd-MMM-yyyy"));
+                        $("#TglKembali").val(dateKembali.format("dd-MMM-yyyy"));
+                        $("#anggotaID").val(data.d.ID);
+                    $('#data-anggota').modal('hide');
                 }
-            });
-            $('#modal-anggota').modal('hide');
+            })
         }
 
         //------------------------DAFTAR BUKU-----------------------//
@@ -278,7 +268,8 @@
                             '<td>' + item.Kode + '</td>' +
                             '<td>' + item.JudulBuku + '</td>' +
                             '<td>' + item.Pengarang + '</td>' +
-                            '<td><div class="row"><div class="col-md-5"><input type="checkbox" id="checkBuku" value="' + item.ID + '" name="selectbuku" class="btn btn-success"/></div></div></td>' +
+                            '<td><input type="hidden" value="' + item.ID + '"/></td>' +
+                            '<td><input type="checkbox" id="cb' + item.ID + '" value="0">' + '</td>' +
                             '</tr>'
                     });
                     $("#data-buku").html(listBuku);
@@ -286,82 +277,66 @@
             });
         };
 
-        //$('#checkBuku').click(function (){
+        function pilihBuku() {
+            var list = [];
+            $("#data-buku tr").each(function () {
+                var data = {};
 
-        //    var checked = this.checked;
-        //    if (checked==true) {
-        //        alert('akua')
-        //    }
-
-        //});
-
-        function check() {
-            var allVals = [];
-            $('#data-buku :checked').each(function () {
-                allVals.push($(this).val());
-            });
-            $('#contoh').val(allVals);
-        }
-
-        $(function () {
-            $('#data-buku input').click(check);
-            check();
-        });
-
-        function pilihBuku(id) {
-            $.ajax({
-                url: '../Service/PeminjamanService.asmx/GetBukuById',
-                data: '{id: ' + id + '}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    $.each(data.d, function (index, item) {
-                        var newBook = '<tr id="judul-' + item.ID + '">' +
+                var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
+                //var cek = $('#cb' + $(this).find("td:nth-child(4)").val()).is(":checked");
+                data.IDBuku = $(this).find("td:nth-child(4)").find("input[type=hidden]").val();
+                alert(data.IDBuku);
+                data.JudulBuku = $(this).find('td:nth-child(2)').text();
+                data.Kode = $(this).find('td:nth-child(1)').text();
+                data.Pengarang = $(this).find('td:nth-child(3)').text();
+                //alert(cek);
+                if (cek == true) {
+                    list.push(data);}
+            })
+                $.each(list, function (index, item) {
+                    var newBook = '<tr id="judul-' + item.IDBuku + '">' +
+                          '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
                             '<td>' + item.Kode + '</td>' +
                             '<td>' + item.JudulBuku + '</td>' +
                             '<td>' + item.Pengarang + '</td>' +
                             "<td><input type='button' value='Delete' class='btn btn-danger' onclick='hapusBuku(" + item.ID + ")'/></td>" +
-                            '<td><input type="hidden" value="' + item.d.ID + '"/></td>' +
                             "</tr>";
-                        $("#data-buku").append(newBook);
-                        return true;
-                    });
-                }
+                    alert(item.IDBuku);
+                    $("#contoh").append(newBook);
             });
             $('#modal-buku').modal('hide');
         }
 
 
+
         function hapusBuku(id) {
             var judulId = '#judul-' + id.toString();
             $(judulId).remove();
-        };
+        }
 
-        //function simpanBuku() {
-        //    var pinjamHeader = {};
-        //    pinjamHeader.IDAnggota = $("#AnggotaId").val();
-        //    pinjamHeader.TanggalPinjam = $("#cal-Tanggal-Pinjam").val();
-        //    pinjamHeader.TanggalKembali = $("#cal-Tanggal-Kembali").val();
-        //    pinjamHeader.IDBuku = [];
+        function simpanBuku() {
+            var header = {};
+            header.IDAnggota = $("#anggotaID").val();
+            header.NoRegistrasi = $("#NoReg").val();
+            var list = [];
 
-        //    $("#list-buku").children().each(function (index, item) {
-        //        var listId = item.id.replace("judul-", "");
-        //        pinjamHeader.IDBuku.push(listId);
-        //    });
-
-        //    $.ajax({
-        //        url: '../Services/PinjamService.asmx/InsertPinjam',
-        //        data: '{brwHeader: ' + JSON.stringify(pinjamHeader) + '}',
-        //        type: 'POST',
-        //        dataType: 'JSON',
-        //        contentType: 'application/json; charset=utf-8',
-        //        success: function (response) {
-        //            alert("Buku berhasil disimpan.");
-        //        }
-        //    });
-        //};
-
+            $("#contoh tr").each(function () {
+                var data = {};
+                data.IDBuku = $(this).find("td:nth-child(1)").find("input[type=hidden]").val();
+                list.push(data);
+            })
+            var param = { header: header, details: list };
+            $.ajax({
+                url: '../Service/PeminjamanService.asmx/SimpanPeminjaman',
+                data: JSON.stringify(param),
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (response) {
+                    alert("Transaksi Peminjaman Berhasil Disimpan");
+                }
+            })
+        }
 
 
         //---------------------------SEARCH---------------------------//

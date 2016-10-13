@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormAnggotaEdit.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaEdit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="FormAnggotaEdit.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <style>
@@ -258,7 +258,74 @@
     <script>
 
         //---------------------------------DROPDOWN DAERAH------------------------------//
+        function loadDataPropinsi() {
+            $.ajax({
+                url: '../Service/AnggotaService.asmx/GetAllPropinsi',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataProp) {
+                    var listProp = "";
+                    listProp += '<option value="-1">--Pilih Propinsi--</option>'
+                    $.each(dataProp.d, function (index, item) {
+                        listProp += '<option value="' + item.ID + '">' +
+                            item.NamaProvinsi + '</option>'
+                    });
+                    $('#OptProvinsi').html(listProp);
+                }
+            });
+        }
 
+        function loadKotaByIdProp(propid) {
+            $.ajax({
+                url: '../Service/AnggotaService.asmx/GetAllKotaByProvID',
+                data: '{"id":"' + propid + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataKota) {
+                    var ListKota = "";
+                    ListKota += '<option value="-1">--Pilih Kota--</option>'
+                    $.each(dataKota.d, function (index, item) {
+                        ListKota += '<option value="' + item.ID + '">' +
+                            item.NamaKota + '</option>'
+                    });
+                    $('#OptKota').html(ListKota);
+                }
+
+            });
+        }
+
+        function loadKecByIdKota(kotaid) {
+            $.ajax({
+                url: '../Service/AnggotaService.asmx/GetAllKecByKotaID',
+                data: '{"id":"' + kotaid + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dataKecamatan) {
+                    var ListKec = "";
+                    ListKec += '<option value="-1">--Pilih Kecamatan--</option>'
+                    $.each(dataKecamatan.d, function (index, item) {
+                        ListKec += '<option value="' + item.ID + '">' +
+                            item.NamaKecamatan + '</option>'
+                    });
+                    $('#OptKecamatan').html(ListKec);
+                }
+
+            });
+        }
+
+
+        $('#OptProvinsi').change(function () {
+            var PropId = $('#OptProvinsi').val();
+            loadKotaByIdProp(PropId);
+        });
+
+        $('#OptKota').change(function () {
+            var KotaId = $('#OptKota').val();
+            loadKecByIdKota(KotaId);
+        });
 
 
         //---------------------------------SEARCH------------------------------//

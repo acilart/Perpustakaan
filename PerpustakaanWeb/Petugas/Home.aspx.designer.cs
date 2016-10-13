@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PerpustakaanWeb.Anggota
+namespace PerpustakaanWeb.Petugas
 {
 
 
-    public partial class FormAnggotaOn
+    public partial class Home
     {
     }
 }

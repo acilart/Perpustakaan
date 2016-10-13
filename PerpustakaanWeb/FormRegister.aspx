@@ -1,7 +1,25 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormAnggotaOn.aspx.cs" Inherits="PerpustakaanWeb.Anggota.FormAnggotaOn" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FormRegister.aspx.cs" Inherits="PerpustakaanWeb.FormRegister" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create - My ASP.NET Application</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="dist/css/font/font-awesome.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="dist/css/ionicons.min.css" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="dist/css/AdminLTE.css" rel="stylesheet" />
+    <link href="dist/css/skins/_all-skins.css" rel="stylesheet" />
+    <script src="dist/js/jquery-1.9.1.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="Scripts/modernizr-2.6.2.js"></script>
+
+</head>
+<body>
     <%--1.GENERATE PASSWORD DEFAULT--%>
 
     <div class="panel panel-primary">
@@ -75,7 +93,8 @@
         </div>
     </div>
 
-
+    <script src="../Scripts/jquery-1.10.2.js"></script>
+        <script src="../Scripts/bootstrap.js"></script>
     <script>
 
         //-----fungsi agar hanya nomor saya yang bisa di inputkan 
@@ -297,5 +316,5 @@
 
 
     </script>
-
-</asp:Content>
+</body>
+</html>

@@ -1,9 +1,8 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/SiteCoba.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="PerpustakaanWeb._Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="PerpustakaanWeb.Petugas.Home" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
-        <h1>WELCOME</h1>
+        <h1>WELCOME PETUGAS</h1>
         <p class="lead"><%--ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.--%></p>
         <p><%--<a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a>--%></p>
     </div>
@@ -37,6 +36,4 @@
             </p>
         </div>
     </div>
-    
-
 </asp:Content>

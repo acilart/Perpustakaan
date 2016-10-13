@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaOff" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeFile="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaOff" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
@@ -111,39 +111,6 @@
                             <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
-
-<%--                    <div class="form-group">
-                        <label class="control-label col-md-2" for="CreatedOn">CreatedOn</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field CreatedOn must be a date." id="CreatedOn" name="CreatedOn" type="date" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="CreatedOn" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="CreatedBy">CreatedBy</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-number="The field CreatedBy must be a number." id="CreatedBy" name="CreatedBy" type="number" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="CreatedBy" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="ModifiedOn">ModifiedOn</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field ModifiedOn must be a date." id="ModifiedOn" name="ModifiedOn" type="date" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ModifiedOn" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="ModifiedBy">ModifiedBy</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-number="The field ModifiedBy must be a number." id="ModifiedBy" name="ModifiedBy" type="number" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ModifiedBy" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>--%>
-
 
                     <%--MODAL POP UP IURAN--%>
 
@@ -330,7 +297,7 @@
             
 
             $.ajax({
-                url: '../Service/AnggotaService.asmx/SimpanAnggota2',
+                url: '../Service/AnggotaService.asmx/SimpanAnggota',
 
                 data: '{anggota:' + JSON.stringify(anggota) + ',iuran:' + JSON.stringify(iuran) +'}',
                 type: 'POST',

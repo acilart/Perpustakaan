@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TransaksiPengembalian.aspx.cs" Inherits="PerpustakaanWeb.Petugas.TransaksiPengembalian" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="TransaksiPengembalian.aspx.cs" Inherits="PerpustakaanWeb.Petugas.TransaksiPengembalian" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">
@@ -6,8 +6,7 @@
             <h2>Form Pengembalian</h2>
         </div>
         <div class="box-body">
-            <form>
-
+<form>
                 <div class="form-horizontal">
                     <input id="ReturnID" type="hidden" />
                     <div class="form-group">
@@ -64,8 +63,7 @@
             <%--<div>
                 <a href="/Anggota">Back to List</a>
             </div>--%>
-        </div>
-    </div>
+        </div></div>
 
     <%-- ini untuk table buku yang dipinjam --%>
     <div class="box">

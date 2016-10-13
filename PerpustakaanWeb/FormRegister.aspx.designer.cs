@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PerpustakaanWeb.Petugas {
+namespace PerpustakaanWeb {
     
     
-    public partial class PenyimpananBuku1 {
+    public partial class FormRegister {
     }
 }

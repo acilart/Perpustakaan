@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Booking.aspx.cs" Inherits="PerpustakaanWeb.Anggota.Booking" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterAnggota.Master" AutoEventWireup="true" CodeBehind="Booking.aspx.cs" Inherits="PerpustakaanWeb.Anggota.Booking" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="../Content/Zebra_Datepicker-master/public/css/metallic.css" rel="stylesheet" />

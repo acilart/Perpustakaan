@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PembayaranDenda.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PembayaranDenda" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="PembayaranDenda.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PembayaranDenda" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">

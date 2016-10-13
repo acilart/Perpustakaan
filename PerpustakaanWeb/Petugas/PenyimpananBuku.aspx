@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PenyimpananBuku.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PenyimpananBuku1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="PenyimpananBuku.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PenyimpananBuku1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="box box-info">
@@ -6,7 +6,7 @@
             <h2>Form Penyimpanan Buku</h2>
         </div>
         <div class="box-body">
-            <form action="/Anggota/Create" method="post">
+            <form method="post">
                 <input name="__RequestVerificationToken" type="hidden" value="wcv9Q8y4GQ_x4bT7YRs85r6txf4MRvFtu3KUuz2Zf9jrA5dDYWSR46ZvsMmytRd1fCGU-m_R6wTCMy2A89rYe-54x__sqULvGAnS1GBxXfI1" />
                 <div class="form-horizontal">
 
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Tgl">Tanggal</label>
                         <div class="col-md-10">
-                            <asp:TextBox runat="server" class="form-control text-box single-line" ID="Tgl" name="Tgl" type="date" value="" ReadOnly="true" />
+                            <%--<asp:TextBox runat="server" class="form-control text-box single-line" ID="Tgl" name="Tgl" type="date" value="" ReadOnly="true" />--%>
                         </div>
                     </div>
 
@@ -205,6 +205,8 @@
             });
         }
 
+
+        //BUAT SEARCH
         function PilihPenggantian(ID) {
             loadBukuPenggantian(ID);
             $.ajax({
@@ -295,6 +297,9 @@
             });
         }
 
+
+
+        //BUAT REFERENSI SAVE
         $('#btn-save').click(function () {
             var list = [];
             var header = {};

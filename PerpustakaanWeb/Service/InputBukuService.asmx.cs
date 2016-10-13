@@ -125,12 +125,12 @@ namespace PerpustakaanWeb.Service
             return PenyimpananBukuDAL.GetBukuHilangByIDPenggantianHeader(ID);
         }
 
-        [WebMethod]
-        public List<MstSumberBuku> GetSumberBuku()
-        {
-            var dal = new SumberBukuDAL();
-            return dal.GetAllSumberBuku();
-        }
+        //[WebMethod]
+        //public List<MstSumberBuku> GetSumberBuku()
+        //{
+        //    var dal = new SumberBukuDAL();
+        //    return dal.GetAllSumberBuku();
+        //}
 
         [WebMethod]
         public bool SimpanPenyimpananBuku(TrPlcHeader header, List<TrPlcDetail> details)

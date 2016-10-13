@@ -5,13 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace PerpustakaanWeb.Petugas
+namespace PerpustakaanWeb
 {
-    public partial class PenyimpananBuku1 : System.Web.UI.Page
+    public partial class SiteCoba : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Tgl.Text = DateTime.Now.ToString("dd MMM yyyy");
+
         }
     }
 }
