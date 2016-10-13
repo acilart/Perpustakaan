@@ -8,14 +8,16 @@ namespace PerpustakaanDAL
 {
     public class Pembayaran
     {
+        public int IDDetail { get; set; }
+        public int IDPembayaran { get; set; }
         public string KodeBuku { get; set; }
         public string JudulBuku { get; set; }
         public int IDBuku { get; set; }
         public string ISBN { get; set; }
-        public int NilaiBuku { get; set; }
-        public int PembayaranSebelumnya { get; set; }
-        public int Sisa { get; set; }
-        public int Bayar { get; set; }
+        public double NilaiBuku { get; set; }
+        public double PembayaranSebelumnya { get; set; }
+        public double Sisa { get; set; }
+        public double Bayar { get; set; }
         public bool Completed { get; set; }
     }
 }

@@ -30,8 +30,28 @@ namespace PerpustakaanDAL
                         };
                         list.Add(penggantian);
                     }
+                }
+                return list;
+            }
+        }
 
-
+        public static List<Penggantian> GetPenggantian()
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var list = new List<Penggantian>();
+                var headerpeng = db.TrRpcHeader.ToList();
+                foreach (var item in headerpeng)
+                {
+                    var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == item.IDAnggota);
+                        var penggantian = new Penggantian()
+                        {
+                            ID = item.ID,
+                            NamaAnggota = anggota.Nama,
+                            NoRegistrasi = item.NoRegistrasi,
+                            Tanggal = Convert.ToDateTime(item.Tanggal)
+                        };
+                        list.Add(penggantian);
                 }
                 return list;
             }
@@ -52,6 +72,7 @@ namespace PerpustakaanDAL
                         var penggantian = new Penggantian()
                         {
                             ID = item.ID,
+                            IDAnggota = anggota.ID,
                             NamaAnggota = anggota.Nama,
                             NoRegistrasi = item.NoRegistrasi,
                             Tanggal = Convert.ToDateTime(item.Tanggal)
@@ -78,6 +99,7 @@ namespace PerpustakaanDAL
                         var peng = new Penggantian()
                         {
                             ID = cek.ID,
+                            IDAnggota=anggota.ID,
                             NoRegistrasi = cek.NoRegistrasi,
                             NamaAnggota = anggota.Nama,
                             Tanggal = DateTime.Now

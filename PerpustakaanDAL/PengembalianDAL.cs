@@ -177,6 +177,7 @@ namespace PerpustakaanDAL
                 {
                     id = listHeader[listHeader.Count - 1].ID + 1;
                 }
+                header.ID = id;
                 header.IDAnggota = header.IDAnggota;
                 header.ModifiedOn = DateTime.Now;
                 header.NoRegistrasi = AutoNumberDAL.PengembalianBukuNoRegAutoNumber();
@@ -184,27 +185,27 @@ namespace PerpustakaanDAL
                 header.TanggalPinjam = header.TanggalPinjam;
                 header.TanggalKembali = header.TanggalKembali;
                 header.TanggalDikembalikan = DateTime.Now;
-                //untuk denda
-                var ts = new TimeSpan();
-                ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
-                if (ts.Days > 0)
-                {
-                    header.Denda = true ; //ada denda
-                }
+                header.Denda = header.Denda;
                 db.TrReturnHeader.Add(header);
                 #endregion
                 #region Insert Detail Pengembalian
                 foreach (var item in detail)
                 {
+                    var listdetail = db.TrReturnDetail.ToList();
+                    if (listdetail.Count > 0)
+                    {
+                        id = listdetail[listdetail.Count - 1].ID + 1;
+                    }
                     var dal = new BukuDAL();
                     var buku = dal.GetBukuByID(item.IDBuku);
+                    item.ID = id;
                     item.HeaderID = id;
                     item.IDBuku = item.IDBuku;
                     item.LaporKehilangan = item.LaporKehilangan;
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
                     item.Denda = header.Denda;
-                    if (item.LaporKehilangan == false)
+                    if (item.LaporKehilangan == false && buku!=null)
                     {
                         using (var dbStock = new PerpustakaanDbContext())
                         {

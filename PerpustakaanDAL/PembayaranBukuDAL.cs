@@ -24,18 +24,18 @@ namespace PerpustakaanDAL
                     {
                         var bukuDal = new BukuDAL();
                         var buku = bukuDal.GetBukuByID(detail.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
-                        int bayarSebelum = 0;
+                        double bayarSebelum = 0;
                         int bayarKe = 0;
-                        int sisa = 0;
+                        double sisa = 0;
                         bool completed = false;
-                        var pmtSettle = db.TrPmtBukuSettlement.Where(n => n.IDPMTDetail == detail.ID);// cek cicilan pembayaran berdasarkan id detail pembayaran
+                        var pmtSettle = new PerpustakaanDbContext().TrPmtBukuSettlement.Where(n => n.IDPMTDetail == detail.ID);// cek cicilan pembayaran berdasarkan id detail pembayaran
                         foreach (var settle in pmtSettle)
                         {
-                            bayarSebelum += Convert.ToInt16(settle.Jumlah);
+                            bayarSebelum += Convert.ToDouble(settle.Jumlah);
                             bayarKe += 1;
                         }
                         bayarKe += 1;
-                        sisa = Convert.ToInt16(detail.Value) - bayarSebelum;
+                        sisa = Convert.ToDouble(detail.Value) - bayarSebelum;
                         if (sisa == 0)
                         {
                             completed = true;
@@ -43,13 +43,15 @@ namespace PerpustakaanDAL
                         #region Instansi Class Pembayaran
                         var pembayar = new Pembayaran()
                         {
+                            IDDetail = detail.ID,
+                            IDPembayaran = pmtHeader.ID,
                             IDBuku = buku.ID,
                             Bayar = 0,
                             Completed = completed,
                             ISBN = buku.ISBN,
                             JudulBuku = buku.JudulBuku,
                             KodeBuku = buku.Kode,
-                            NilaiBuku = Convert.ToInt16(detail.Value),
+                            NilaiBuku = Convert.ToDouble(detail.Value),
                             PembayaranSebelumnya = bayarSebelum,
                             Sisa = sisa
                         };
@@ -63,7 +65,11 @@ namespace PerpustakaanDAL
                     var detailRpc = db.TrRpcDetail.Where(n => n.HeaderID == id);
                     foreach (var item in detailRpc)
                     {
-
+                        double nilai = 0;
+                        if (item.IDOpsiPenggantian == 1)
+                        {
+                            nilai = Convert.ToDouble(item.HargaPenggantian);
+                        }
                         var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);//cek data buku berdasarkan id buku di detail pembayaran
                         var pembayar = new Pembayaran()
                          {
@@ -73,9 +79,9 @@ namespace PerpustakaanDAL
                              ISBN = buku.ISBN,
                              JudulBuku = buku.JudulBuku,
                              KodeBuku = buku.Kode,
-                             NilaiBuku = Convert.ToInt16(item.HargaPenggantian) + 5000,
+                             NilaiBuku = nilai + 5000,
                              PembayaranSebelumnya = 0,
-                             Sisa = Convert.ToInt16(item.HargaPenggantian) + 5000
+                             Sisa = nilai + 5000
                          };
                         list.Add(pembayar);
                     }
@@ -93,8 +99,14 @@ namespace PerpustakaanDAL
                 if (cekHeader == null)
                 {
                     #region Header Pembayaran Baru
+
+                    int id = 1;
                     var listHeader = db.TrPmtBukuHeader.ToList();
-                    var id = listHeader[listHeader.Count - 1].ID + 1;
+                    if (listHeader.Count > 0)
+                    {
+                        id = listHeader[listHeader.Count - 1].ID + 1;
+                    }
+                    header.Tanggal = DateTime.Now;
                     header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
                     header.ID = id;
                     header.CreatedOn = DateTime.Now;
@@ -103,11 +115,14 @@ namespace PerpustakaanDAL
                     #endregion
                     #region Pembayaran Detail & settlement baru
                     var listDetail = db.TrPmtBukuDetail.ToList();
-                    var idDetail = listDetail[listDetail.Count - 1].ID;
+                    int idDetail = 0;
+                    if (listDetail.Count > 0)
+                    { idDetail = listDetail[listDetail.Count - 1].ID; }
                     foreach (var item in details)
                     {
                         idDetail += 1;
                         item.HeaderID = id;
+                        
                         item.CreatedOn = DateTime.Now;
                         item.ModifiedOn = DateTime.Now;
                         var sett = new TrPmtBukuSettlement()
@@ -133,14 +148,11 @@ namespace PerpustakaanDAL
                     var pmtDetail = db.TrPmtBukuDetail.Where(n => n.HeaderID == cekHeader.ID);
                     foreach (var item in pmtDetail)
                     {
-                        var cekDetail = details.FirstOrDefault(n => n.ID == item.ID);
-                        if (cekDetail != null)
-                        {
-
-                            var sett = db.TrPmtBukuSettlement.Where(n => n.IDPMTDetail == item.ID).ToList();
+                            var sett = new PerpustakaanDbContext().TrPmtBukuSettlement.Where(n => n.IDPMTDetail == item.ID).ToList();
                             var sum = sett.Sum(n => n.Jumlah);
                             item.ModifiedOn = DateTime.Now;
-                            if (sum + item.JumlahBayar == item.Value)
+                            var det = details.FirstOrDefault(n => n.ID == item.ID);
+                            if (sum + det.JumlahBayar == item.Value)
                             {
                                 item.IsCompleted = true;
                             }
@@ -148,24 +160,24 @@ namespace PerpustakaanDAL
                             {
                                 item.IsCompleted = false;
                             }
-                    #endregion
-                            #region Tabah Pembayaran Settlement
-                            var settlement = new TrPmtBukuSettlement()
-                            {
-                                IDPMTDetail = item.ID,
-                                Jumlah = item.JumlahBayar,
-                                PembayaranKe = sett.Count + 1,
-                                CreatedOn = DateTime.Now,
-                                ModifiedOn = DateTime.Now,
-
-                            };
-                            db.TrPmtBukuSettlement.Add(settlement);
-
-
-                        }
-
                     }
-                            #endregion
+                    #endregion
+                    #region Tabah Pembayaran Settlement
+                    foreach (var item in details)
+                    {
+                        var sett = new PerpustakaanDbContext().TrPmtBukuSettlement.Where(n => n.IDPMTDetail == item.ID).ToList();
+                        var sum = sett.Sum(n => n.Jumlah);
+                        var settlement = new TrPmtBukuSettlement()
+                                {
+                                    IDPMTDetail = item.ID,
+                                    Jumlah = item.JumlahBayar,
+                                    PembayaranKe = sett.Count + 1,
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedOn = DateTime.Now,
+                                };
+                        db.TrPmtBukuSettlement.Add(settlement);
+                    }
+                    #endregion
                 }
                 #region Eksekusi
                 try
@@ -179,7 +191,7 @@ namespace PerpustakaanDAL
                     throw;
                 }
                 #endregion
-             
+
 
             }
         }

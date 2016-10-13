@@ -18,96 +18,92 @@ namespace PerpustakaanDAL
         public DateTime TanggalDikembalikan { get; set; }
         public static List<PembayaranDendaDAL> GetPengembalian()
         {
-            List<PembayaranDendaDAL> result = new List<PembayaranDendaDAL>();
-            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
+            using (var db = new PerpustakaanDbContext())
             {
-                result = (from rtr in db.TrReturnHeader
-                          join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
-                          select new
-                          {
-                              ID = rtr.ID,
-                              NoReferensi = rtr.NoReferensi,
-                              NamaAnggota = nama.Nama,
-                              TanggalPinjam = rtr.TanggalPinjam,
-                              TanggalKembali = rtr.TanggalKembali,
-                              TanggalDikembalikan = rtr.TanggalDikembalikan
-                          }).ToList().
-                              Select(x => new PembayaranDendaDAL()
-                              {
-                                  ID = x.ID,
-                                  NoReferensi = x.NoReferensi,
-                                  NamaAnggota = x.NamaAnggota,
-                                  TanggalPinjam = Convert.ToDateTime(x.TanggalPinjam),
-                                  TanggalKembali = Convert.ToDateTime(x.TanggalKembali),
-                                  TanggalDikembalikan = Convert.ToDateTime(x.TanggalDikembalikan)
-                              }).ToList();
-            }
-            return result;
-        }
+                var list = new List<PembayaranDendaDAL>();
+                var headerkembali = db.TrReturnHeader.Where(n => n.Denda == true && n.SudahDibayar < 1).ToList();
+                foreach (var item in headerkembali)
+                {
+                    var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == item.IDAnggota);
+                    var pembayaran = new PembayaranDendaDAL()
+                    {
+                        ID = item.ID,
+                        NamaAnggota = anggota.Nama,
+                        NoReferensi = item.NoReferensi,
+                        TanggalPinjam = Convert.ToDateTime(item.TanggalPinjam),
+                        TanggalKembali = Convert.ToDateTime(item.TanggalKembali),
+                        TanggalDikembalikan = Convert.ToDateTime(item.TanggalDikembalikan)
+                    };
+                    list.Add(pembayaran);                    
+                }
+                 return list;
+                }
+               
+            }         
+        
         public static List<PembayaranDendaDAL> GetPengembalianBySearch(string search)
         {
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
-                var result = (from rtr in db.TrReturnHeader
-                              join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
-                              select new
-                              {
-                                  ID = rtr.ID,
-                                  NoReferensi = rtr.NoReferensi,
-                                  NamaAnggota = nama.Nama,
-                                  TanggalPinjam = rtr.TanggalPinjam,
-                                  TanggalKembali = rtr.TanggalKembali,
-                                  TanggalDikembalikan = rtr.TanggalDikembalikan,
-                              }).Where(a => (a.NoReferensi +a.NamaAnggota).Contains(search)).ToList();
-                var list = new List<PembayaranDendaDAL>();
-                foreach (var item in result)
+                //masih ngeload semua datanya abis search
+                var headerkembali = db.TrReturnHeader.Where(n => n.Denda == true && n.SudahDibayar < 1).ToList();
+                foreach (var item in headerkembali)
                 {
-                    var dal = new PembayaranDendaDAL()
+                    var result = (from rtr in db.TrReturnHeader
+                                  join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
+                                  select new
+                                  {
+                                      ID = rtr.ID,
+                                      NoReferensi = rtr.NoReferensi,
+                                      NamaAnggota = nama.Nama,
+                                      TanggalPinjam = rtr.TanggalPinjam,
+                                      TanggalKembali = rtr.TanggalKembali,
+                                      TanggalDikembalikan = rtr.TanggalDikembalikan,
+                                  }).Where(a => (a.NoReferensi + a.NamaAnggota).Contains(search)).ToList();
+                    var list = new List<PembayaranDendaDAL>();
+                    foreach (var cek in result)
                     {
-                        NoReferensi = item.NoReferensi,
-                        NamaAnggota = item.NamaAnggota,
-                        TanggalPinjam = Convert.ToDateTime(item.TanggalPinjam),
-                        TanggalKembali = Convert.ToDateTime(item.TanggalKembali),
-                        TanggalDikembalikan = Convert.ToDateTime(item.TanggalDikembalikan)
-                    };
-                    list.Add(dal);
+                        var dal = new PembayaranDendaDAL()
+                        {
+                            NoReferensi = cek.NoReferensi,
+                            NamaAnggota = cek.NamaAnggota,
+                            TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam),
+                            TanggalKembali = Convert.ToDateTime(cek.TanggalKembali),
+                            TanggalDikembalikan = Convert.ToDateTime(cek.TanggalDikembalikan)
+                        };
+                        list.Add(dal);
+                    }
+                    return list;
                 }
-                return list;
+                return null;
             }
         }
 
-        public static List<PembayaranDendaDAL> GetPeminjamanById(int id)
+        public static PembayaranDendaDAL GetPeminjamanById(int id)
         {
-            using(PerpustakaanDbContext db = new PerpustakaanDbContext())
+            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
-                var result = (from rtr in db.TrReturnHeader
-                              join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
-                              select new
-                              {
-                                  ID = rtr.ID,
-                                  IDAnggota = rtr.IDAnggota,
-                                  Noreferensi = rtr.NoReferensi,
-                                  NamaAnggota = nama.Nama,
-                                  TanggalPinjam = rtr.TanggalPinjam,
-                                  TanggalKembali = rtr.TanggalKembali,
-                                  TanggalDikembalikan = rtr.TanggalDikembalikan
-                              }).Where(a => a.ID == id).ToList();
-                var list = new List<PembayaranDendaDAL>();
-                foreach(var item in result)
+                var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == id);
+                if (cek != null)
                 {
-                    var dal = new PembayaranDendaDAL()
+                    var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == cek.IDAnggota);
+                    if (anggota != null)
                     {
-                        ID = item.ID,
-                        IDAnggota = item.IDAnggota,
-                        NoReferensi = item.Noreferensi,
-                        NamaAnggota = item.NamaAnggota,
-                        TanggalPinjam = Convert.ToDateTime(item.TanggalPinjam),
-                        TanggalKembali = Convert.ToDateTime(item.TanggalKembali),
-                        TanggalDikembalikan = Convert.ToDateTime(item.TanggalDikembalikan)
+                        var pembayaran = new PembayaranDendaDAL()
+                    {
+                        ID = cek.ID,
+                        NamaAnggota = anggota.Nama,
+                        NoReferensi = cek.NoReferensi,
+                        TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam),
+                        TanggalKembali = Convert.ToDateTime(cek.TanggalKembali),
+                        TanggalDikembalikan = Convert.ToDateTime(cek.TanggalDikembalikan)
                     };
-                    list.Add(dal);
+                        return pembayaran;
+                    }
+                    return null;
                 }
-                return list;
+                return null;
+                
             }
         }
 
