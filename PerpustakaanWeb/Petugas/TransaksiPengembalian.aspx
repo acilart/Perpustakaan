@@ -54,7 +54,8 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="TglDikembalikan">Tanggal Dikembalikan</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="TglDikembalikan" name="TglDikembalikan" type="text" value="" readonly />
+                            <input data-provide="datepicker" class="form-control text-box single-line" id="TglDikembalikan" name="TglDikembalikan" type="text" value="" readonly />
+                            
                         </div>
                     </div>
 
@@ -92,7 +93,7 @@
         <!-- /.box-body -->
         <div class="box-footer clearfix">
             <input type="submit" value="Clear" class="btn btn-primary" />
-            <input value="Save" class="btn btn-primary" onclick="SavePengembalian()" />
+            <input  type="button" value="Save" class="btn btn-primary" onclick="SavePengembalian()" />
         </div>
     </div>
     <!-- /.box -->
@@ -133,10 +134,22 @@
         </div>
     </div>
 
+      
+
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+   
+
+
+  
+    
     <%-- SCRIPT --%>
     <script>
+
+        //untuk datepicker di tanggal pengembalian
+       
+        var tglppinjam;
+        var tglkembali;       
 
         //untuk munculin pop up modal-borrow
         $('#search-btn').click(function () {
@@ -179,17 +192,16 @@
                 success: function (data) {
                     var listborrow = "";
                     var Icount = 0;
-                    $.each(data.d, function (index, item) {
-                        var HariIni = new Date();
-                      
-                        var datepinjam = new Date(parseInt((item.TanggalPinjam).replace(/[^\d]/g, '')));
-                        var datekembali = new Date(parseInt((item.TanggalKembali).replace(/[^\d]/g, '')));
+                    $.each(data.d, function (index, item) {                      
+                        tglpinjam = item.TanggalPinjam;
+                        tglkembali = item.TanggalKembali;
+
                         $("#ReturnID").val(item.IDAnggota);
                         $("#NoRef").val(item.NoReferensi);                        
                         $("#Nama").val(item.NamaAnggota);
-                        $("#TglPinjam").val(datepinjam);
-                        $("#TglKembali").val(datekembali);
-                        $("#TglDikembalikan").val(HariIni);
+                        $("#TglPinjam").val(convertDate(tglpinjam));
+                        $("#TglKembali").val(convertDate(tglkembali));
+                        $("#TglDikembalikan").val();
                         LoadBukuPinjam();
                         $('#modal-borrow').modal('hide');                        
                     });;                   
@@ -239,8 +251,7 @@
                     var listbuku = '';
                     var totaldenda = 0;
                     $.each(data.d, function (index, item) {
-                        listbuku += '<tr>' +
-                            
+                        listbuku += '<tr>' +                            
                             '<td>' + item.KodeMstBuku + '</td>' +
                             '<td>' + item.Judul + '</td>' +
                             '<td><input type="checkbox" id="cb' + item.IDBuku + '">' + '</td>' + //value satu untuk kehilangan buku
@@ -251,37 +262,34 @@
                         totaldenda = (totaldenda + item.denda)
                     });
                     $('#buku-borrow').html(listbuku);
-                    $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td></td><td>' + totaldenda + '</td></tr>');                  
+                    $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td></td><td>' + totaldenda + '</td><td></td></tr>');
                 }
             })
-        }
-        
-        function isiHiddenField(Id) {                      
-            $('#checkhilang').val("True");
-        }
-
-        
+        }     
+                
 
         //fungsi simpan
         function SavePengembalian() {
             var header = {};
             header.IdAnggota = $("#ReturnID").val();
             header.NoReferensi = $('#NoRef').val();
-            var list = [];        
-
-            $("#buku-borrow tr").each(function () {
-                var data = {
-                    
-                };
+            var TanggalPinjam = $("#TglPinjam").val();
+            var TanggalKembali = $("#TglKembali").val();
+            header.TanggalPinjam = convertDate(TanggalPinjam);
+            header.TanggalKembali = convertDate(TanggalKembali);
+            var list = [];
+            $("#buku-borrow tr").each(function () {              
+                var data = {};
                 var cek = $('#cb' + $(this).find("td:nth-child(6)").find("input[type=hidden]").val()).is(":checked");
                 data.IDBuku = $(this).find('td:nth-child(6)').find("input[type=hidden]").val();
                 data.SudahDiganti = false;
                 data.SudahDibayar = false;
-                if ($(this).find("td:nth-child(5)").text() != 0) {
-                    data.Denda = true;
+                if ($(this).find("td:nth-child(5)").text() != 0) {                    
+                    header.Denda = true;
+                    header.SudahDibayar = 0;
                 }
                 else {
-                    data.Denda = false;
+                    header.Denda = false;
                 }
                 data.LaporKehilangan = cek;
                 list.push(data);
@@ -300,15 +308,23 @@
             
         }
 
-        //checkbox
-        //$(document).ready(function () {
-        //    $('#checkhilang').change(function () {
-        //        if ($(this).prop('checked')) {
-        //            alert("hai");
-        //        }
-        //    })
 
-        //})
+        //fungsi untuk mengubah tampilan di dalam form dengan format dd-mm-yy
+        function convertDate(tanggal) {
+
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+        
+
+        
+
+      
 
 
         

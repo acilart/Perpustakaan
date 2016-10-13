@@ -17,7 +17,6 @@ namespace PerpustakaanWeb.Service
     [System.Web.Script.Services.ScriptService]
     public class PembayaranBuku : System.Web.Services.WebService
     {
-
         [WebMethod]
         public string HelloWorld()
         {

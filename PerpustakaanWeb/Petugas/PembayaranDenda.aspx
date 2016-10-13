@@ -130,6 +130,12 @@
 
     <%-- SCRIPT --%>
     <script>
+
+        var datepinjam;
+        var datekembali;
+        var datedikembalikan;
+
+
         //untuk munculin pop up
         $('#search-btn').click(function () {
             $('#modal-rtr').modal('show');
@@ -197,20 +203,19 @@
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
-                    var listrtr = "";
-                    var Icount = 0;
-                    $.each(data.d, function (index, item) {
-                        var datepinjam = new Date(parseInt((item.TanggalPinjam).replace(/[^\d]/g, '')));
-                        var datekembali = new Date(parseInt((item.TanggalKembali).replace(/[^\d]/g, '')));
-                        var datedikembalikan = new Date(parseInt((item.TanggalDikembalikan).replace(/[^\d]/g, '')));
-                        $("#PMTID").val(item.IDAnggota);
-                        $("#NoRef").val(item.NoReferensi);
-                        $("#Nama").val(item.NamaAnggota);
-                        $("#TglPinjam").val(datepinjam);
-                        $("#TglKembali").val(datekembali);
-                        $("#TglDikembalikan").val(datekembali);
+                    
+                   
+                        datepinjam = data.d.TanggalPinjam;
+                        datekembali = data.d.TanggalKembali;
+                        datedikembalikan = data.d.TanggalDikembalikan;
+                        $("#PMTID").val(data.d.IDAnggota);
+                        $("#NoRef").val(data.d.NoReferensi);
+                        $("#Nama").val(data.d.NamaAnggota);
+                        $("#TglPinjam").val(convertDate(datepinjam));
+                        $("#TglKembali").val(convertDate(datekembali));
+                        $("#TglDikembalikan").val(convertDate(datedikembalikan));
                         $('#modal-rtr').modal('hide');
-                    })
+                    
                 }
             })
         }
@@ -242,10 +247,15 @@
             })
         }
 
-        //fungsi simpan
-        //function SaveDenda() {
-        //    var header = {};
-        //    header.
-        //}
+        function convertDate(tanggal) {
+          
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
     </script>    
 </asp:Content>

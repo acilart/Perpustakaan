@@ -36,7 +36,7 @@ namespace PerpustakaanWeb.Service
         }
         
         [WebMethod]
-        public List<PembayaranDendaDAL> GetPeminjamanById(int id)
+        public PembayaranDendaDAL GetPeminjamanById(int id)
         {
             return PembayaranDendaDAL.GetPeminjamanById(id);
         }
