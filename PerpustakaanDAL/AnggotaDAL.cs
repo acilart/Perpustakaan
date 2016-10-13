@@ -75,51 +75,6 @@ namespace PerpustakaanDAL
             }
         }
 
-        public static bool SimpanAnggota2(MstAnggota anggota, IuranViewModel iuran )
-        {
-            List<IuranViewModel> form = new List<IuranViewModel>();
-            using (var db = new PerpustakaanDbContext())
-            {
-                var cek = db.MstAnggota.FirstOrDefault(n => n.ID == anggota.ID);
-                if (cek != null)
-                {
-                    cek.ID = anggota.ID;
-                    cek.Nama = anggota.Nama;
-                    cek.MasaBerlakuAnggota = anggota.MasaBerlakuAnggota;
-                    cek.MasaBerlakuKartu = anggota.MasaBerlakuKartu;
-                    cek.ModifiedBy = anggota.ModifiedBy;
-                    cek.ModifiedOn = DateTime.Now;
-                    cek.NoTelepon = anggota.NoTelepon;
-                    cek.IDKecamatan = anggota.IDKecamatan;
-                    cek.IDKelurahan = anggota.IDKelurahan;
-                    cek.IDProvinsi = anggota.IDProvinsi;
-                    cek.IDKota = anggota.IDKota;
-                    cek.Alamat = anggota.Alamat;
-                    cek.Email = anggota.Email;
-                    //panggil fungsi 
-                }
-                else
-                {
-                    anggota.KodeAnggota = AutoNumberDAL.KodeAnggotaAutoNumber();
-                    anggota.CreatedOn = DateTime.Now;
-                    anggota.MasaBerlakuKartu = DateTime.Now.AddMonths(3);
-                    anggota.MasaBerlakuAnggota = DateTime.Now.AddYears(1);
-                    db.MstAnggota.Add(anggota);
-
-                    //for(int i=0;i<iuran.TipeIuran.Count;i++)
-                }
-                try
-                {
-                    db.SaveChanges();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
-
         public static bool SimpanAnggotaIuran(MstAnggota anggota, List<IuranViewModel> iurans)
         {
             List<IuranViewModel> form = new List<IuranViewModel>();
