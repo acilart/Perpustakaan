@@ -24,7 +24,7 @@ namespace PerpustakaanDAL
         public bool IsKehilangan { get; set; }
         public string Judul { get; set; }
         public string KodeMstBuku { get; set; }
-        public int denda { get; set; }
+        public double denda { get; set; }
         
         //ini untuk nampilin table peminjaman
         public static List<PengembalianDAL> GetPeminjaman()
@@ -181,10 +181,11 @@ namespace PerpustakaanDAL
                 header.IDAnggota = header.IDAnggota;
                 header.ModifiedOn = DateTime.Now;
                 header.NoRegistrasi = AutoNumberDAL.PengembalianBukuNoRegAutoNumber();
+                header.NoReferensi = header.NoReferensi;
                 header.CreatedOn = DateTime.Now;
                 header.TanggalPinjam = header.TanggalPinjam;
                 header.TanggalKembali = header.TanggalKembali;
-                header.TanggalDikembalikan = DateTime.Now;
+                header.TanggalDikembalikan = header.TanggalDikembalikan; //harus diganti pakai datepicker
                 header.Denda = header.Denda;
                 db.TrReturnHeader.Add(header);
                 #endregion
@@ -205,6 +206,7 @@ namespace PerpustakaanDAL
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
                     item.Denda = header.Denda;
+                    db.TrReturnDetail.Add(item);
                     if (item.LaporKehilangan == false && buku!=null)
                     {
                         using (var dbStock = new PerpustakaanDbContext())
