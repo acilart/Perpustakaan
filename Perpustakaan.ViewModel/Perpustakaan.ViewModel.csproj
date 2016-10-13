@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookingViewModel.cs" />
     <Compile Include="IuranViewModel.cs" />
     <Compile Include="LemariViewModel.cs" />
     <Compile Include="ListPinjamanViewModel.cs" />
