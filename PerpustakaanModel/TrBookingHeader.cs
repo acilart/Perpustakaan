@@ -13,9 +13,7 @@ namespace PerpustakaanModel
     {
         public int ID { get; set; }
         [MaxLength(20)]
-        public string NoRegistrasi { get; set; }
-        [MaxLength(20)]
-        public string NoReferensi { get; set; }
+        public string BookingNo { get; set; }
         public Nullable<int> IDAnggota { get; set; }
         public Nullable<System.DateTime> TanggalBooking { get; set; }
         public Nullable<System.DateTime> TanggalPinjam { get; set; }
