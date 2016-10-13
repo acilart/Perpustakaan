@@ -10,6 +10,7 @@ namespace PerpustakaanDAL
         public int ID { get; set; }
         public int IDAnggota { get; set; }
         public string NoRegistrasi { get; set; }
+        public string NoReferensi { get; set; }
         public string NamaAnggota { get; set; }
         public DateTime Tanggal { get; set; }
 
