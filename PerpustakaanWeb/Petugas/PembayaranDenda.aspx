@@ -9,6 +9,7 @@
            <%--<form>--%>
                 <div class="form-horizontal">
                     <input id="DendaID" type="hidden"/>
+                    <input id="DendaAnggotaID" type="hidden"/>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
                         <div class="input-group col-md-10">
@@ -86,7 +87,7 @@
         <!-- /.box-body -->
         <div class="box-footer clearfix">
             <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="button" value="Save" class="btn btn-primary" onclick="SaveDenda()" />
         </div>
     </div>
     <!-- /.box -->
@@ -170,7 +171,7 @@
             LoadReturnSearch(SearchValue);
         })
 
-        // fungsi search
+        // fungsi search INI BELUM BENER
         function LoadReturnSearch(SearchValue) {
             $.ajax({
                 url: '../Service/DendaService.asmx/GetPengembalianBySearch',
@@ -202,13 +203,12 @@
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
-                success: function (data) {
-                    
-                   
+                success: function (data) {                
                         datepinjam = data.d.TanggalPinjam;
                         datekembali = data.d.TanggalKembali;
                         datedikembalikan = data.d.TanggalDikembalikan;
-                        $("#PMTID").val(data.d.IDAnggota);
+                        $("#DendaID").val(ID);
+                        $("#DendaAnggotaID").val(data.d.IDAnggota);
                         $("#NoRef").val(data.d.NoReferensi);
                         $("#Nama").val(data.d.NamaAnggota);
                         $("#TglPinjam").val(convertDate(datepinjam));
@@ -238,6 +238,8 @@
                             '<td>' + item.Judul + '</td>' +                            
                             '<td>' + item.Terlambat + '</td>' +
                             '<td>' + item.denda + '</td>' +
+                            '<td class="hidden"><input type="hidden" value="' + item.IDBuku + '"/></td>' +
+                            '</tr>';
                             '</tr>';
                         totaldenda = (totaldenda + item.denda)
                     });
@@ -256,6 +258,36 @@
             var year = currentTime.getFullYear();
             var date = day + "-" + month + "-" + year;
             return date;
+        }
+
+        //fungsi save pembayaran denda
+        function SaveDenda() {
+            var header = {};
+            header.IDAnggota =  $("#DendaAnggotaID").val();
+            header.NoReferensi = $("#NoRef").val();  
+            
+            var rtr = {};
+            rtr.ID = $("#DendaID").val();
+        
+        var list = [];
+        $("#buku-borrow tr").each(function () {
+            var data = {};
+            data.IDBuku = $(this).find('td:nth-child(5)').find("input[type=hidden]").val();
+            data.Jumlah = $(this).find('td:nth-child(4)').text();
+            list.push(data);
+        });
+        var param = {header: header , details :list , retHeader:rtr };
+        $.ajax({
+            url: '../Service/DendaService.asmx/SimpanPembayaranDenda',
+            data: JSON.stringify(param),
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json;charset=utf-8',
+            success: function (response) {
+                alert("Transaksi Pengembalian Berhasil Disimpan");
+            }
+        })
+
         }
     </script>    
 </asp:Content>

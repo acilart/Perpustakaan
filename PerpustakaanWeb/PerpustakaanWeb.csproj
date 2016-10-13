@@ -212,6 +212,7 @@
     <Content Include="Content\Zebra_Datepicker-master\readme.txt" />
     <Content Include="dist\css\AdminLTE.css" />
     <Content Include="dist\css\AdminLTE.min.css" />
+    <Content Include="dist\css\datepicker3.css" />
     <Content Include="dist\css\font\font-awesome.min.css" />
     <Content Include="dist\css\ionicons.min.css" />
     <Content Include="dist\css\skins\skin-black-light.css" />
@@ -242,6 +243,7 @@
     <Content Include="dist\css\skins\_all-skins.min.css" />
     <Content Include="dist\js\app.js" />
     <Content Include="dist\js\app.min.js" />
+    <Content Include="dist\js\bootstrap-datepicker.js" />
     <Content Include="dist\js\demo.js" />
     <Content Include="dist\js\jquery.validate.js" />
     <Content Include="dist\js\pages\dashboard.js" />
@@ -320,6 +322,7 @@
     <Content Include="Service\PembayaranBuku.asmx" />
     <Content Include="Service\PeminjamanService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
+    <Content Include="Service\PenggantianService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Bundle.config" />
@@ -647,9 +650,12 @@
       <DependentUpon>PeminjamanService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-
     <Compile Include="Service\PengembalianService.asmx.cs">
       <DependentUpon>PengembalianService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\PenggantianService.asmx.cs">
+      <DependentUpon>PenggantianService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Site.Master.cs">

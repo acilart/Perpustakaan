@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="TransaksiPengembalian.aspx.cs" Inherits="PerpustakaanWeb.Petugas.TransaksiPengembalian" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <link href="../dist/css/datepicker3.css" rel="stylesheet" />
     <div class="box box-info">
         <div class="box-header">
             <h2>Form Pengembalian</h2>
@@ -52,8 +53,8 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="TglDikembalikan">Tanggal Dikembalikan</label>
-                        <div class="col-md-10">
-                            <input data-provide="datepicker" class="form-control text-box single-line" id="TglDikembalikan" name="TglDikembalikan" type="text" value="" readonly />
+                        <div class="input-group-date col-md-10">
+                            <input class="form-control col-md-10" id="TglDikembalikan" name="TglDikembalikan" type="text" value="" readonly />
                             
                         </div>
                     </div>
@@ -136,7 +137,7 @@
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
-   
+    <script src="../dist/js/bootstrap-datepicker.js"></script>
 
 
   
@@ -144,8 +145,11 @@
     <%-- SCRIPT --%>
     <script>
 
-        //untuk datepicker di tanggal pengembalian
-       
+        //untuk datepicker di tanggal pengembalian 
+        //$('#TglDikembalikan').datepicker({
+        //    format : "dd/MM/yyyy",
+        //    autoclose: true 
+        //});
         var tglppinjam;
         var tglkembali;       
 
@@ -188,18 +192,17 @@
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
-                    var listborrow = "";
-                    var Icount = 0;
+                    var listborrow = "";                    
                     $.each(data.d, function (index, item) {                      
                         tglpinjam = item.TanggalPinjam;
                         tglkembali = item.TanggalKembali;
-
+                        TglDikembalikan = new Date();
                         $("#ReturnID").val(item.IDAnggota);
                         $("#NoRef").val(item.NoReferensi);                        
                         $("#Nama").val(item.NamaAnggota);
                         $("#TglPinjam").val(convertDate(tglpinjam));
                         $("#TglKembali").val(convertDate(tglkembali));
-                        $("#TglDikembalikan").val();
+                        $("#TglDikembalikan").val(convertDateNow(TglDikembalikan));
                         LoadBukuPinjam();
                         $('#modal-borrow').modal('hide');                        
                     });;                   
@@ -224,6 +227,7 @@
                     var listborrow = "";
                     var Icount = 0;
                     $.each(data.d, function (index, item) {
+
                         listborrow += '<tr>' +
                             '<td>' + ++Icount + '</td>' +
                             '<td>' + item.NoReferensi + '</td>' +
@@ -243,8 +247,7 @@
                 data: '{"id":"' + id + '"}',
                 type: 'POST',
                 dataType: 'JSON',
-                contentType: 'application/json;charset=utf-8',
-               
+                contentType: 'application/json;charset=utf-8',               
                 success: function (data) {
                     var listbuku = '';
                     var totaldenda = 0;
@@ -271,10 +274,14 @@
             var header = {};
             header.IdAnggota = $("#ReturnID").val();
             header.NoReferensi = $('#NoRef').val();
+            
             var TanggalPinjam = $("#TglPinjam").val();
             var TanggalKembali = $("#TglKembali").val();
+            var TanggalDikembalikan = $("TglDikembalikan").val();
             header.TanggalPinjam = convertDate(TanggalPinjam);
             header.TanggalKembali = convertDate(TanggalKembali);
+            header.TanggalDikembalikan = convertDateNow(TanggalDikembalikan);
+
             var list = [];
             $("#buku-borrow tr").each(function () {              
                 var data = {};
@@ -315,7 +322,16 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = day + "-" + month + "-" + year;
+            var date = month + "/" + day + "/" + year;
+            return date;
+        }
+        //fungsi convert tanggal khusus tanggal system
+        function convertDateNow(tanggal) {            
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
             return date;
         }
         

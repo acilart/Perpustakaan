@@ -1,4 +1,5 @@
 ﻿using PerpustakaanDAL;
+using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,12 @@ namespace PerpustakaanWeb.Service
         public PembayaranDendaDAL GetPeminjamanById(int id)
         {
             return PembayaranDendaDAL.GetPeminjamanById(id);
+        }
+
+        [WebMethod]
+        public bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
+        {
+            return PembayaranDendaDAL.SimpanPembayaranDenda(header, details, retHeader);
         }
     }
 }
