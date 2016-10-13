@@ -120,6 +120,97 @@ namespace PerpustakaanDAL
             }
         }
 
+        public static bool SimpanAnggotaIuran(MstAnggota anggota, List<IuranViewModel> iurans)
+        {
+            List<IuranViewModel> form = new List<IuranViewModel>();
+            using (var db = new PerpustakaanDbContext())
+            {
+                int idHead = 0;
+                var lisHead = db.TrScnHeader.ToList();
+                if (lisHead.Count > 0)
+                {
+                    idHead = lisHead[lisHead.Count - 1].ID;
+                }
+                idHead += 1;
+                var header = new TrScnHeader() 
+                {
+                    ID = idHead,
+                    CreatedOn = DateTime.Now,
+                    NoRegistrasi = AutoNumberDAL.IuranNoRegAutoNumber(),
+                    ModifiedOn = DateTime.Now
+                };
+
+                var cek = db.MstAnggota.FirstOrDefault(n => n.ID == anggota.ID);
+                if (cek != null)
+                {
+                    header.IDAnggota = cek.ID;
+                    cek.Nama = anggota.Nama;
+                    var masaAnggota = iurans.FirstOrDefault(n => n.ID == 1);
+                    if(masaAnggota != null)
+                    {
+                        cek.MasaBerlakuAnggota =DateTime.Now.AddMonths(3);
+                    }
+                    var masaKartu = iurans.FirstOrDefault(n => n.ID == 2);
+                    if (masaKartu != null)
+                    {
+                        cek.MasaBerlakuKartu = DateTime.Now.AddYears(1);
+                    }
+                   
+                    cek.ModifiedBy = anggota.ModifiedBy;
+                    cek.ModifiedOn = DateTime.Now;
+                    cek.NoTelepon = anggota.NoTelepon;
+                    cek.IDKecamatan = anggota.IDKecamatan;
+                    cek.IDKelurahan = anggota.IDKelurahan;
+                    cek.IDProvinsi = anggota.IDProvinsi;
+                    cek.IDKota = anggota.IDKota;
+                    cek.Alamat = anggota.Alamat;
+                    cek.Email = anggota.Email;
+                    //panggil fungsi 
+                }
+                else
+                {
+                    int id = 0;
+                    var lis = db.MstAnggota.ToList();
+                    if (lis.Count > 0)
+                    {
+                        id = lis[lis.Count - 1].ID;
+                    }
+                    id += 1;
+                    anggota.ID = id;
+                    header.ID = id;
+                    anggota.KodeAnggota = AutoNumberDAL.KodeAnggotaAutoNumber();
+                    anggota.CreatedOn = DateTime.Now;
+                    anggota.MasaBerlakuKartu = DateTime.Now.AddMonths(3);
+                    anggota.MasaBerlakuAnggota = DateTime.Now.AddYears(1);
+                    db.MstAnggota.Add(anggota);
+                    //for(int i=0;i<iuran.TipeIuran.Count;i++)
+                }
+                db.TrScnHeader.Add(header);
+                var list = new List<TrScnDetail>();
+                foreach (var item in iurans)
+                {
+                    var scn = new TrScnDetail()
+                    {
+                        HeaderID = header.ID,
+                        IDTipeIuran = item.ID,
+                        CreatedOn = DateTime.Now,
+                        ModifiedOn=DateTime.Now
+                    };
+                    list.Add(scn);
+                }
+                db.TrScnDetail.AddRange(list);
+                try
+                {
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
         public static bool DeleteAnggota(int id)
         {
             using (var db = new PerpustakaanDbContext())

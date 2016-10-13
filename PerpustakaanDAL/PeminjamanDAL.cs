@@ -99,31 +99,33 @@ namespace PerpustakaanDAL
                     //item.ModifiedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
-                    
-                    #region Update Stock
-                    var cekStock = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
-                    if (cekStock != null)
-                    {
-                        cekStock.InStock = false;
-                    }
-                    #endregion
-
                     #region Update Status Buku
                     var buku = db.MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
                     if (buku != null)
                     {
                         buku.Aktif = false;
-                    }
+
                     #endregion
 
-                    #region Update Kolom Rak
-                    var cek = db.MstCabinetCell.FirstOrDefault(n => n.ID == buku.Lokasi);
-                    if (cek != null)
-                    {
-                        cek.Terisi -= 1;
-                        cek.Kosong += 1;
+                        #region Update Stock
+                        var cekStock = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekStock != null)
+                        {
+                            cekStock.InStock = false;
+                        }
+                        #endregion
+
+
+
+                        #region Update Kolom Rak
+                        var cek = db.MstCabinetCell.FirstOrDefault(n => n.ID == buku.Lokasi);
+                        if (cek != null)
+                        {
+                            cek.Terisi -= 1;
+                            cek.Kosong += 1;
+                        }
+                        #endregion
                     }
-                    #endregion
 
                 }
                 db.TrBrwDetail.AddRange(details);
@@ -143,5 +145,106 @@ namespace PerpustakaanDAL
             }
           
         }
+
+        public bool SimpanPeminjamanBook(TrBookingHeader header, List<TrBookingDetail> details)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                #region Simpan Peminjaman Header
+                int idBrw = 1;
+                var listHeader = db.TrBookingHeader.ToList();
+                if (listHeader.Count > 0)
+                {
+                    idBrw = listHeader[listHeader.Count - 1].ID + 1;
+                }
+                var pinjamHeader = new TrBrwHeader()
+                {
+                    IDAnggota = header.IDAnggota,
+                    ID = idBrw,
+                    TanggalPinjam = DateTime.Now,
+                    TanggalKembali = DateTime.Now.AddDays(3),
+                    NoReferensi = header.BookingNo,
+                    NoRegistrasi = AutoNumberDAL.PeminjamanBukuNoRegAutoNumber(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedOn = DateTime.Now
+                };
+                db.TrBrwHeader.Add(pinjamHeader);
+                #endregion
+            
+                #region Update Header Booking
+                var headerBooking = db.TrBookingHeader.FirstOrDefault(n => n.ID == header.ID);
+                if (headerBooking != null)
+                {
+                    headerBooking.ModifiedOn = DateTime.Now;
+                    headerBooking.Active = false;
+                }
+                #endregion
+                
+                #region Update Detail Boking
+                var detailBoking = db.TrBookingDetail.Where(n => n.HeaderID == header.ID);
+                foreach (var item in detailBoking)
+                {
+                    item.Active = false;
+                    item.ModifiedOn = DateTime.Now;
+                }
+                #endregion
+              
+                #region Simpan Peminjaman Detail
+                var listBorrow = new List<TrBrwDetail>();
+                foreach (var item in details)
+                {
+                    #region Update Status Buku
+                    var buku = db.MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
+                    if (buku != null)
+                    {
+                        buku.Aktif = false;
+
+                    #endregion
+
+                        #region Update Stock
+                        var cekStock = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekStock != null)
+                        {
+                            cekStock.InStock = false;
+                        }
+                        #endregion
+
+
+
+                        #region Update Kolom Rak
+                        var cek = db.MstCabinetCell.FirstOrDefault(n => n.ID == buku.Lokasi);
+                        if (cek != null)
+                        {
+                            cek.Terisi -= 1;
+                            cek.Kosong += 1;
+                        }
+                        #endregion
+                    }
+                    var det = new TrBrwDetail()
+                    {
+                        HeaderID = idBrw,
+                        IDBuku = item.IDBuku,
+                        CreatedOn = DateTime.Now,
+                        ModifiedOn = DateTime.Now
+
+                    };
+                    listBorrow.Add(det);
+                }
+                db.TrBrwDetail.AddRange(listBorrow);
+                #endregion
+               
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+            return false;
+        }
+
     }
 }
