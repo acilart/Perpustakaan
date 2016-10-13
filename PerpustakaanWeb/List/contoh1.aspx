@@ -58,7 +58,7 @@
 			data.pembayaran = $(this).find("td:nth-child(6)").find("input[type=hidden]").val();
 		    //data.completed = $(this).find("td:nth-child(7)").find("input[type=checkbox]").attr("checked");
 			data.completed = cek;
-			list.push(data);
+			list.(data);
 		});
 		alert(list[0].pembayaran);
 		console.log(list);

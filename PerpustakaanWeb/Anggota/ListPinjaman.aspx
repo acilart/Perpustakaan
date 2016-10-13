@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Kembalikan</button>
-                    <button type="button" class="btn btn-primary">Tutup</button>
+                    <button type="button" class="btn btn-primary" >Kembalikan</button>
+                    <button type="button" class="btn btn-primary"data-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>

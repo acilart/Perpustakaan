@@ -30,5 +30,31 @@ namespace PerpustakaanWeb.Service
         {
             return BukuDAL.GetAllBuku();
         }
+
+        [WebMethod]
+        public List<MstBuku> GetBukuAvailable()
+        {
+            return BukuDAL.GetBukuAvailable();
+        }
+
+        [WebMethod]
+        public MstBuku GetBukuAvailableByID(int id)
+        {
+            return BukuDAL.GetBukuAvailableByID(id);
+        }
+
+        [WebMethod]
+        public MstAnggota GetAnggotaByID(int id)
+        {
+            return AnggotaDAL.GetAnggotaByID(id);
+        }
+
+        [WebMethod]
+        public bool SimpanBooking(TrBookingHeader header, List<TrBookingDetail> details)
+        {
+            return BookingDAL.SimpanBooking(header,details);
+        }
+
+
     }
 }
