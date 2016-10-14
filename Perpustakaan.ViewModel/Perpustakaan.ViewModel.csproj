@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookingHeaderViewModel.cs" />
     <Compile Include="BookingViewModel.cs" />
     <Compile Include="BrwHeaderViewModel.cs" />
     <Compile Include="IuranViewModel.cs" />
