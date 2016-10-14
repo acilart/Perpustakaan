@@ -245,20 +245,20 @@
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
-    <script src="../dist/js/jquery.validate.js"></script>
+  
     <script>
 
-        $('#btn-tambah').click(function () {
-            $("#formAnggota").validate({
-                rules: {
-                    Nama: "required"
-                },
-                messages: {
-                    Nama: "Please choose Anggota for Nama"
-                }
+        //$('#btn-tambah').click(function () {
+        //    $("#formAnggota").validate({
+        //        rules: {
+        //            Nama: "required"
+        //        },
+        //        messages: {
+        //            Nama: "Please choose Anggota for Nama"
+        //        }
 
-            })
-        });
+        //    })
+        //});
 
         $(document).ready(function () {
             LoadAnggota();
@@ -339,7 +339,7 @@
             $("#data-buku tr").each(function () {
                 var data = {};
 
-                var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
+               // var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
                 //var cek = $('#cb' + $(this).find("td:nth-child(4)").val()).is(":checked");
                 data.IDBuku = $(this).find("td:nth-child(4)").find("input[type=hidden]").val();
                 alert(data.IDBuku);
@@ -418,8 +418,6 @@
                 }
             })
         }
-
-
         //---------------------------SEARCH---------------------------//
 
         function loadSearchAnggota(searchValue) {
@@ -448,7 +446,6 @@
 
         //-----------------------------MODAL POP UP------------------------//
        
-   
         function PilihHeader(ID) {
             TampilHeader(ID);
             $("#BookingID").val(ID);
@@ -467,7 +464,7 @@
                         '<td>' + item.KodeBuku + '</td>' +
                         '<td>' + item.JudulBuku + '</td>' +
                         '<td>' + item.Pengarang + '</td>' +
-                        '<td><input type="button" value="Delete" class="btn btn-danger" onclick="hapusBuku(' + item.ID + ')"/></td>' +
+                        '<td><input type="button" value="Delete" class="btn btn-danger" onclick="hapusBuku(' + item.IDBuku + ')"/></td>' +
                         '<td><input type="hidden" value="' + item.IDDetail + '"/></td>' +
                 '</tr>';
 
@@ -486,10 +483,9 @@
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
-
                     $("#NoBooking").val(data.d.NoBooking);
-                    TglPinjam
-
+                    $("#TglPinjam").val(data.d.TanggalPinjam.for('dd MMM yyyy'));
+                    $("#TglKembali").val(data.d.TanggalKembali.format('dd MMM yyyy'));
                 }
             })
         }
