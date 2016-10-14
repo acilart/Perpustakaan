@@ -35,10 +35,10 @@ namespace PerpustakaanWeb.Service
             return PenggantianDAL.GetPengembalianById(id);
         }
 
-        [WebMethod]
-        public List<PenggantianDAL> GetBukuHilang(int id)
-        {
-            return PenggantianDAL.GetBukuHilang(id);
-        }
+        //[WebMethod]
+        //public List<PenggantianDAL> GetBukuHilang(int id)
+        //{
+        //    return PenggantianDAL.GetBukuHilang(id);
+        //}
     }
 }

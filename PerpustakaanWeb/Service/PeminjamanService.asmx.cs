@@ -66,5 +66,26 @@ namespace PerpustakaanWeb.Service
             return new PeminjamanDAL().SimpanPeminjaman(header, details);
         }
 
+        [WebMethod]
+        public List<BookingViewModel> GetBookingAktifByID(int id)
+        {
+            var dal = new BookingDAL();
+            return dal.GetBookingAktifByID(id);
+
+        }
+
+        [WebMethod]
+        public List<TrBookingHeader> GetBookingHeaderAktifByIDAnggota(int id)
+        {
+            var dal = new BookingDAL();
+            return dal.GetBookingHeaderAktifByIDAnggota(id);
+        }
+
+        [WebMethod]
+        public bool SimpanPeminjamanBook(TrBookingHeader book, List<TrBookingDetail> details)
+        {
+            var dal = new PeminjamanDAL();
+            return dal.SimpanPeminjamanBook(book, details);
+        }
     }
 }

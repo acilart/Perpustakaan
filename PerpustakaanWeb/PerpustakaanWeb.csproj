@@ -273,6 +273,7 @@
     <Content Include="Petugas\ListAnggota.aspx" />
     <Content Include="Petugas\PembayaranBuku.aspx" />
     <Content Include="Petugas\PembayaranDenda.aspx" />
+    <Content Include="Petugas\PeminjamanDariBooking.aspx" />
     <Content Include="Petugas\Penggantian.aspx" />
     <Content Include="Petugas\InputBuku.aspx" />
     <Content Include="Petugas\PenyimpananBuku.aspx" />
@@ -566,6 +567,13 @@
     </Compile>
     <Compile Include="Petugas\PembayaranDenda.aspx.designer.cs">
       <DependentUpon>PembayaranDenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\PeminjamanDariBooking.aspx.cs">
+      <DependentUpon>PeminjamanDariBooking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\PeminjamanDariBooking.aspx.designer.cs">
+      <DependentUpon>PeminjamanDariBooking.aspx</DependentUpon>
     </Compile>
     <Compile Include="Petugas\Penggantian.aspx.cs">
       <DependentUpon>Penggantian.aspx</DependentUpon>
