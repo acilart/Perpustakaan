@@ -150,36 +150,36 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-                #region Simpan Peminjaman Header
                 int idBrw = 1;
-                var listHeader = db.TrBookingHeader.ToList();
-                if (listHeader.Count > 0)
-                {
-                    idBrw = listHeader[listHeader.Count - 1].ID + 1;
-                }
-                var pinjamHeader = new TrBrwHeader()
-                {
-                    IDAnggota = header.IDAnggota,
-                    ID = idBrw,
-                    TanggalPinjam = DateTime.Now,
-                    TanggalKembali = DateTime.Now.AddDays(3),
-                    NoReferensi = header.BookingNo,
-                    NoRegistrasi = AutoNumberDAL.PeminjamanBukuNoRegAutoNumber(),
-                    CreatedOn = DateTime.Now,
-                    ModifiedOn = DateTime.Now
-                };
-                db.TrBrwHeader.Add(pinjamHeader);
-                #endregion
-            
                 #region Update Header Booking
                 var headerBooking = db.TrBookingHeader.FirstOrDefault(n => n.ID == header.ID);
                 if (headerBooking != null)
                 {
                     headerBooking.ModifiedOn = DateTime.Now;
                     headerBooking.Active = false;
-                }
                 #endregion
-                
+                    #region Simpan Peminjaman Header
+                  
+                    var listHeader = db.TrBookingHeader.ToList();
+                    if (listHeader.Count > 0)
+                    {
+                        idBrw = listHeader[listHeader.Count - 1].ID + 1;
+                    }
+                    var pinjamHeader = new TrBrwHeader()
+                    {
+                        IDAnggota = header.IDAnggota,
+                        ID = idBrw,
+                        TanggalPinjam = DateTime.Now,
+                        TanggalKembali = DateTime.Now.AddDays(3),
+                        NoReferensi = headerBooking.BookingNo,
+                        NoRegistrasi = AutoNumberDAL.PeminjamanBukuNoRegAutoNumber(),
+                        CreatedOn = DateTime.Now,
+                        ModifiedOn = DateTime.Now
+                    };
+                    db.TrBrwHeader.Add(pinjamHeader);
+                    #endregion
+            
+                }
                 #region Update Detail Boking
                 var detailBoking = db.TrBookingDetail.Where(n => n.HeaderID == header.ID);
                 foreach (var item in detailBoking)

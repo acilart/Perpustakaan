@@ -117,7 +117,11 @@ namespace PerpustakaanDAL
             using (var db = new PerpustakaanDbContext())
             {
                 var listHeader = db.TrPlcHeader.ToList();
-                var id = listHeader[listHeader.Count - 1].ID + 1;
+                int id = 1;
+                if (listHeader.Count > 0)
+                {
+                    id = listHeader[listHeader.Count - 1].ID + 1;
+                }
                 header.NoRegistrasi = AutoNumberDAL.PenggantianBukuNoRegAutoNumber();
                 header.ID = id;
                 header.CreatedOn = DateTime.Now;
@@ -150,31 +154,52 @@ namespace PerpustakaanDAL
 
         public static List<Penggantian> GetPengembalian()
         {
-            List<Penggantian> result = new List<Penggantian>();
+            using(var db = new PerpustakaanDbContext())
+            {
+                var list = new List<Penggantian>();
+                var headerganti = db.TrReturnHeader.ToList();
+                foreach (var item in headerganti)
+                {
+                    var detailganti = db.TrReturnDetail.Where(n => n.LaporKehilangan == true && n.SudahDiganti == false);
+                    if (detailganti.Count() > 0)
+                    {
+                        var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == item.IDAnggota);
+                        var penggantian = new Penggantian()
+                        {
+                            ID = item.ID,
+                            IDAnggota = anggota.ID,
+                            NamaAnggota = anggota.Nama,
+                            NoReferensi = item.NoReferensi,                            
+                        };
+                        list.Add(penggantian);
+                    }                    
+                }
+                return list;
+            }           
+        }
+
+        public static Penggantian GetPengembalianById(int id)
+        {
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
-                
-                 
-                result =(from Rtr in db.TrReturnHeader
-                             join nama in db.MstAnggota on Rtr.IDAnggota equals nama.ID
-                             
-                             select new
+                var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == id);
+                if (cek != null)
+                {
+                    var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == cek.IDAnggota);
+                    if (anggota != null)
                              {
-                                 ID = Rtr.ID,
-                                 NoRegistrasi = Rtr.NoRegistrasi,
-                                 NamaAnggota = nama.Nama,
-                                 Tanggal =DateTime.Now
-                             }).ToList().
-                                 Select(x=> new Penggantian()
+                        var penggantian = new Penggantian()
                                  {
-                                     ID = x.ID,
-                                     NoRegistrasi = x.NoRegistrasi,
-                                     NamaAnggota =x.NamaAnggota,
-                                     Tanggal = x.Tanggal
-                                 }).ToList();
-                
+                        ID = cek.ID,
+                        IDAnggota = anggota.ID,
+                        NamaAnggota = anggota.Nama,
+                        NoReferensi = cek.NoReferensi,
+                    };
+                    return penggantian;
+                    }
+                }
+                return null;
             }
-            return result;
         }
     }
 }

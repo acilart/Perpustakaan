@@ -108,9 +108,10 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-                return db.TrBookingHeader.Where(n => n.IDAnggota == id &&
-                    n.Active == false &&
-                    n.TanggalPinjam >= DateTime.Now).ToList();
+                var list = db.TrBookingHeader.Where(n => n.IDAnggota == id &&
+                    n.Active == true).ToList();
+
+                return list;
             }
         }
 
