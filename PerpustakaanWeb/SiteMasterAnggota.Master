@@ -16,8 +16,8 @@
     <link href="/Content/bootstrap.css" rel="stylesheet" />
     <link href="/dist/css/AdminLTE.css" rel="stylesheet" />
     <link href="/dist/css/skins/_all-skins.css" rel="stylesheet" />
-    <script src="/dist/js/jquery-1.9.1.js"></script>
-    <script src="/dist/js/bootstrap.min.js"></script>
+    <%--<script src="/dist/js/jquery-1.9.1.js"></script>
+    <script src="/dist/js/bootstrap.min.js"></script>--%>
     <script src="/Scripts/modernizr-2.6.2.js"></script>
     <%--DATEPICKER BELUM MASUK--%>
 </head>

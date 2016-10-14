@@ -87,5 +87,12 @@ namespace PerpustakaanWeb.Service
             var dal = new PeminjamanDAL();
             return dal.SimpanPeminjamanBook(book, details);
         }
+
+        [WebMethod]
+        public BookingHeaderViewModel GetHeaderViewModelByID(int id)
+        {
+            var dal = new BookingDAL();
+            return dal.GetHeaderViewModelByID(id);
+        }
     }
 }

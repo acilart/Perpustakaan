@@ -329,12 +329,10 @@
     <Content Include="Bundle.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Site.Mobile.Master" />
     <Content Include="Site.Master" />
     <Content Include="Web.config" />
     <Content Include="SiteMasterPetugas.Master" />
     <Content Include="SiteMasterAnggota.Master" />
-    <Content Include="SiteCoba.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -672,20 +670,6 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Site.Mobile.Master.cs">
-      <DependentUpon>Site.Mobile.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Site.Mobile.Master.designer.cs">
-      <DependentUpon>Site.Mobile.Master</DependentUpon>
-    </Compile>
-    <Compile Include="SiteCoba.Master.cs">
-      <DependentUpon>SiteCoba.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SiteCoba.Master.designer.cs">
-      <DependentUpon>SiteCoba.Master</DependentUpon>
     </Compile>
     <Compile Include="SiteMasterAnggota.Master.cs">
       <DependentUpon>SiteMasterAnggota.Master</DependentUpon>

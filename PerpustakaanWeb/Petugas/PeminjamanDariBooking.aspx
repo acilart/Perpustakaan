@@ -450,7 +450,7 @@
        
    
         function PilihHeader(ID) {
-
+            TampilHeader(ID);
             $("#BookingID").val(ID);
             $.ajax({
                 url: '../Service/PeminjamanService.asmx/GetBookingAktifByID',
@@ -476,6 +476,22 @@
                     $("#data-peminjaman").html(listProp);
                 }
             });
+        }
+
+        function TampilHeader(ID) {
+            $.ajax({
+                url: '../Service/PeminjamanService.asmx/GetHeaderViewModelByID',
+                type: 'POST',
+                data: '{"id":"' + ID + '"}',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+
+                    $("#NoBooking").val(data.d.NoBooking);
+                    TglPinjam
+
+                }
+            })
         }
         //$('#txt-anggotaS').keyup(function () {
         //    var searchValue = $('#txt-anggotaS').val();
