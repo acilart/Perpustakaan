@@ -122,8 +122,6 @@ namespace PerpustakaanDAL
                 var cek = db.TrBookingHeader.FirstOrDefault(n => n.IDAnggota == book.IDAnggota);
                 //var ambilNoRef = BorrowHeaderDAL.GetDataById(Convert.ToInt32(book.IDAnggota)).NoReferensi;
                 var ambilNoReg = AutoNumberDAL.BookingBukuAutoNumber();
-
-
                 if (cek != null)
                 {
                     cek.Active = false;
@@ -133,10 +131,6 @@ namespace PerpustakaanDAL
                         item.Active = false;
                     }
                     //db.TrBookingDetail.AddRange(details);
-
-
-
-
                 }
                 else
                 {
@@ -179,7 +173,25 @@ namespace PerpustakaanDAL
             }
         }
 
-    
+        public BookingHeaderViewModel GetHeaderViewModelByID(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.TrBookingHeader.FirstOrDefault(n => n.ID == id);
+                if (cek != null)
+                {
+                    var view = new BookingHeaderViewModel()
+                    {
+                        NoBooking = cek.BookingNo,
+                        IDBooking = cek.ID,
+                        TanggalKembali = DateTime.Now.AddDays(3),
+                        TanggalPinjam = DateTime.Now
+                    };
+                    return view;
+                }
+                return null;
+            }
+        }
     
     
     }
