@@ -1,10 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeFile="FormAnggotaOff.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaOff" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    
-    <%--1.SIMPAN ANGGOTA (TERMASUK GENERATE KODE ANGGOTA, GENERATE NO REGISTRASI, SAVE LIST IURAN)
-        2.VALIDASI FORM--%>
-    
+    <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+        { %>
+
+    <%--1.VALIDASI FORM & DUPLICATE DATA SAMA--%>
+
     <div class="box box-info">
         <div class="box-header">
             <h2>FORM PENDAFTARAN ANGGOTA</h2>
@@ -16,7 +17,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="KodeAnggota">Kode Anggota</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly/>
+                            <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="KodeAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -91,30 +92,14 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoReg">No Registrasi</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" id="No Reg" name="NoReg" type="date" value="" readonly/>
+                            <input class="form-control text-box single-line" data-val="true" id="NoReg" name="NoReg" type="date" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoREG" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="MasaBerlakuKartu">Masa Berlaku Kartu</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field MasaBerlakuKartu must be a date." data-val-required="The MasaBerlakuKartu field is required." id="MasaBerlakuKartu" name="MasaBerlakuKartu" type="date" value="" readonly />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuKartu" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="MasaBerlakuAnggota">Masa Berlaku Anggota</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field MasaBerlakuAnggota must be a date." data-val-required="The MasaBerlakuAnggota field is required." id="MasaBerlakuAnggota" name="MasaBerlakuAnggota" type="date" value="" readonly/>
-                            <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <%--MODAL POP UP IURAN--%>
 
-                    <!-- Modal IURAN Dialog-->
+                    <%--<!-- Modal IURAN Dialog-->
                     <div id="modal-iuran" class="modal fade" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -128,6 +113,7 @@
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
+                                                        <th><%--<input type="checkbox">--%><%--</th>
                                                         <th>Jenis Iuran</th>
                                                         <th>Masa Berlaku</th>
                                                         <th>Jumlah</th>
@@ -147,12 +133,12 @@
                             <!-- /.modal-content -->
                         </div>
                         <!-- /.modal-dialog -->
-                    </div>
+                    </div>--%>
                     <!-- /.modal -->
 
                     <div class="form-group">
-                        <div class="box-footer clearfix" style="float: right;">
-                            <button type="button" id="btn-ok" class="btn btn-success">Ok</button>
+                        <div class="box-footer clearfix">
+                            <button type="button" id="btn-ok" class="btn btn-primary" onclick="loadIuran()" disabled>Add</button>
                         </div>
                     </div>
 
@@ -160,6 +146,31 @@
             </form>
         </div>
     </div>
+
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">List Buku Pinjaman</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><%--<input type="checkbox">--%></th>
+                        <th>Jenis Iuran</th>
+                        <th>Masa Berlaku</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody id="data-iuran-modal">
+                </tbody>
+            </table>
+            
+            <button type="button" id="btn-save" class="btn btn-primary" style="float:right;">Save</button>
+            <button type="button" class="btn btn-primary" style="float:right;">Close</button>
+        </div>
+    </div>
+    <!-- /.box -->
 
 
 
@@ -240,11 +251,6 @@
 
         //---------------------------------INSERT------------------------------//
 
-        $('#btn-ok').click(function () {
-            $('#modal-iuran').modal('show');
-
-        })
-
         function loadIuran() {
             $.ajax({
                 url: '../Service/AnggotaService.asmx/GetIuranNonDenda',
@@ -254,7 +260,8 @@
                 success: function (dataIuran) {
                     var listIuran = "";
                     $.each(dataIuran.d, function (index, item) {
-                        listIuran += '<tr>' +
+                        listIuran += '<tr id="id' + item.ID + '">' +
+                                '<td><input type="hidden" value="' + item.ID + '"/></td>' +
                                 '<td>' + item.TipeIuran + '</td>' +
                                 '<td>' + item.MasaBerlaku + '</td>' +
                                 '<td>' + item.Jumlah + '</td>' +
@@ -264,6 +271,7 @@
                     $('#data-iuran-modal').html(listIuran);
                 }
             });
+            //$('#modal-iuran').modal('show');
         }
 
 
@@ -271,7 +279,7 @@
 
         $('#btn-save').click(function () {
             var anggota = {};
-            //anggota.ID = $("#AnggotaId").val();
+            anggota.ID = $("#AnggotaId").val();
             anggota.KodeAnggota = $("#KodeAnggota").val();
             anggota.Nama = $("#Nama").val();
             anggota.Alamat = $("#Alamat").val();
@@ -281,25 +289,22 @@
             anggota.IDKelurahan = $("#Kelurahan").val();
             anggota.Email = $("#Email").val();
             anggota.NoTelepon = $("#NoTelepon").val();
-            anggota.CreatedBy = $("#CreatedBy").val();
-            anggota.ModifiedBy = $("#ModifiedBy").val();
-            var iuran = {};
-            iuran.TipeIuran = [];
-            iuran.MasaBerlaku = [];
-            iuran.Jumlah = [];
+            anggota.ModifiedBy = '<%= Session["ID"] %>';
 
-            //ambil data dari tabel setiap cellnya
+            var iuran = [];
             $('#data-iuran-modal tr').each(function () {
-                iuran.TipeIuran.push($(this).find("td:nth-child(1)").text()); // cari td pertama, dan text disimpan kedalam tipe iuran
-                iuran.MasaBerlaku.push($(this).find("td:nth-child(2)").text());
-                iuran.Jumlah.push($(this).find("td:nth-child(3)").text());
+                var data = {};
+
+                data.ID = $(this).find("td:nth-child(1)").find("input[type=hidden]").val();//ID tipe iuran
+                data.TipeIuran = $(this).find("td:nth-child(2)").text();
+                data.Jumlah = $(this).find("td:nth-child(4)").text();
+                iuran.push(data);
             })
-            
 
+            var param = { anggota: anggota, iurans: iuran }
             $.ajax({
-                url: '../Service/AnggotaService.asmx/SimpanAnggota',
-
-                data: '{anggota:' + JSON.stringify(anggota) + ',iuran:' + JSON.stringify(iuran) +'}',
+                url: '../Service/AnggotaService.asmx/SimpanAnggotaIuran',
+                data: JSON.stringify(param),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'JSON',
@@ -313,21 +318,20 @@
 
         //---------------------------------EDIT IURAN------------------------------//
 
-
-
         $(document).ready(function () {
-
-            var dateAnggota = new Date();
-            var dateKartu = new Date();
-            var dateA = dateAnggota.setDate(dateAnggota.getDate() + 90);
-            var dateK = dateKartu.setMonth(dateKartu.getMonth() + 12);
-
-            $(MasaBerlakuKartu).val(dateKartu.format("dd-MMM-yyyy"));
-            $(MasaBerlakuAnggota).val(dateAnggota.format("dd-MMM-yyyy"));
+            //IF "BEBAS" = NULL SESSIONNYA
+            $("#AnggotaId").val(0);
             loadIuran();
             loadDataPropinsi();
+            //ELSE DAH ADA PARAMETER/TIDAK NULL, BIKIN FUNCTION BUAT LOAD EDIT
         });
 
     </script>
-
+     <%
+      }
+        else
+        {
+            Response.Redirect("../LoginAnggota.aspx");
+        }
+                    %>
 </asp:Content>
