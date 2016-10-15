@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="LoginAnggota.aspx.cs" Inherits="PerpustakaanWeb.Login" %>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="">
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,13 +19,11 @@
 </head>
 <body class="hold-transition login-page">
 
-    <%--1.SESSION
-    2.LOGOUT
-    3.HOME--%>
+    <%--2.LOGOUT & CLEAR SESSION--%>
 
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
+            <a href="#"><b>Admin</b>LTE</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
