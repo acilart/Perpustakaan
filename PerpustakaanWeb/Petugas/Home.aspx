@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="PerpustakaanWeb.Petugas.Home" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <% //if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["role"] != null && HttpContext.Current.Session["role"].ToString() == "Petugas")
+        if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+       { %>
     <div class="jumbotron">
         <h1>WELCOME PETUGAS</h1>
         <p class="lead"><%--ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.--%></p>
@@ -36,4 +39,13 @@
             </p>
         </div>
     </div>
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+     <%
+      }
+      else
+      {
+          Response.Redirect("../LoginAnggota.aspx");
+      }
+    %>
 </asp:Content>
