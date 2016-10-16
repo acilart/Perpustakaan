@@ -11,37 +11,34 @@
             <h2>FORM PENDAFTARAN ANGGOTA</h2>
         </div>
         <div class="box-body">
-            <form action="#" method="post" id="formAnggota">
+            <form action="#" method="POST" id="formAnggota">
                 <div class="form-horizontal">
                     <input id="AnggotaId" type="hidden">
                     <div class="form-group">
                         <label class="control-label col-md-2" for="KodeAnggota">Kode Anggota</label>
                         <div class="col-md-10">
                             <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="KodeAnggota" data-valmsg-replace="true"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Nama">Nama</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
+                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" value="" required/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Alamat">Alamat</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Alamat" name="Alamat" type="text" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="Alamat" data-valmsg-replace="true"></span>
+                            <input class="form-control text-box single-line" id="Alamat" name="Alamat" type="text" value="" required/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="OptProvinsi">Provinsi</label>
                         <div class="col-md-10">
-                            <select class="form-control" data-val="true" data-val-number="The field IDProvinsi must be fill" id="OptProvinsi" name="OptProvinsi">
+                            <select class="form-control" data-val="true" data-val-number="The field IDProvinsi must be fill" id="OptProvinsi" name="OptProvinsi" required>
                             </select>
                             <span class="field-validation-valid text-danger" data-valmsg-for="OptProvinsi" data-valmsg-replace="true"></span>
                         </div>
@@ -50,7 +47,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="OptKota">Kota</label>
                         <div class="col-md-10">
-                            <select class="form-control" data-val="true" data-val-number="The field IDKota must be fill." id="OptKota" name="OptKota">
+                            <select class="form-control" data-val="true" data-val-number="The field IDKota must be fill." id="OptKota" name="OptKota" required>
                             </select>
                             <span class="field-validation-valid text-danger" data-valmsg-for="OptKota" data-valmsg-replace="true"></span>
                         </div>
@@ -59,7 +56,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="OptKecamatan">Kecamatan</label>
                         <div class="col-md-10">
-                            <select class="form-control" data-val="true" data-val-number="The field IDKecamatan must be a number." id="OptKecamatan" name="OptKecamatan">
+                            <select class="form-control" data-val="true" data-val-number="The field IDKecamatan must be a number." id="OptKecamatan" name="OptKecamatan" required>
                             </select>
                             <span class="field-validation-valid text-danger" data-valmsg-for="OptKecamatan" data-valmsg-replace="true"></span>
                         </div>
@@ -68,7 +65,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Kelurahan">Kelurahan</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Kelurahan" name="Kelurahan" type="text" value="" />
+                            <input class="form-control text-box single-line" id="Kelurahan" name="Kelurahan" type="text" value="" required/>
                             <span class="field-validation-valid text-danger" data-valmsg-for="Kelurahan" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -76,7 +73,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Email">Email</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Email" name="Email" type="text" value="" />
+                            <input class="form-control text-box single-line" id="Email" name="Email" type="text" value="" required/>
                             <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -84,7 +81,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoTelepon">No Telepon</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="NoTelepon" name="NoTelepon" type="text" value="" />
+                            <input class="form-control text-box single-line" id="NoTelepon" name="NoTelepon" type="text" value="" required/>
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoTelepon" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -176,6 +173,8 @@
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../dist/js/jquery.form-validator.min.js"></script>
+    <script src="../dist/js/jquery.validate.js"></script>
     <script>
 
         //---------------------------------DROPDOWN DAERAH------------------------------//
@@ -274,10 +273,8 @@
             //$('#modal-iuran').modal('show');
         }
 
-
-        //BUTTON SAVE UNTUK KE TABEL MSTANGGOTA DAN T_R_SCN_HEADER , T_R_SCN_DETAIL, T_MST_SCN_TYPE
-
         $('#btn-save').click(function () {
+            //$("#formAnggota").valid();
             var anggota = {};
             anggota.ID = $("#AnggotaId").val();
             anggota.KodeAnggota = $("#KodeAnggota").val();
@@ -289,7 +286,7 @@
             anggota.IDKelurahan = $("#Kelurahan").val();
             anggota.Email = $("#Email").val();
             anggota.NoTelepon = $("#NoTelepon").val();
-            anggota.ModifiedBy = '<%= Session["ID"] %>';
+            anggota.CreatedBy = '<%= Session["ID"] %>';
 
             var iuran = [];
             $('#data-iuran-modal tr').each(function () {
@@ -319,13 +316,25 @@
         //---------------------------------EDIT IURAN------------------------------//
 
         $(document).ready(function () {
+            //This field is required.
             //IF "BEBAS" = NULL SESSIONNYA
             $("#AnggotaId").val(0);
             loadIuran();
             loadDataPropinsi();
+
+            
             //ELSE DAH ADA PARAMETER/TIDAK NULL, BIKIN FUNCTION BUAT LOAD EDIT
         });
 
+
+
+        //$.validator.setDefaults({
+        //    submitHandler: function () {
+        //        alert("submitted!");
+        //    }
+        //});
+
+        
     </script>
      <%
       }
