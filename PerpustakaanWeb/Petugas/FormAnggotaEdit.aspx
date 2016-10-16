@@ -1,36 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="FormAnggotaEdit.aspx.cs" Inherits="PerpustakaanWeb.Petugas.FormAnggotaEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <style>
-        .box-body {
-            display: none;
-        }
-    </style>
+  <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+        { %>
+    
+    <%--    1. NERIMA ID DARI PAGE LISTANGGOTA
+            2. TAMPIL IURAN BERDASARKAN MASA BERLAKU
+            3. SIMPAN EDIT ANGGOTA BERDASARKAN IURAN
+            4. CHECK BERDASARKAN CHECKBOX
+            5. VALIDASI FORM--%>
 
- <%--   1.SEARCH ANGGOTA
-    2.PILIH ANGGOTA BY ID
-    3.TAMPIL ANGGOTA BY ID
-    4.TAMPIL EDIT ANGGOTA DAN IURAN
-    5.SIMPAN EDIT ANGGOTA
-     6. VALIDASI FORM--%>
+    <%--$theName = $_REQUEST('ID');--%>
 
     <div class="box box-info">
         <div class="box-header">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <input type="text" id="txt-anggotaS" class="form-control" />
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" id="search-anggota" class="btn btn-primary">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <h2>UBAH DATA ANGGOTA</h2>
         </div>
-        <div class="box-body" id="hidden">
+        <div class="box-body">
             <form action="#" method="post" id="formAnggota">
                 <div class="form-horizontal">
                     <input id="AnggotaId" type="hidden">
@@ -125,37 +111,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="CreatedOn">CreatedOn</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" id="CreatedOn" name="CreatedOn" type="date" value="" readonly />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="CreatedOn" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="CreatedBy">CreatedBy</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" id="CreatedBy" name="CreatedBy" type="number" value="" readonly />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="CreatedBy" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="ModifiedOn">ModifiedOn</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field ModifiedOn must be a date." id="ModifiedOn" name="ModifiedOn" type="date" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ModifiedOn" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-2" for="ModifiedBy">ModifiedBy</label>
-                        <div class="col-md-10">
-                            <input class="form-control text-box single-line" data-val="true" data-val-number="The field ModifiedBy must be a number." id="ModifiedBy" name="ModifiedBy" type="number" value="" />
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ModifiedBy" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
 
                     <%--MODAL ANGGOTA POPUP--%>
                     <div class="modal" id="modal-anggota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -167,7 +122,7 @@
                                     <h4>Daftar Anggota Perpustakaan</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <input id="anggotaID" type="hidden" />
+                                    <input id="anggotaID"/>
 
                                     <div class="row">
                                         <br />
@@ -218,6 +173,7 @@
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
+                                                        <th><input type="checkbox" /></th>
                                                         <th>Jenis Iuran</th>
                                                         <th>Masa Berlaku</th>
                                                         <th>Jumlah</th>
@@ -241,8 +197,8 @@
                     <!-- /.modal -->
 
                     <div class="form-group">
-                        <div class="box-footer clearfix" style="float: right;">
-                            <button type="button" id="btn-ok" class="btn btn-success">Ok</button>
+                        <div class="box-footer clearfix">
+                            <button type="button" id="btn-ok" class="btn btn-primary">Add</button>
                         </div>
                     </div>
 
@@ -251,82 +207,83 @@
         </div>
     </div>
 
-
-
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
     <script>
 
+        var dprovinsi;
+        var dkota;
+        var dkecamatan;
+        var tempID;
+
         //---------------------------------DROPDOWN DAERAH------------------------------//
-        function loadDataPropinsi() {
+        function loadPropinsi(ID) {
+
             $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllPropinsi',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataProp) {
-                    var listProp = "";
-                    listProp += '<option value="-1">--Pilih Propinsi--</option>'
-                    $.each(dataProp.d, function (index, item) {
-                        listProp += '<option value="' + item.ID + '">' +
-                            item.NamaProvinsi + '</option>'
+                url: "../Service/ListAnggotaService.asmx/getPropinsi",
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (id) {
+                    var out = "";
+                    $.each(id.d, function (index, item) {
+
+                        out += '<option value="' + item.ID + '">' + item.NamaProvinsi + '</option>';
                     });
-                    $('#OptProvinsi').html(listProp);
+                    $('#OptProvinsi').html(out).val(ID);
                 }
             });
         }
 
-        function loadKotaByIdProp(propid) {
+
+        function loadKota(ID) {
+
+            if (ID == null) {
+                dpropinsi = $("#OptProvinsi").val();
+            }
+
             $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllKotaByProvID',
-                data: '{"id":"' + propid + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataKota) {
-                    var ListKota = "";
-                    ListKota += '<option value="-1">--Pilih Kota--</option>'
-                    $.each(dataKota.d, function (index, item) {
-                        ListKota += '<option value="' + item.ID + '">' +
-                            item.NamaKota + '</option>'
+                url: "../Service/ListAnggotaService.asmx/getKota",
+                data: '{id: ' + dpropinsi + '}',
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (id) {
+                    var out = "";
+                    $.each(id.d, function (index, item) {
+
+                        out += '<option value="' + item.ID + '">' + item.NamaKota + '</option>';
                     });
-                    $('#OptKota').html(ListKota);
+                    $('#OptKota').html(out).val(ID);
                 }
-
-            });
-        }
-
-        function loadKecByIdKota(kotaid) {
-            $.ajax({
-                url: '../Service/AnggotaService.asmx/GetAllKecByKotaID',
-                data: '{"id":"' + kotaid + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (dataKecamatan) {
-                    var ListKec = "";
-                    ListKec += '<option value="-1">--Pilih Kecamatan--</option>'
-                    $.each(dataKecamatan.d, function (index, item) {
-                        ListKec += '<option value="' + item.ID + '">' +
-                            item.NamaKecamatan + '</option>'
-                    });
-                    $('#OptKecamatan').html(ListKec);
-                }
-
             });
         }
 
 
-        $('#OptProvinsi').change(function () {
-            var PropId = $('#OptProvinsi').val();
-            loadKotaByIdProp(PropId);
-        });
 
-        $('#OptKota').change(function () {
-            var KotaId = $('#OptKota').val();
-            loadKecByIdKota(KotaId);
-        });
+        function loadKecamatan(ID) {
 
+            if (ID == null) {
+                dkota = $("#OptKota").val();
+            }
+
+
+            $.ajax({
+                url: "../Service/ListAnggotaService.asmx/getKecamatan",
+                data: '{id: ' + dkota + '}',
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (id) {
+                    var out = "";
+                    $.each(id.d, function (index, item) {
+
+                        out += '<option value="' + item.ID + '">' + item.NamaKecamatan + '</option>';
+                    });
+                    $('#OptKecamatan').html(out).val(ID);
+                }
+            });
+        }
 
         //---------------------------------SEARCH------------------------------//
         $('#search-anggota').click(function () {
@@ -375,6 +332,7 @@
                     var listIuran = "";
                     $.each(dataIuran.d, function (index, item) {
                         listIuran += '<tr>' +
+                                '<td><input type="checkbox" id="cb' + item.ID + '" value="0">' + '</td>' +
                                 '<td>' + item.TipeIuran + '</td>' +
                                 '<td>' + item.MasaBerlaku + '</td>' +
                                 '<td>' + item.Jumlah + '</td>' +
@@ -386,12 +344,9 @@
             });
         }
 
-
-        //BUTTON SAVE UNTUK KE TABEL MSTANGGOTA DAN T_R_SCN_HEADER , T_R_SCN_DETAIL, T_MST_SCN_TYPE
-
         $('#btn-save').click(function () {
             var anggota = {};
-            //anggota.ID = $("#AnggotaId").val();
+            anggota.ID = $("#AnggotaId").val();
             anggota.KodeAnggota = $("#KodeAnggota").val();
             anggota.Nama = $("#Nama").val();
             anggota.Alamat = $("#Alamat").val();
@@ -401,20 +356,27 @@
             anggota.IDKelurahan = $("#Kelurahan").val();
             anggota.Email = $("#Email").val();
             anggota.NoTelepon = $("#NoTelepon").val();
-            anggota.CreatedBy = $("#CreatedBy").val();
-            anggota.ModifiedBy = $("#ModifiedBy").val();
-            var iuran = {};
-            iuran.TipeIuran = $()
+            anggota.ModifiedBy = '<%= Session["ID"] %>';
 
+            var iuran = [];
+            $('#data-iuran-modal tr').each(function () {
+                var data = {};
+
+                data.ID = $(this).find("td:nth-child(1)").find("input[type=hidden]").val();//ID tipe iuran
+                data.TipeIuran = $(this).find("td:nth-child(2)").text();
+                data.Jumlah = $(this).find("td:nth-child(4)").text();
+                iuran.push(data);
+            })
+
+            var param = { anggota: anggota, iurans: iuran }
             $.ajax({
-                url: '../Service/AnggotaService.asmx/SimpanAnggota',
-
-                data: '{anggota:' + JSON.stringify(anggota) + '}',
+                url: '../Service/AnggotaService.asmx/SimpanAnggotaIuran',
+                data: JSON.stringify(param),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'JSON',
                 success: function (response) {
-                    alert("Member has been saved successfully.");
+                    alert("Member has been updated successfully.");
                     window.location.reload();
                 }
             });
@@ -425,41 +387,55 @@
 
         function edit(id) {
             $.ajax({
-                url: '../Services/AnggotaService.asmx/GetAnggotaById',
-                data: '{"id":"' + id + '"}',
+                url: '../Service/ListAnggotaService.asmx/getAnggotaByID',
+                data: '{"ID":"' + JSON.stringify(id) + '"}',
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
-                success: function (dataAnggota) {
-                    var listAnggota = "";
-                    var iCount = 0;
-                    $.each(dataAnggota.d, function (index, item) {
-                        var dateKartu = new Date(parseInt((item.MasaBerlakuKartu).replace(/[^\d]/g, '')));
-                        var dateAnggota = new Date(parseInt((item.MasaBerlakuAnggota).replace(/[^\d]/g, '')));
-                        listAnggota += '<tr>' +
-                        $("#KodeAnggota").val(item.KodeAnggota);
-                        $("#Nama").val(item.Nama);
-                        $("#Alamat").val(item.Alamat);
-                        $("#OptProvinsi").val(item.IDProvinsi);
-                        $("#OptKota").val(item.IDKota);
-                        $("#OptKecamatan").val(item.IDKecamatan);
-                        $("#Kelurahan").val(item.IDKelurahan);
-                        $("#Email").val(item.Email);
-                        $("#NoTelepon").val(item.NoTelepon);
-                        $("#MasaBerlakuKartu").val(dateKartu.format("dd-MMM-yyyy"));
-                        $("#MasaBerlakuAnggota").val(dateAnggota.format("dd-MMM-yyyy"));
+                success: function (anggota) {
 
-                    });
-                    //$('#hidden').show();
+                    //SavedateAnggota = convertDateSave(anggota.d.MasaBerlakuAnggota);
+                    //SavedateKartu = convertDateSave(anggota.d.MasaBerlakuKartu);
+
+                    var dateKartu = new Date(parseInt((anggota.d.MasaBerlakuKartu).replace(/[^\d]/g, '')));
+                    var dateAnggota = new Date(parseInt((anggota.d.MasaBerlakuAnggota).replace(/[^\d]/g, '')));
+
+                    tempID = anggota.d.ID,
+                    $('#MasaBerlakuKartu').val(dateKartu),
+                    $('#MasaBerlakuAnggota').val(dateAnggota),
+
+                    $("#KodeAnggota").val(anggota.d.KodeAnggota),
+                    $('#Nama').val(anggota.d.Nama),
+                    $('#Alamat').val(anggota.d.Alamat),
+                    $('#NoTelepon').val(anggota.d.NoTelepon),
+                    $('#Email').val(anggota.d.Email),
+
+                    dpropinsi = anggota.d.IDProvinsi,
+                    loadPropinsi(dpropinsi),
+
+                    dkota = anggota.d.IDKota,
+                    loadKota(dkota)
+
+                    dkecamatan = anggota.d.IDKecamatan,
+                    loadKecamatan(dkecamatan)
+
                 }
-
             });
         }
 
         $(document).ready(function () {
+            id = 3;
+            edit(id);
             loadIuran();
-            loadDataPropinsi();
+            // loadDataPropinsi();
         });
 
     </script>
+    <%
+      }
+        else
+        {
+            Response.Redirect("../LoginAnggota.aspx");
+        }
+                    %>
 </asp:Content>
