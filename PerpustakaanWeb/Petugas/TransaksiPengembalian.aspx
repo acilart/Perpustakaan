@@ -1,22 +1,26 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="TransaksiPengembalian.aspx.cs" Inherits="PerpustakaanWeb.Petugas.TransaksiPengembalian" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+        { %>
+
     <link href="../dist/css/datepicker3.css" rel="stylesheet" />
     <div class="box box-info">
         <div class="box-header">
             <h2>Form Pengembalian</h2>
         </div>
         <div class="box-body">
-<form>
+<form name="Form1">
                 <div class="form-horizontal">
                     <input id="ReturnID" type="hidden" />
+                    <input id="BorrowID" type="hidden" />
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
                         <div class="input-group col-md-10">
                             <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
-                                <button type="button" name="search" id="search-btn" class="btn btn-flat">
+                                <button type="button" name="search" id="search-borr" class="btn btn-flat">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
@@ -91,12 +95,11 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
+            <button type="button" name="search" id="btn-clear" value="clear" class="btn btn-primary">Clear</button>
             <input  type="button" value="Save" class="btn btn-primary" onclick="SavePengembalian()" />
         </div>
     </div>
     <!-- /.box -->
-
     <%--MODAL NO REFERENSI POPUP--%>
     <div class="modal" id="modal-borrow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -106,19 +109,13 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4>Data Peminjaman Buku</h4>
                 </div>
-                <div class="modal-body">
-                    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <input type="text" id="search-borrow" class="form-control" />
-                        </div>
-                    </div>
+                <div class="modal-body">                                     
                     <div class="col-md-12">
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>No Referensi</th>
+                                    <th>No Registrasi</th>
                                     <th>Nama Anggota</th>
                                     <th></th>
                                 </tr>
@@ -154,7 +151,7 @@
         var tglkembali;       
 
         //untuk munculin pop up modal-borrow
-        $('#search-btn').click(function () {
+        $('#search-borr').click(function () {
             $('#modal-borrow').modal('show');
             LoadBorrow();
         })
@@ -174,7 +171,7 @@
                             '<td>' + ++Icount + '</td>' +
                             '<td>' + item.NoReferensi + '</td>' +
                             '<td>' + item.NamaAnggota + '</td>' +
-                            '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + '); LoadBukuPinjam(' + item.ID + ');"/>' + '</td>' +
+                            '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
                                  '</tr>'
                     });
                     $('#data-borrow').html(listborrow);
@@ -184,7 +181,8 @@
 
 
         // untuk ngeload data yang dipilih di modal untuk masuk ke form peminjaman
-        function Choose(Id) {           
+        function Choose(Id) {
+            
             $.ajax({
                 url: '../Service/PengembalianService.asmx/GetPeminjamanByID',
                 type: 'POST',
@@ -192,95 +190,104 @@
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
-                    var listborrow = "";                    
+                                     
                     $.each(data.d, function (index, item) {                      
                         tglpinjam = item.TanggalPinjam;
                         tglkembali = item.TanggalKembali;
                         TglDikembalikan = new Date();
+                        $('#BorrowID').val(Id);
                         $("#ReturnID").val(item.IDAnggota);
                         $("#NoRef").val(item.NoReferensi);                        
                         $("#Nama").val(item.NamaAnggota);
                         $("#TglPinjam").val(convertDate(tglpinjam));
                         $("#TglKembali").val(convertDate(tglkembali));
-                        $("#TglDikembalikan").val(convertDateNow(TglDikembalikan));
-                        LoadBukuPinjam();
+                        $("#TglDikembalikan").val(convertDateNow(TglDikembalikan));                     
                         $('#modal-borrow').modal('hide');                        
                     });;                   
                 }
             })
-        }
 
-        //fungsi untuk text box pencarian nomor referensi peminjaman
-        $('#search-borrow').keyup(function () {
-            var searchValue = $('#search-borrow').val();
-            LoadDataSearch(searchValue);
-        });
-        //fungsi untuk mencari di pop up peminjaman
-        function LoadDataSearch(searchValue) {
-            $.ajax({
-                url: '../Service/PengembalianService.asmx/GetPeminjamanBySearch',
-                type: 'POST',
-                data: '{"Search":"' + searchValue + '"}',
-                dataType: 'JSON',
-                contentType: 'application/json;charset=utf-8',
-                success: function (data) {
-                    var listborrow = "";
-                    var Icount = 0;
-                    $.each(data.d, function (index, item) {
 
-                        listborrow += '<tr>' +
-                            '<td>' + ++Icount + '</td>' +
-                            '<td>' + item.NoReferensi + '</td>' +
-                            '<td>' + item.NamaAnggota + '</td>' +
-                            '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
-                                 '</tr>'
-                    });
-                    $('#data-borrow').html(listborrow);
-                }
-            })
-        }
 
-        //fungsi untuk menampilkan buku yang di pinjam
-        function LoadBukuPinjam(id) {         
+
             $.ajax({
                 url: '../Service/PengembalianService.asmx/GetBukuPinjam',
-                data: '{"id":"' + id + '"}',
+                data: '{"id":"' + Id + '"}',
                 type: 'POST',
                 dataType: 'JSON',
-                contentType: 'application/json;charset=utf-8',               
+                contentType: 'application/json;charset=utf-8',
                 success: function (data) {
                     var listbuku = '';
                     var totaldenda = 0;
                     $.each(data.d, function (index, item) {
-                        listbuku += '<tr>' +                            
+                        listbuku += '<tr>' +
                             '<td>' + item.KodeMstBuku + '</td>' +
                             '<td>' + item.Judul + '</td>' +
                             '<td><input type="checkbox" id="cb' + item.IDBuku + '">' + '</td>' + //value satu untuk kehilangan buku
                             '<td>' + item.Terlambat + '</td>' +
                             '<td>' + item.denda + '</td>' +
                             '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
-                            '</tr>' ;
+                            '</tr>';
                         totaldenda = (totaldenda + item.denda)
                     });
                     $('#buku-borrow').html(listbuku);
                     $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td></td><td>' + totaldenda + '</td><td></td></tr>');
                 }
             })
-        }     
+
+
+
+
+
+
+
+        }
+
+        //fungsi untuk text box pencarian nomor referensi peminjaman
+        //$('#search-borrow').keyup(function () {
+        //    var searchValue = $('#search-borrow').val();
+        //    LoadDataSearch(searchValue);
+        //});
+        ////fungsi untuk mencari di pop up peminjaman
+        //function LoadDataSearch(searchValue) {
+        //    $.ajax({
+        //        url: '../Service/PengembalianService.asmx/GetPeminjamanBySearch',
+        //        type: 'POST',
+        //        data: '{"Search":"' + searchValue + '"}',
+        //        dataType: 'JSON',
+        //        contentType: 'application/json;charset=utf-8',
+        //        success: function (data) {
+        //            var listborrow = "";
+        //            var Icount = 0;
+        //            $.each(data.d, function (index, item) {
+
+        //                listborrow += '<tr>' +
+        //                    '<td>' + ++Icount + '</td>' +
+        //                    '<td>' + item.NoReferensi + '</td>' +
+        //                    '<td>' + item.NamaAnggota + '</td>' +
+        //                    '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
+        //                         '</tr>'
+        //            });
+        //            $('#data-borrow').html(listborrow);
+        //        }
+        //    })
+        //}
+ 
                 
 
         //fungsi simpan
         function SavePengembalian() {
             var header = {};
             header.IdAnggota = $("#ReturnID").val();
-            header.NoReferensi = $('#NoRef').val();
-            
+            header.IDBorrow = $('#BorrowID').val();
+            header.NoReferensi = $('#NoRef').val();            
             var TanggalPinjam = $("#TglPinjam").val();
             var TanggalKembali = $("#TglKembali").val();
             var TanggalDikembalikan = $("TglDikembalikan").val();
             header.TanggalPinjam = convertDate(TanggalPinjam);
             header.TanggalKembali = convertDate(TanggalKembali);
             header.TanggalDikembalikan = convertDateNow(TanggalDikembalikan);
+            header.CreatedBy = '<%= Session["ID"] %>';
 
             var list = [];
             $("#buku-borrow tr").each(function () {              
@@ -322,7 +329,7 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = month + "/" + day + "/" + year;
+            var date = day + "/" + month + "/" + year;
             return date;
         }
         //fungsi convert tanggal khusus tanggal system
@@ -331,19 +338,41 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = month + "/" + day + "/" + year;
+            var date = day + "/" + month + "/" + year;
             return date;
         }
         
 
-        
 
+        //fungsi clearfiled
+     
+        $("#btn-clear").click(function () {
+         
+            $('#BorrowID').val('');
+            $("#ReturnID").val('');
+            $("#NoRef").val('');
+            $("#Nama").val('');
+            $("#TglPinjam").val('');
+            $("#TglKembali").val('');
+            $("#TglDikembalikan").val('');
+
+            $("#buku-borrow").html(null);
+        });
+       
       
-
+        $(document).ready(function () {
+            Choose(Id);
+        });
 
         
 
 
     </script>
-
+    <%
+      }
+        else
+        {
+            Response.Redirect("../LoginAnggota.aspx");
+        }
+                    %>
 </asp:Content>
