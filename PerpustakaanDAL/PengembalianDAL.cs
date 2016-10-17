@@ -5,59 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Perpustakaan.ViewModel;
 
 namespace PerpustakaanDAL
 {
     public class PengembalianDAL
-    {
-        public string NamaAnggota { get; set; }
-        public int ID { get; set; }
-        public Nullable<int> IDAnggota { get; set; }
-        public string NoReferensi { get; set; }
-        public DateTime TanggalPinjam { get; set; }
-        public DateTime TanggalKembali { get; set; }
-        public DateTime TanggalDikembalikan { get; set; }
-       
-        //ini property untuk tampilan di form pengembalian
-        public int IDBuku { get; set; }
-        public int Terlambat { get; set; }
-        public bool IsKehilangan { get; set; }
-        public string Judul { get; set; }
-        public string KodeMstBuku { get; set; }
-        public double denda { get; set; }
-        
+    {               
         //ini untuk nampilin table peminjaman
-        public static List<PengembalianDAL> GetPeminjaman()
+        public static List<PengembalianViewModel> GetPeminjaman()
         {
-            List<PengembalianDAL> result = new List<PengembalianDAL>();
+            List<PengembalianViewModel> result = new List<PengembalianViewModel>();
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
-                result = (from Brw in db.TrBrwHeader
-                          join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
-                          select new
-                          {
-                              ID = Brw.ID,                              
-                              NoReferensi = Brw.NoReferensi,
-                              NamaAnggota = cat.Nama,
-                              TanggalPinjam = Brw.TanggalPinjam,
-                              TanggalKembali = Brw.TanggalKembali
+                var pinjam = db.TrBrwHeader.Where(n => n.Status == false);
+                if (pinjam.Count() > 0)
+                {
+                    result = (from Brw in db.TrBrwHeader
+                              join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
+                              select new
+                              {
+                                  ID = Brw.ID,
+                                  NoReferensi = Brw.NoReferensi,
+                                  NamaAnggota = cat.Nama,
+                                  TanggalPinjam = Brw.TanggalPinjam,
+                                  TanggalKembali = Brw.TanggalKembali
 
-                          }).ToList().
-                          Select(x => new PengembalianDAL()
+                              }).ToList().
+                          Select(x => new PengembalianViewModel()
                           {
-                              ID = x.ID,                              
+                              ID = x.ID,
                               NoReferensi = x.NoReferensi,
                               NamaAnggota = x.NamaAnggota,
                               TanggalPinjam = Convert.ToDateTime(x.TanggalPinjam),
                               TanggalKembali = Convert.ToDateTime(x.TanggalKembali)
                           }).ToList();
+                }
                 
-                //result = db.TrBrwHeader.ToList();
+               
             }
             return result;
         }
 
-        public static List<PengembalianDAL> GetPeminjamanByID(int id)
+        public static List<PengembalianViewModel> GetPeminjamanByID(int id)
         {
 
             // List<PengembalianDAL> result = new List<PengembalianDAL>();
@@ -76,11 +65,11 @@ namespace PerpustakaanDAL
                                   TanggalKembali = Brw.TanggalKembali
                               }).Where(a => a.ID == id).ToList();
 
-                var list = new List<PengembalianDAL>();
+                var list = new List<PengembalianViewModel>();
                 foreach (var item in result)
                 {
 
-                    var dal = new PengembalianDAL()
+                    var dal = new PengembalianViewModel()
                     {
                         ID = item.ID,
                         IDAnggota = item.IDAnggota,
@@ -95,7 +84,7 @@ namespace PerpustakaanDAL
             }
             //return new List<PengembalianDAL>();          
         }
-        public static List<PengembalianDAL> GetPeminjamanBySearch(string Search)
+        public static List<PengembalianViewModel> GetPeminjamanBySearch(string Search)
         {
 
             // List<PengembalianDAL> result = new List<PengembalianDAL>();
@@ -112,11 +101,11 @@ namespace PerpustakaanDAL
                                   TanggalKembali = Brw.TanggalKembali
                               }).Where(a => (a.NamaAnggota + a.NoReferensi).Contains(Search)).ToList();
 
-                var list = new List<PengembalianDAL>();
+                var list = new List<PengembalianViewModel>();
                 foreach (var item in result)
                 {
 
-                    var dal = new PengembalianDAL()
+                    var dal = new PengembalianViewModel()
                     {
                         NoReferensi = item.NoReferensi,
                         NamaAnggota = item.NamaAnggota,
@@ -129,9 +118,9 @@ namespace PerpustakaanDAL
             }
         }
         //untuk mendapatkan buku yang dipinjam oleh anggota
-        public static List<PengembalianDAL> GetBukuPinjam(int id)
+        public static List<PengembalianViewModel> GetBukuPinjam(int id)
         {
-            List<PengembalianDAL> result = new List<PengembalianDAL>();
+            List<PengembalianViewModel> result = new List<PengembalianViewModel>();
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
                 
@@ -142,7 +131,7 @@ namespace PerpustakaanDAL
                     var ts = new TimeSpan();
                     ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
                     var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
-                    var pengembalian = new PengembalianDAL()
+                    var pengembalian = new PengembalianViewModel()
                     {
                         IDBuku=buku.ID,
                         Judul = buku.JudulBuku,
@@ -160,16 +149,17 @@ namespace PerpustakaanDAL
         public static bool SimpanPengembalian(TrReturnHeader header, List<TrReturnDetail> detail)
         {
             var bukuDal = new BukuDAL();
-            #region Update Peminjaman Header
-            var pinjamDal = new PeminjamanDAL();
-            var pinjam = pinjamDal.GetHeaderByNore(header.NoReferensi);
-            if (pinjam != null)
-            {
-                pinjam.Status = true;
-            }
-            #endregion
+            
             using (var db = new PerpustakaanDbContext())
             {
+                #region Update Peminjaman Header
+                var pinjamDal = new PeminjamanDAL();
+                var pinjam = db.TrBrwHeader.FirstOrDefault(n=>n.ID == header.IDBorrow);
+                if (pinjam != null)
+                {
+                    pinjam.Status = true;
+                }
+                #endregion
                 #region Insert Header Pengembalian
                 int id = 1;
                 var listHeader = db.TrReturnHeader.ToList();
@@ -183,34 +173,40 @@ namespace PerpustakaanDAL
                 header.NoRegistrasi = AutoNumberDAL.PengembalianBukuNoRegAutoNumber();
                 header.NoReferensi = header.NoReferensi;
                 header.CreatedOn = DateTime.Now;
+                header.CreatedBy = header.CreatedBy;
                 header.TanggalPinjam = header.TanggalPinjam;
                 header.TanggalKembali = header.TanggalKembali;
                 header.TanggalDikembalikan = header.TanggalDikembalikan; //harus diganti pakai datepicker
                 header.Denda = header.Denda;
                 db.TrReturnHeader.Add(header);
                 #endregion
-                #region Insert Detail Pengembalian
+               
                 foreach (var item in detail)
                 {
+                    #region Insert Detail Pengembalian
+                    int idd = 0;
                     var listdetail = db.TrReturnDetail.ToList();
                     if (listdetail.Count > 0)
                     {
-                        id = listdetail[listdetail.Count - 1].ID + 1;
+                        idd = listdetail[listdetail.Count - 1].ID + 1;
                     }
                     var dal = new BukuDAL();
                     var buku = dal.GetBukuByID(item.IDBuku);
-                    item.ID = id;
-                    item.HeaderID = id;
-                    item.IDBuku = item.IDBuku;
-                    item.LaporKehilangan = item.LaporKehilangan;
-                    item.CreatedOn = DateTime.Now;
-                    item.ModifiedOn = DateTime.Now;
-                    item.Denda = header.Denda;
-                    db.TrReturnDetail.Add(item);
+                    if (buku != null)
+                    {
+                        item.ID = idd;
+                        item.HeaderID = header.ID;
+                        item.IDBuku = item.IDBuku;
+                        item.LaporKehilangan = item.LaporKehilangan;
+                        item.CreatedOn = DateTime.Now;
+                        item.CreatedBy = header.CreatedBy;
+                        item.ModifiedOn = DateTime.Now;
+                        item.Denda = header.Denda;
+                        db.TrReturnDetail.Add(item);
+                    }
+                    #endregion
                     if (item.LaporKehilangan == false && buku!=null)
                     {
-                        using (var dbStock = new PerpustakaanDbContext())
-                        {
                             #region Update Stock
                             var stock = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
                             if (stock != null)
@@ -220,7 +216,7 @@ namespace PerpustakaanDAL
                             #endregion
 
                             #region Update Cell
-                            var cell = dbStock.MstCabinetCell.Where(n => n.ID == buku.Lokasi).FirstOrDefault();
+                            var cell = db.MstCabinetCell.Where(n => n.ID == buku.Lokasi).FirstOrDefault();
                             if (cell != null)
                             {
                                 cell.Terisi += 1;
@@ -228,27 +224,19 @@ namespace PerpustakaanDAL
                             }
                             #endregion
 
-                            #region Update Status Buku
-                            if (buku != null)
-                            {
-                                buku.Aktif = true;
-                            }
-                            #endregion
-                            try
-                            {
-                                dbStock.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                return false;
-                            }
-                            
+                    }
+                    else if (item.LaporKehilangan == true && buku != null)
+                    {
+                        var cekBuku = db.MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
+                        if (cekBuku != null)
+                        {
+                            cekBuku.Aktif = false;
+                            cekBuku.Lokasi = null;
                         }
-
                     }
 
                 }
-                #endregion
+             
                 try
                 {
                     db.SaveChanges();
