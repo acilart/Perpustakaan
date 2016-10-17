@@ -15,37 +15,42 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-
+                //cek di bookingHeader data ID yang akan disimpan
                 var cek = db.TrBookingHeader.FirstOrDefault(n => n.IDAnggota == book.IDAnggota);
                 var ambilNoReg = AutoNumberDAL.BookingBukuAutoNumber();
 
-
+                //apabila di bookingheader ada lanjutkan
+                //update
                 if (cek != null)
                 {
+                    //update modifiedOn
                     cek.ModifiedOn = DateTime.Now;
-
-
+                    
+                    
                     cek.TanggalPinjam = Convert.ToDateTime(book.TanggalPinjam);
                     var det = db.TrBookingDetail.Where(n => n.HeaderID == cek.ID);
+                    
+                    //lanjut update di bookingdetailnya
                     var listDeleted = new List<TrBookingDetail>();
                     
                     foreach (var item in det)
                     {
+                        
                         var cekDet = details.FirstOrDefault(n => n.IDBuku == item.IDBuku);
                         if (cekDet == null)
                         {
-                             
                             item.Active = false;
                             item.ModifiedOn = DateTime.Now;
                             listDeleted.Add(item);
                         }
+                        
                         else {
-
                             item.Active = true;
                             item.ModifiedOn= DateTime.Now;  
                         }
                     }
                     
+                    //cek input detail
                     foreach (var item in details)
                     {
                         var cekDet = db.TrBookingDetail.FirstOrDefault(n => n.HeaderID == cek.ID && n.IDBuku == item.IDBuku);
@@ -63,6 +68,7 @@ namespace PerpustakaanDAL
                         }
                    }
 
+                    //pengecekan stok buku 
                     foreach (var item in listDeleted)
                     {
                         var cekStok = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
@@ -73,7 +79,8 @@ namespace PerpustakaanDAL
                     }
                        
                 }
-                
+
+                //else
                 else
                 {
                     int id = 1;
@@ -90,16 +97,28 @@ namespace PerpustakaanDAL
                     book.Active = true;
                     book.CreatedOn = DateTime.Now;
                     db.TrBookingHeader.Add(book);
-
+                    var listDeleted = new List<TrBookingDetail>();
+                    
                     foreach (var item in details)
                     {
                         item.HeaderID = id;
                         item.Active = true;
                         item.CreatedOn = DateTime.Now;
                         item.ModifiedOn = DateTime.Now;
+
+
+                        var cekStok = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekStok != null)
+                        {
+                            cekStok.InStock = false;
+                        }
+
+
                     }
 
                     db.TrBookingDetail.AddRange(details);
+
+                     
 
                 }
 

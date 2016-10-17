@@ -118,9 +118,10 @@ namespace PerpustakaanDAL
                 var list = new List<MstBuku>();
                 var buku = db.MstBuku.ToList();
                 var stok = db.TrStock.Where(n => n.InStock == true);
+                
                 foreach (var item in stok)
                 {
-                    var cek = buku.FirstOrDefault(n => n.ID == item.ID);
+                    var cek = buku.FirstOrDefault(n => n.ID == item.IDBuku);
                     if (cek != null) 
                     {
                         list.Add(cek);
