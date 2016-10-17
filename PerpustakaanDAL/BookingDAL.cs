@@ -282,8 +282,8 @@ namespace PerpustakaanDAL
                     {
                         NoBooking = cek.BookingNo,
                         IDBooking = cek.ID,
-                        TanggalKembali = Convert.ToDateTime(cek.TanggalBooking),
-                        TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam)
+                        TanggalKembali = DateTime.Now.AddDays(3),
+                        TanggalPinjam = DateTime.Now
 
                     };
                     return view;
