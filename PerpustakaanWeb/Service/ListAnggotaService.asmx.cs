@@ -104,6 +104,9 @@ namespace PerpustakaanWeb.Service
             return AnggotaDAL.searchAnggotaByEmail(email);
         }
 
-
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByAlamat(string alamat) {
+             return AnggotaDAL.searchAnggotaByAlamat(alamat);
+        }
     }
 }

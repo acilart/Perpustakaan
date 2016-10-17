@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterAnggota.Master" AutoEventWireup="true" CodeBehind="ListPinjaman.aspx.cs" Inherits="PerpustakaanWeb.Anggota.ListPinjaman" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
+    
+    <%-- panel --%>
      <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">List Peminjaman</h1>
@@ -10,7 +12,7 @@
             <div class="form-horizontal">
                 <div class="form-group col-md-3">
                     <select class="form-control" id="searchby">
-                        <option value="kode">No Registrasi</option>
+                        <option value="no">No Registrasi</option>
                         <option value="nama">Nama Anggota</option>
                        
 
@@ -76,7 +78,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" >Kembalikan</button>
+                    <button type="button" id="btn-kembalikan" class="btn btn-primary" >Kembalikan</button>
                     <button type="button" class="btn btn-primary"data-dismiss="modal">Tutup</button>
                 </div>
             </div>
@@ -87,10 +89,22 @@
 
 
     <script>
+        
+        var login = "1";
+
+         
         $(document).ready(function () {
-            LoadList();
-            
+            if (login == "1") {
+                LoadList();
+            } else {
+                LoadListAnggotaOnly(login);
+                $("#btn-kembalikan").hide();
+            }
+             
         });
+
+
+
 
         function LoadList() {
             $.ajax({
@@ -107,8 +121,8 @@
                             + '<td>' + id + '</td>'
                             + '<td>' + item.NoRegistrasi + '</td>'
                             + '<td>' + item.Nama + '</td>'
-                            + '<td>' + convertDate(item.TglKembali) + '</td>'
                             + '<td>' + convertDate(item.TglPinjam) + '</td>'
+                            + '<td>' + convertDate(item.TglKembali) + '</td>'
                             + '<td>' + item.JumlahBuku + '</td>'
                             + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID('+item.ID+')></td>'
                         '</tr>'
@@ -119,8 +133,34 @@
             });
         }
         
-        function getDataByID(ID) {
+        function LoadListAnggotaOnly(ID) {
 
+            $.ajax({
+                url: '../Service/ListPinjamanService.asmx/getListAnggotaOnly',
+                data: "{ID:" + ID + "}",
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "1";
+                         listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + anggota.d.NoRegistrasi + '</td>'
+                            + '<td>' + anggota.d.Nama + '</td>'
+                            + '<td>' + convertDate(anggota.d.TglPinjam) + '</td>'
+                            + '<td>' + convertDate(anggota.d.TglKembali) + '</td>'
+                            + '<td>' + anggota.d.JumlahBuku + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + anggota.d.ID + ')></td>'
+                        '</tr>'
+                     
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+        }
+
+
+        function getDataByID(ID) {
 
             $.ajax({
                 url: '../Service/ListPinjamanService.asmx/getListDetail',
@@ -137,9 +177,8 @@
                             + '<td>' + id + '</td>'
                             + '<td>' + item.KodeBuku + '</td>'
                             + '<td>' + item.JudulBuku + '</td>'
-                            + '<td>' +  + '</td>'
-                            + '<td>' +  + '</td>'
-                  
+                            + '<td>' + item.Terlambat + '</td>'
+                            + '<td>' + item.Denda + '</td>'
                          '</tr>'
                     });
                     $('#modal-edit').modal('show');
@@ -150,8 +189,59 @@
             
         }
 
+        function convertDate(tanggal) {
+
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+        function HitungJumlahHari(pinjam, kembali) {
+            var dateString = tanggal.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+        function searchByNo(No) {
+            $.ajax({
+                url: '../Service/ListPinjamanService.asmx/searchByNo',
+                data: '{"No":"' + No + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.NoRegistrasi + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + convertDate(item.TglKembali) + '</td>'
+                            + '<td>' + convertDate(item.TglPinjam) + '</td>'
+                            + '<td>' + item.JumlahBuku + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + item.ID + ')></td>'
+                        '</tr>'
+
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
+
+
+        }
+
         function searchByNama(nama) {
-              $.ajax({
+            $.ajax({
                 url: '../Service/ListPinjamanService.asmx/searchByNama',
                 data: '{"nama":"' + nama + '"}',
                 type: 'POST',
@@ -171,7 +261,7 @@
                             + '<td>' + item.JumlahBuku + '</td>'
                             + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + item.ID + ')></td>'
                         '</tr>'
-                        
+
                     });
                     $('#tbl-list-anggota').html(listProp);
                 }
@@ -181,22 +271,23 @@
         }
 
 
-
-        function convertDate(tanggal) {
-
-            var dateString = tanggal.substr(6);
-            var currentTime = new Date(parseInt(dateString));
-            var month = currentTime.getMonth() + 1;
-            var day = currentTime.getDate();
-            var year = currentTime.getFullYear();
-            var date = day + "/" + month + "/" + year;
-            return date;
-        }
-
-
         $('#txt-search').keypress(function () {
-            searchByNama($('#txt-search').val())
+
+             if ($("#searchby").val() == "nama") {
+                 searchByNama($('#txt-search').val())
+             }
+
+             else if ($("#searchby").val() == "no") {
+                 searchByNo($('#txt-search').val())
+             }
+
         });
+
+        $('btn-kembalikan').click(function () {
+
+            //kirim paramater ke sesion, ID langsung keluar di form pembayaran
+        });
+
     </script>
     
 </asp:Content>

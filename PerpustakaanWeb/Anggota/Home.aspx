@@ -37,4 +37,8 @@
         </div>
     </div>
         </form>
+
+
+     <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
 </asp:Content>

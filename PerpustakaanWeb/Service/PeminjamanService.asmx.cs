@@ -70,7 +70,7 @@ namespace PerpustakaanWeb.Service
         public List<BookingViewModel> GetBookingAktifByID(int id)
         {
             var dal = new BookingDAL();
-            return dal.GetBookingAktifByID(id);
+            return BookingDAL.GetBookingAktifByID(id);
 
         }
 
@@ -92,7 +92,7 @@ namespace PerpustakaanWeb.Service
         public BookingHeaderViewModel GetHeaderViewModelByID(int id)
         {
             var dal = new BookingDAL();
-            return dal.GetHeaderViewModelByID(id);
+            return BookingDAL.GetHeaderViewModelByID(id);
         }
     }
 }

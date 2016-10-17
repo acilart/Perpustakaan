@@ -314,6 +314,34 @@
                 $("#modal-buku").modal("show");
             };
 
+<<<<<<< .mine
+                var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
+                //var cek = $('#cb' + $(this).find("td:nth-child(4)").val()).is(":checked");
+                data.IDBuku = $(this).find("td:nth-child(4)").find("input[type=hidden]").val();
+                data.JudulBuku = $(this).find('td:nth-child(2)').text();
+                data.Kode = $(this).find('td:nth-child(1)').text();
+                data.Pengarang = $(this).find('td:nth-child(3)').text();
+                //alert(cek);
+                if (cek == true) {
+                    list.push(data);}
+            })
+                $.each(list, function (index, item) {
+                    var newBook = '<tr id="judul-' + item.IDBuku + '">' +
+||||||| .r95
+                var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
+                //var cek = $('#cb' + $(this).find("td:nth-child(4)").val()).is(":checked");
+                data.IDBuku = $(this).find("td:nth-child(4)").find("input[type=hidden]").val();
+                alert(data.IDBuku);
+                data.JudulBuku = $(this).find('td:nth-child(2)').text();
+                data.Kode = $(this).find('td:nth-child(1)').text();
+                data.Pengarang = $(this).find('td:nth-child(3)').text();
+                //alert(cek);
+                if (cek == true) {
+                    list.push(data);}
+            })
+                $.each(list, function (index, item) {
+                    var newBook = '<tr id="judul-' + item.IDBuku + '">' +
+=======
             //VALIDASI JIKA SUDAH DI PILIH TIDAK BISA LOAD BUKU
             function pilihBuku() {
                 //Cek CreatedOn dulu
@@ -335,12 +363,19 @@
                 $("#contoh tr").remove();
                 $.each(listChecked, function (index, item) {
                     var newBook = '<tr id="id' + item.IDBuku + '">' +
+>>>>>>> .r120
                           '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
                             '<td>' + item.Kode + '</td>' +
                             '<td>' + item.JudulBuku + '</td>' +
                             '<td>' + item.Pengarang + '</td>' +
                             "<td><input type='button' value='Delete' class='btn btn-danger' onclick='hapusBuku(" + item.IDBuku + ")'/></td>" +
                             "</tr>";
+<<<<<<< .mine
+                   
+||||||| .r95
+                    alert(item.IDBuku);
+=======
+>>>>>>> .r120
                     $("#contoh").append(newBook);
                 
                 });
@@ -429,10 +464,38 @@
                 loadSearchAnggota(searchValue);
             });
 
+<<<<<<< .mine
+            //var param = { header: header, details: list };
+            //$.ajax({
+            //    url: '../Service/InputBukuService.asmx/SimpanPenyimpananBuku',
+            //    type: 'POST',
+            //    data: JSON.stringify(param),
+            //    contentType: 'application/json; charset=utf-8',
+            //    datatype: "json",
+            //    success: function (response) {
+            //        alert("Data Penyimpanan Berhasil Disimpan..");
+            //        window.location.reload();
+            //    }
+            //});
+||||||| .r95
+            var param = { header: header, details: list };
+            $.ajax({
+                url: '../Service/InputBukuService.asmx/SimpanPenyimpananBuku',
+                type: 'POST',
+                data: JSON.stringify(param),
+                contentType: 'application/json; charset=utf-8',
+                datatype: "json",
+                success: function (response) {
+                    alert("Data Penyimpanan Berhasil Disimpan..");
+                    window.location.reload();
+                }
+            });
+=======
             $('#search-anggota').click(function () {
                 var searchValue = $('#txt-anggotaS').val();
                 loadSearchAnggota(searchValue);
             });
+>>>>>>> .r120
 
     </script>
     <%

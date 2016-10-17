@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-
+    <%--Panel --%>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">List Anggota</h1>
@@ -11,6 +11,7 @@
 
             <div class="form-horizontal">
                 <div class="form-group col-md-3">
+                    <%-- Opsi Untuk Pemilihan --%>
                     <select class="form-control" id="searchby">
                         <option value="kode">Kode Anggota</option>
                         <option value="nama">Nama Anggota</option>
@@ -21,13 +22,15 @@
                     </select>
                 </div>
 
-                <div class="form-group col-md-8 col-md-offset-1">
+                <div class="form-group col-md-3">
+                    <%-- Inputan --%>
                     <input class="form-control" type="text" id="txt-search" placeholder="search" />
 
                 </div>
 
                 <div class="form-group">
 
+                    <%-- Tabel Untuk Ouput Table Master Anggota --%>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -50,7 +53,7 @@
     </div>
 
 
-
+    <%-- modal edit --%>
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -83,25 +86,29 @@
                     <label>No Telepon </label>
                     <input type="text" id="txt-telp" class="form-control" placeholder="No Telepon" maxlength="12" />
                     <label>Masa Berlaku Kartu </label>
-                    <input type="text" id="txt-masa-berlaku-kartu" class="form-control" placeholder="a" readonly="readonly"/>
+                    <input type="text" id="txt-masa-berlaku-kartu" class="form-control" readonly="readonly" />
                     <label>Masa Berlaku Anggota </label>
-                    <input type="text" id="txt-masa-berlaku-anggota" class="form-control" placeholder="a" readonly="readonly"/>
+                    <input type="text" id="txt-masa-berlaku-anggota" class="form-control" readonly="readonly" />
 
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <%--                    <button type="button" class="btn btn-primary" onclick="perpanjangAnggota()">Perpanjang Keanggotaan</button>--%>
                     <button type="button" class="btn btn-primary" onclick="editAnggota()">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
                 </div>
             </div>
         </div>
     </div>
 
+    <%-- akhir modal perpanjangan anggota --%>
+
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
-    <script>
     
 
+    <script>
         var dprovinsi;
         var dkota;
         var dkecamatan;
@@ -116,7 +123,14 @@
             LoadAnggota();
         });
 
+        
+        //function perpanjangAnggota() {
+          
+        //    $("modal-edit").modal("hide");
 
+        //}
+
+        //menampilkan seluruh anggota
         function LoadAnggota() {
             $.ajax({
                 url: '../Service/ListAnggotaService.asmx/getAnggota',
@@ -144,10 +158,12 @@
             });
         }
 
-
-
+        //apabila klik edit, maka akan menampilkan modal untuk edit anggota
 
         function getAnggotaByID(ID) {
+
+            //antara keluar modal atau keluar form baru?? masih harus ditanyakan
+
 
             $.ajax({
                 url: '../Service/ListAnggotaService.asmx/getAnggotaByID',
@@ -167,6 +183,7 @@
                     $('#txt-masa-berlaku-kartu').val(dateKartu),
                     $('#txt-masa-berlaku-anggota').val(dateAnggota),
 
+                    $('#txt-kode-anggota').val(anggota.d.KodeAnggota),
 
                     $('#txt-nama').val(anggota.d.Nama),
                     $('#txt-alamat').val(anggota.d.Alamat),
@@ -188,7 +205,7 @@
             $('#modal-edit').modal('show');
         }
 
-
+        //konversi tanggal dan ditampilkan format dd mm YY
         function convertDateShow(tanggal) {
 
             var dateString = tanggal.substr(6);
@@ -199,7 +216,8 @@
             var date = day + "-" + month + "-" + year;
             return date;
         }
-       
+
+        //konversi tanggal dan disimpan kedalam Database format YY mm dd
         function convertDateSave(tanggal) {
 
             var dateString = tanggal.substr(6);
@@ -211,25 +229,36 @@
             return date;
         }
 
-       function hapusAnggotaByID(ID) {
+        //hapus anggota
+        function hapusAnggotaByID(ID) {
 
-            $.ajax({
-                url: '../Service/ListAnggotaService.asmx/hapusAnggota',
-                data: '{"id":"' + JSON.stringify(ID) + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (anggota) {
-                    if (anggota) {
-                        alert('berhasil')
-                        LoadAnggota();
-                    } else
-                        alert('gagal dihapus')
+            var answer = confirm("Anda Akan Menghapus Data ini?")
+            if (answer) {
 
-                }
-            });
+                $.ajax({
+                    url: '../Service/ListAnggotaService.asmx/hapusAnggota',
+                    data: '{"id":"' + JSON.stringify(ID) + '"}',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (anggota) {
+                        if (anggota) {
+                            alert('berhasil')
+                            LoadAnggota();
+                        } else
+                            alert('gagal dihapus')
+
+                    }
+                });
+
+            }
+            else {
+ 
+                //do nothing
+            }
+
+            
         }
-
 
         function editAnggota() {
             var anggota = {};
@@ -261,10 +290,7 @@
             });
             $('#modal-edit').modal('hide');
         }
-
-
-
-
+         
         function loadPropinsi(ID) {
 
             $.ajax({
@@ -282,8 +308,7 @@
                 }
             });
         }
-
-      
+   
         function loadKota(ID) {
 
             if (ID == null ) {
@@ -306,9 +331,7 @@
                 }
             });
         }
-
-
-
+ 
         function loadKecamatan(ID) {
 
             if (ID == null) {
@@ -332,11 +355,7 @@
                 }
             });
         }
-
-
-
-
-        
+    
         function searchAnggotaByNama(nama) {
             $.ajax({
 
@@ -458,9 +477,38 @@
             });
 
         }
+ 
+        function searchAnggotaByAlamat(Alamat) {
 
+            $.ajax({
 
+                url: '../Service/ListAnggotaService.asmx/searchAnggotaByAlamat',
+                data: '{"alamat":"' + Alamat + '"}',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (anggota) {
+                    var listProp = "";
+                    var id = "0";
+                    $.each(anggota.d, function (index, item) {
+                        id++;
+                        listProp += '<tr>'
+                            + '<td>' + id + '</td>'
+                            + '<td>' + item.KodeAnggota + '</td>'
+                            + '<td>' + item.Nama + '</td>'
+                            + '<td>' + item.Alamat + '</td>'
+                            + '<td>' + item.NoTelepon + '</td>'
+                            + '<td>' + item.Email + '</td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
+                            + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
+                        '</tr>'
+                    });
+                    $('#tbl-list-anggota').html(listProp);
+                }
+            });
 
+        }
+         
         $("#dpropinsi").click(function () {
             loadKota();
             loadKecamatan();
@@ -485,8 +533,9 @@
                 searchAnggotaByEmail($("#txt-search").val());
             else if ($("#searchby").val() == 'kode')
                 searchAnggotaByKode($("#txt-search").val());
+            else if ($("#searchby").val() == 'alamat')
+                searchAnggotaByAlamat($("#txt-search").val());
         });
-
-
+         
     </script>
 </asp:Content>

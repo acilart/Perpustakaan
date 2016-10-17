@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using Perpustakaan.ViewModel;
 
 namespace PerpustakaanWeb.Service
 {
@@ -55,6 +56,30 @@ namespace PerpustakaanWeb.Service
             return BookingDAL.SimpanBooking(header,details);
         }
 
+        [WebMethod]
+        public bool RemoveDetailBukuBookingList(int details)
+        {
+            return BookingDAL.RemoveDetailBukuBookingList(details);
+        }
 
+        [WebMethod]
+        public List<BookingViewModel> GetSelectedBookingAktifByID(int ID)
+        {
+            return BookingDAL.GetSelectedBookingAktifByID(ID);
+        }
+
+        [WebMethod]
+        public BookingHeaderViewModel GetHeaderViewModelByID(int ID)
+        {
+            return BookingDAL.GetHeaderViewModelByID(ID);
+        }
+
+        [WebMethod]
+        public BookingHeaderViewModel GetSelectedHeaderViewModelByID(int ID)
+        {
+            return BookingDAL.GetSelectedHeaderViewModelByID(ID);
+        }
+
+       
     }
 }

@@ -41,10 +41,21 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod]
+        public ListPinjamanViewModel getListAnggotaOnly(int ID) {
+
+            return ListPeminjamanDAL.getListAnggotaOnly(ID);
+        }
+
+        [WebMethod]
         public List<ListPinjamanViewModel> searchByNama(string nama)
         {
             return ListPeminjamanDAL.searchByNama(nama);
         }
 
+        [WebMethod]
+        public List<ListPinjamanViewModel> searchByNo(string No) {
+
+            return ListPeminjamanDAL.searchByNo(No);
+        }
     }
 }
