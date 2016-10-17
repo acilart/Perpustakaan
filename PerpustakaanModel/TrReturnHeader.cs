@@ -28,5 +28,8 @@ namespace PerpustakaanModel
         public Nullable<bool> ModifiedBy { get; set; }
         public Nullable<bool> Denda { get; set; }
         public Nullable<int> SudahDibayar { get; set; }
+
+        [NotMapped]
+        public int IDBorrow { get; set; }
     }
 }
