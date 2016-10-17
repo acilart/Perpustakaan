@@ -45,6 +45,9 @@
     <Compile Include="IuranViewModel.cs" />
     <Compile Include="LemariViewModel.cs" />
     <Compile Include="ListPinjamanViewModel.cs" />
+    <Compile Include="PembayaranDendaViewModel.cs" />
+    <Compile Include="PengembalianViewModel.cs" />
+    <Compile Include="PetugasViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
