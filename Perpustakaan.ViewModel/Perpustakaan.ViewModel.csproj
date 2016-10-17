@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{69EC4599-3011-4B4E-8B76-7E049940AE99}</ProjectGuid>
+    <ProjectGuid>{27FE780A-CB4D-4D35-9C55-34B974826962}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Perpustakaan.ViewModel</RootNamespace>
