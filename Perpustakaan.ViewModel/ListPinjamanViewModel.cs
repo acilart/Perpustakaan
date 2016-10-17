@@ -14,7 +14,6 @@ namespace Perpustakaan.ViewModel
         public Nullable<System.DateTime> TglPinjam { get; set; }
         public Nullable<System.DateTime> TglKembali { get; set; }
         public int JumlahBuku { get; set; }
-
         public string KodeBuku { get; set; }
         public string JudulBuku { get; set; }
         public DateTime TglTelat { get; set; }
