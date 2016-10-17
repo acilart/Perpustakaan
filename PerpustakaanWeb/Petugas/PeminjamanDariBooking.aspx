@@ -244,7 +244,6 @@
 
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
-    <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
   
     <script>

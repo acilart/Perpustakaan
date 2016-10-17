@@ -121,11 +121,10 @@
             <!-- /.modal -->
         </div>
 
-        
+        </div>
         <%--MODAL POP UP LOKASI--%>
 
         <script src="../Scripts/jquery-1.10.2.js"></script>
-        <script src="../Scripts/jquery-3.1.1.min.js"></script>
         <script src="../Scripts/bootstrap.js"></script>
         <script>
             function loadDataKategori() {
