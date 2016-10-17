@@ -143,7 +143,13 @@ body.hold-transition .main-header .logo {
 }
 /* Content */
 .content {
+<<<<<<< .mine
+  min-height: 100%;
+||||||| .r124
+  min-height: 250px;
+=======
   min-height: 540px;
+>>>>>>> .r144
   padding: 15px;
   margin-right: auto;
   margin-left: auto;
@@ -558,6 +564,7 @@ a:focus {
   padding: 0;
   margin: 0;
   padding-left: 5px;
+    min-height:100%;
 }
 .sidebar-menu .treeview-menu .treeview-menu {
   padding-left: 20px;
@@ -757,7 +764,8 @@ a:focus {
 .nav-tabs.control-sidebar-tabs > li.active > a:hover,
 .nav-tabs.control-sidebar-tabs > li.active > a:focus,
 .nav-tabs.control-sidebar-tabs > li.active > a:active {
-  border-top: none;
+
+    border-top: none;
   border-right: none;
   border-bottom: none;
 }

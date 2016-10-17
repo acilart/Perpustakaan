@@ -12,35 +12,35 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="sumber">Sumber Buku</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <td>
-                                <select class="form-control" data-val="true" id="sumber" name="sumber">
+                                <select class="form-control" data-val="true" id="sumber" onchange="pilihSumber()" name="sumber">
                                 </select></td>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoRef">No Referensi</label>
-                        <div class="input-group col-md-3">
+                        <div class="input-group col-md-4">
                             <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
-                                <button class="btn btn-default glyphicon glyphicon-search" type="button" data-toggle="modal" data-target="#modal-penggantian" />
+                                <button id="cari" class="btn btn-default glyphicon glyphicon-search" hidden="hidden" type="button" data-toggle="modal" data-target="#modal-penggantian" />
                             </span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoReg">No Registrasi</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="NoReg" name="NoReg" type="text" value="" readonly />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Tgl">Tanggal</label>
-                        <div class="col-md-10">
-                            <%--<asp:TextBox runat="server" class="form-control text-box single-line" ID="Tgl" name="Tgl" type="date" value="" ReadOnly="true" />--%>
+                        <div class="col-md-4">
+                            <input class="form-control text-box single-line" id="Tgl" name="Tgl" type="text" value="" ReadOnly />
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
     </div>
 
     <%--JIKA MELAKUKAN LAPORAN KEHILANGAN--%>
-    <div class="box">
+    <div class="box" id ="laporan">
         <div class="box-header with-border">
             <h3 class="box-title">Daftar Buku yang dilaporkan hilang</h3>
         </div>
@@ -179,6 +179,7 @@
     <!-- /.modal -->
 
     <script src="../Scripts/jquery-1.10.2.js"></script>
+    <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="../Scripts/bootstrap.js"></script>
     <script>
         function loadDataPenggantian() {
@@ -301,6 +302,12 @@
 
         //BUAT REFERENSI SAVE
         $('#btn-save').click(function () {
+            if ($("#sumber").val() == "2" && $("#NoRef").val()=="") {
+                alert('Pilih No Referensi Penggantian');
+            }
+            if ($("#data-buku-baru tr").length < 1) {
+                alert('Data Buku Harus Diisi!!');
+            }
             var list = [];
             var header = {};
             header.IDSumberBuku = $("#sumber").val();
@@ -387,6 +394,19 @@
           
         }
 
+        function pilihSumber() {
+            
+            if ($("#sumber").val() == "2") {
+                $("#cari").show();
+                $("#laporan").show();
+            }
+            else {
+                $("#laporan").hide();
+                $("#cari").hide();
+            }
+            
+        }
+
         function HapusBuku(ID) {
             var judulId = '#id' + ID;
             $(judulId).remove();
@@ -396,6 +416,10 @@
         $(document).ready(function () {
             loadDataSumberBuku();
             loadDataPenggantian();
+            $("#cari").hide();
+            $("#laporan").hide();
+            var date = new Date();
+            $("#Tgl").val(date.toLocaleDateString("en-au", { year: "numeric", month: "short", day: "numeric" }).replace(/\s/g, '-'));
         });
 
     </script>

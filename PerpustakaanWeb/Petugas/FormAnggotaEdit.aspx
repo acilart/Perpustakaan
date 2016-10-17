@@ -21,7 +21,7 @@
                     <input id="AnggotaId" type="hidden">
                     <div class="form-group">
                         <label class="control-label col-md-2" for="KodeAnggota">Kode Anggota</label>
-                        <div class="col-md-10">
+                        <div class="input-group col-md-4">
                             <input class="form-control text-box single-line" id="KodeAnggota" name="KodeAnggota" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="KodeAnggota" data-valmsg-replace="true"></span>
                         </div>
@@ -29,7 +29,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Nama">Nama</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" required="required" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
                         </div>
@@ -37,7 +37,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Alamat">Alamat</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="Alamat" name="Alamat" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Alamat" data-valmsg-replace="true"></span>
                         </div>
@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="OptProvinsi">Provinsi</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <select class="form-control" data-val="true" data-val-number="The field IDProvinsi must be fill" id="OptProvinsi" name="OptProvinsi">
                             </select>
                             <span class="field-validation-valid text-danger" data-valmsg-for="OptProvinsi" data-valmsg-replace="true"></span>
@@ -54,7 +54,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="OptKota">Kota</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <select class="form-control" data-val="true" data-val-number="The field IDKota must be fill." id="OptKota" name="OptKota">
                             </select>
                             <span class="field-validation-valid text-danger" data-valmsg-for="OptKota" data-valmsg-replace="true"></span>
@@ -72,7 +72,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Kelurahan">Kelurahan</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="Kelurahan" name="Kelurahan" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Kelurahan" data-valmsg-replace="true"></span>
                         </div>
@@ -80,7 +80,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Email">Email</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="Email" name="Email" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
                         </div>
@@ -88,7 +88,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NoTelepon">No Telepon</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="NoTelepon" name="NoTelepon" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoTelepon" data-valmsg-replace="true"></span>
                         </div>
@@ -96,7 +96,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="MasaBerlakuKartu">Masa Berlaku Kartu</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" data-val="true" id="MasaBerlakuKartu" name="MasaBerlakuKartu" type="date" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuKartu" data-valmsg-replace="true"></span>
                         </div>
@@ -104,7 +104,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2" for="MasaBerlakuAnggota">Masa Berlaku Anggota</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" data-val="true" id="MasaBerlakuAnggota" name="MasaBerlakuAnggota" type="date" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="MasaBerlakuAnggota" data-valmsg-replace="true"></span>
                         </div>
@@ -236,7 +236,6 @@
 
 
         function loadKota(ID) {
-
             if (ID == null) {
                 dpropinsi = $("#OptProvinsi").val();
             }

@@ -11,7 +11,7 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="control-label col-md-2" for="KodeBuku">Kode Buku</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="KodeBuku" name="KodeBuku" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="KodeBuku" data-valmsg-replace="true"></span>
                         </div>
@@ -36,37 +36,36 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="JudulBuku">Judul Buku</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="JudulBuku" name="JudulBuku" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="JudulBuku" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Pengarang">Pengarang</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="Pengarang" name="Pengarang" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Pengarang" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="ISBN">ISBN</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="ISBN" name="ISBN" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="ISBN" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="NilaiBuku">Nilai Buku (Rp)</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <input class="form-control text-box single-line" id="NilaiBuku" name="NilaiBuku" type="text" value="" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NilaiBuku" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Lokasi">Lokasi Buku</label>
-
-                        <div class="col-md-10">
-                            <input id="Lokasi" type="text" class="form-control text-box single-line" placeholder="Search Lokasi">
+                        <div class="input-group col-md-4">
+                            <input id="Lokasi" type="text" class="form-control text-box single-line" placeholder="Search Lokasi" readonly>
                             <span class="input-group-btn">
                                 <button class="btn btn-default glyphicon glyphicon-search" type="button" data-toggle="modal" data-target="#modal-Lokasi" />
                             </span>
@@ -78,7 +77,7 @@
 
                     <div class="form-group">
                         <div class="col-md-5 col-md-offset-2">
-                            <input  value="Cancel" class="btn btn-primary" />
+                            <input onclick="ClearData()"  value="Cancel" class="btn btn-primary" />
                             <input id="btn-save" value="Save" class="btn btn-primary" />
                         </div>
                     </div>
@@ -126,8 +125,8 @@
         <%--MODAL POP UP LOKASI--%>
 
         <script src="../Scripts/jquery-1.10.2.js"></script>
+        <script src="../Scripts/jquery-3.1.1.min.js"></script>
         <script src="../Scripts/bootstrap.js"></script>
-
         <script>
             function loadDataKategori() {
                 $.ajax({
@@ -212,8 +211,33 @@
                 loadDataPenerbit();
             });
 
+            function ClearData() {
+                $("#JudulBuku").val('');
+                $("#ISBN").val('');
+                $("#Pengarang").val('');
+                $("#NilaiBuku").val('');
+                $("#Lokasi").val('');
+             
+            }
+
             //event untuk button simpan
             $('#btn-save').click(function () {
+                if ($("#JudulBuku").val() == "") {
+                    alert('Judul Buku Harus Di Isi');
+                    $("#JudulBuku").focus();
+                }
+                if ($("#Pengarang").val() == "") {
+                    alert('Pengarang Harus Di Isi');
+                    $("#Pengarang").focus();
+                }
+                if ($("#NilaiBuku").val() == "") {
+                    alert('Nilai Buku Harus Di Isi');
+                    $("#NilaiBuku").focus();
+                }
+                if ($("#Lokasi").val() == "") {
+                    alert('Lokasi Harus Di Isi');
+                    $("#Lokasi").focus();
+                }
                 var buku = {};
                 buku.IDKategori = $("#IDKategori").val();
                 buku.IDPenerbit = $("#IDPenerbit").val();
@@ -230,9 +254,26 @@
                     datatype: "json",
                     success: function (response) {
                         alert("Data Buku '" + $("#JudulBuku").val() + "' Berhasil Disimpan..");
+                        ClearData();
                         window.location.reload();
                     }
                 });
             })
+
+            $("#NilaiBuku").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
         </script>
 </asp:Content>

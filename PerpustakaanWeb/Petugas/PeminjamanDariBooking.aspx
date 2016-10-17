@@ -25,9 +25,9 @@
                             <input class="form-control text-box single-line required" id="Nama" name="Nama" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
-                                <button type="button" name="search" id="search-btn" class="btn btn-default glyphicon glyphicon-search" data-toggle="modal" data-target="#modal-anggota">
-                                    <span class="btn btn-search">Search</span>
-                                </button>
+                                <button type="button" name="search" id="search-btn" class="btn btn-default glyphicon glyphicon-search" data-toggle="modal" data-target="#modal-anggota"/>
+                            </span>
+                                
                             </span>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                     </div>
 
                 </div>
-                <input type="button" id="btn-tambah" value="Tambah Buku" class="btn btn-primary" data-toggle="modal" data-target="#modal-buku" />
+                <input type="button" id="btn-tambah" value="Tambah Buku" class="btn btn-primary" />
             </form>
 
         </div>
@@ -244,25 +244,14 @@
 
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
   
     <script>
-
-        //$('#btn-tambah').click(function () {
-        //    $("#formAnggota").validate({
-        //        rules: {
-        //            Nama: "required"
-        //        },
-        //        messages: {
-        //            Nama: "Please choose Anggota for Nama"
-        //        }
-
-        //    })
-        //});
-
+        var listChecked = [];
+        var listUnchecked = [];
         $(document).ready(function () {
             LoadAnggota();
-            LoadBuku();
         });
 
         //------------------------DAFTAR ANGGOTA-----------------------//
@@ -335,34 +324,36 @@
         };
 
         function pilihBuku() {
-            var list = [];
+            //Cek CreatedOn dulu
+
             $("#data-buku tr").each(function () {
                 var data = {};
-
-               // var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
-                //var cek = $('#cb' + $(this).find("td:nth-child(4)").val()).is(":checked");
+                var cek = $('#cb' + $(this).find("td:nth-child(4)").find("input[type=hidden]").val()).is(":checked");
                 data.IDBuku = $(this).find("td:nth-child(4)").find("input[type=hidden]").val();
-                alert(data.IDBuku);
                 data.JudulBuku = $(this).find('td:nth-child(2)').text();
                 data.Kode = $(this).find('td:nth-child(1)').text();
                 data.Pengarang = $(this).find('td:nth-child(3)').text();
-                //alert(cek);
                 if (cek == true) {
-                    list.push(data);
+                    listChecked.push(data);
+                }
+                else {
+                    listUnchecked.push(data);
                 }
             })
-            $.each(list, function (index, item) {
-                var newBook = '<tr id="judul-' + item.IDBuku + '">' +
+            $("#data-peminjaman tr").remove();
+            $.each(listChecked, function (index, item) {
+                var newBook = '<tr id="id' + item.IDBuku + '">' +
                       '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
                         '<td>' + item.Kode + '</td>' +
                         '<td>' + item.JudulBuku + '</td>' +
                         '<td>' + item.Pengarang + '</td>' +
-                       '<td><input type="button" value="Delete" class="btn btn-danger" onclick="hapusBuku(' + item.ID + ')"/></td>' +
-                        '</tr>';
-                alert(item.IDBuku);
-                $("##data-peminjaman").append(newBook);
+                        "<td><input type='button' value='Delete' class='btn btn-danger' onclick='hapusBuku(" + item.IDBuku + ")'/></td>" +
+                        "</tr>";
+                $("#data-peminjaman").append(newBook);
+
             });
             $('#modal-buku').modal('hide');
+
         }
 
         function pilihBooking() {
@@ -388,9 +379,26 @@
             });
         }
 
-        function hapusBuku(id) {
-            var judulId = '#judul-' + id.toString();
-            $(judulId).remove();
+        function hapusBuku(ID) {
+            var kodeBuku = '#id' + ID;
+            $(kodeBuku).each(function () {
+                var data = {};
+                data.IDBuku = $(this).find("td:nth-child(1)").find("input[type=hidden]").val();
+                data.JudulBuku = $(this).find('td:nth-child(3)').text();
+                data.Kode = $(this).find('td:nth-child(2)').text();
+                data.Pengarang = $(this).find('td:nth-child(4)').text();
+                listUnchecked.push(data);
+            })
+            $(kodeBuku).remove();
+            listChecked = [];
+            $("#data-peminjaman tr").each(function () {
+                var data = {};
+                data.IDBuku = $(this).find("td:nth-child(1)").find("input[type=hidden]").val();
+                data.JudulBuku = $(this).find('td:nth-child(3)').text();
+                data.Kode = $(this).find('td:nth-child(2)').text();
+                data.Pengarang = $(this).find('td:nth-child(4)').text();
+                listChecked.push(data);
+            })
         }
 
         function simpanBuku() {
@@ -446,6 +454,51 @@
 
         //-----------------------------MODAL POP UP------------------------//
        
+        function LoadBukuFilt() {
+
+            //data-buku di remove
+            //cek kalau unchecked ada, tampilin yg unchecked
+            $("#data-buku tr").remove();
+            if (listUnchecked.length > 0) {
+                var listBuku = '';
+                $.each(listUnchecked, function (index, item) {
+
+                    listBuku += '<tr id="selectedID' + item.IDBuku + '">' +
+                        '<td>' + item.Kode + '</td>' +
+                        '<td>' + item.JudulBuku + '</td>' +
+                        '<td>' + item.Pengarang + '</td>' +
+                        '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
+                        '<td><input type="checkbox" id="cb' + item.IDBuku + '" value="0">' + '</td>' +
+                        '</tr>'
+
+                });
+                $("#data-buku").html(listBuku);
+            }
+            if(listChecked.length > 0 && listUnchecked.length < 1) {
+                $.ajax({
+                    url: '../Service/PeminjamanService.asmx/GetBukuAvailable',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        var listBuku = '';
+                        $.each(data.d, function (index, item) {
+                            listBuku += '<tr id="selectedID' + item.ID + '">' +
+                                '<td>' + item.Kode + '</td>' +
+                                '<td>' + item.JudulBuku + '</td>' +
+                                '<td>' + item.Pengarang + '</td>' +
+                                '<td><input type="hidden" value="' + item.ID + '"/></td>' +
+                                '<td><input type="checkbox" id="cb' + item.ID + '" value="0">' + '</td>' +
+                                '</tr>'
+                        });
+                        $("#data-buku").html(listBuku);
+                    }
+                });
+            }
+            $('#modal-buku').modal('show');
+            listUnchecked = [];
+        }
+
         function PilihHeader(ID) {
             TampilHeader(ID);
             $("#BookingID").val(ID);
@@ -459,7 +512,7 @@
                 success: function (dataAnu) {
                     var listProp = "";
                     $.each(dataAnu.d, function (index, item) {
-                        listProp += '<tr id="judul-' + item.IDBuku + '">' +
+                        listProp += '<tr id="id' + item.IDBuku + '">' +
                        '<td><input type="hidden" value="' + item.IDBuku + '"/></td>' +
                         '<td>' + item.KodeBuku + '</td>' +
                         '<td>' + item.JudulBuku + '</td>' +
@@ -484,21 +537,43 @@
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
                     $("#NoBooking").val(data.d.NoBooking);
-                    $("#TglPinjam").val(data.d.TanggalPinjam.for('dd MMM yyyy'));
-                    $("#TglKembali").val(data.d.TanggalKembali.format('dd MMM yyyy'));
+                    $("#TglPinjam").val(CurrentDate(data.d.TanggalPinjam));
+                    $("#TglKembali").val(CurrentDate(data.d.TanggalKembali));
                 }
             })
         }
-        //$('#txt-anggotaS').keyup(function () {
-        //    var searchValue = $('#txt-anggotaS').val();
-        //    loadSearchAnggota(searchValue);
-        //});
-
+      
         $('#search-anggota').click(function () {
             var searchValue = $('#txt-boking').val();
             loadSearchAnggota(searchValue);
         });
 
-      
+        function CurrentDate(tgl) {
+
+            var currentTime;
+            if (tgl == null) {
+                currentTime = new Date();
+
+            } else {
+                var dateString = tgl.substr(6);
+                currentTime = new Date(parseInt(dateString));
+            }
+
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "-" + month + "-" + year;
+
+            if (tgl == null) {
+                $("#txt-tgl-booking").val(date);
+            } else {
+                return date;
+            }
+        }
+
+        $("#btn-tambah").click(function () {
+            //var list = [];
+            LoadBukuFilt();
+        })
     </script>
 </asp:Content>
