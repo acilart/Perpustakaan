@@ -38,6 +38,7 @@ namespace PerpustakaanDAL
                     //item.ModifiedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
                     item.CreatedOn = DateTime.Now;
                     item.ModifiedOn = DateTime.Now;
+         
                     var stok = new TrStock()
                     {
                         IDBuku = item.IDBuku,

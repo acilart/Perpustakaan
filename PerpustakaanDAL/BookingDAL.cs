@@ -10,32 +10,70 @@ namespace PerpustakaanDAL
 {
     public class BookingDAL
     {
+
         public static bool SimpanBooking(TrBookingHeader book, List<TrBookingDetail> details)
         {
             using (var db = new PerpustakaanDbContext())
             {
 
-
-
                 var cek = db.TrBookingHeader.FirstOrDefault(n => n.IDAnggota == book.IDAnggota);
-                //var ambilNoRef = BorrowHeaderDAL.GetDataById(Convert.ToInt32(book.IDAnggota)).NoReferensi;
                 var ambilNoReg = AutoNumberDAL.BookingBukuAutoNumber();
 
 
                 if (cek != null)
                 {
-                    cek.Active = false;
+                    cek.ModifiedOn = DateTime.Now;
+
+
+                    cek.TanggalPinjam = Convert.ToDateTime(book.TanggalPinjam);
                     var det = db.TrBookingDetail.Where(n => n.HeaderID == cek.ID);
+                    var listDeleted = new List<TrBookingDetail>();
+                    
                     foreach (var item in det)
                     {
-                        item.Active = false;
+                        var cekDet = details.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekDet == null)
+                        {
+                             
+                            item.Active = false;
+                            item.ModifiedOn = DateTime.Now;
+                            listDeleted.Add(item);
+                        }
+                        else {
+
+                            item.Active = true;
+                            item.ModifiedOn= DateTime.Now;  
+                        }
                     }
-                    //db.TrBookingDetail.AddRange(details);
+                    
+                    foreach (var item in details)
+                    {
+                        var cekDet = db.TrBookingDetail.FirstOrDefault(n => n.HeaderID == cek.ID && n.IDBuku == item.IDBuku);
+                        if (cekDet == null)
+                        {
+                            item.Active = true;
+                            item.HeaderID = cek.ID;
+                            item.CreatedOn = DateTime.Now;
+                            db.TrBookingDetail.Add(item);
+                        }
+                        var cekStok = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekStok != null)
+                        {
+                            cekStok.InStock = false;
+                        }
+                   }
 
-
-
-
+                    foreach (var item in listDeleted)
+                    {
+                        var cekStok = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        if (cekStok != null)
+                        {
+                            cekStok.InStock = true;
+                        }
+                    }
+                       
                 }
+                
                 else
                 {
                     int id = 1;
@@ -47,9 +85,10 @@ namespace PerpustakaanDAL
 
                     book.ID = id;
                     book.BookingNo = ambilNoReg;
-                    //cek.NoReferensi = ambilNoRef;
+
                     book.TanggalBooking = DateTime.Now;
                     book.Active = true;
+                    book.CreatedOn = DateTime.Now;
                     db.TrBookingHeader.Add(book);
 
                     foreach (var item in details)
@@ -64,7 +103,6 @@ namespace PerpustakaanDAL
 
                 }
 
-
                 try
                 {
                     db.SaveChanges();
@@ -76,8 +114,8 @@ namespace PerpustakaanDAL
                 }
             }
         }
-
-        public List<BookingViewModel> GetBookingAktifByID(int id)
+        
+        public static List<BookingViewModel> GetBookingAktifByID(int id)
         {
             var list = new List<BookingViewModel>();
             using (var db = new PerpustakaanDbContext())
@@ -118,7 +156,7 @@ namespace PerpustakaanDAL
         public static bool RemoveDetailBukuBooking(TrBookingHeader book, List<TrBookingDetail> details)
         {
             using (var db = new PerpustakaanDbContext())
-            { 
+            {
                 var cek = db.TrBookingHeader.FirstOrDefault(n => n.IDAnggota == book.IDAnggota);
                 //var ambilNoRef = BorrowHeaderDAL.GetDataById(Convert.ToInt32(book.IDAnggota)).NoReferensi;
                 var ambilNoReg = AutoNumberDAL.BookingBukuAutoNumber();
@@ -130,8 +168,7 @@ namespace PerpustakaanDAL
                     {
                         item.Active = false;
                     }
-                    //db.TrBookingDetail.AddRange(details);
-                }
+                 }
                 else
                 {
                     int id = 1;
@@ -163,6 +200,7 @@ namespace PerpustakaanDAL
 
                 try
                 {
+                    
                     db.SaveChanges();
                     return true;
                 }
@@ -173,7 +211,67 @@ namespace PerpustakaanDAL
             }
         }
 
-        public BookingHeaderViewModel GetHeaderViewModelByID(int id)
+        public static bool RemoveDetailBukuBookingList(int details)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var det = db.TrBookingDetail.Where(n => n.IDBuku == details);
+                foreach (var item in det)
+                {
+                    item.Active = false;
+                }
+                try
+                {
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static List<BookingViewModel> GetSelectedBookingAktifByID(int id)
+        {
+            var list = new List<BookingViewModel>();
+            using (var db = new PerpustakaanDbContext())
+            {
+                var head = db.TrBookingHeader.Where(n => n.IDAnggota == id);
+                
+                foreach (var item in head)
+                { 
+                    var det = new PerpustakaanDbContext().TrBookingDetail.Where(n => n.HeaderID == item.ID);
+                    if (det == null)
+                    {
+                        return null;
+                    }
+                    foreach (var detail in det)
+                    {
+                        var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == detail.IDBuku);
+                        if (detail.Active == true)
+                        {
+                            var boking = new BookingViewModel()
+                           {
+                               IDBuku = buku.ID,
+                               KodeBuku = buku.Kode,
+                               JudulBuku = buku.JudulBuku,
+                               Pengarang = buku.Pengarang
+                           };
+                            list.Add(boking);
+                        }
+                    }
+
+
+                }
+
+
+
+            }
+            return list;
+        }
+
+        public static BookingHeaderViewModel GetHeaderViewModelByID(int id)
         {
             using (var db = new PerpustakaanDbContext())
             {
@@ -184,15 +282,41 @@ namespace PerpustakaanDAL
                     {
                         NoBooking = cek.BookingNo,
                         IDBooking = cek.ID,
-                        TanggalKembali = DateTime.Now.AddDays(3),
-                        TanggalPinjam = DateTime.Now
+                        TanggalKembali = Convert.ToDateTime(cek.TanggalBooking),
+                        TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam)
+
                     };
                     return view;
                 }
                 return null;
             }
         }
-    
-    
+
+        public static BookingHeaderViewModel GetSelectedHeaderViewModelByID(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.TrBookingHeader.FirstOrDefault(n => n.IDAnggota == id);
+                if (cek != null)
+                {
+                    var bookingNull = "";
+                     if (cek.BookingNo!=null)
+                    {
+                        bookingNull = cek.BookingNo;
+                    }
+                    var view = new BookingHeaderViewModel()
+                    {
+                        NoBooking = bookingNull,
+                        IDBooking = cek.ID,
+                        TanggalKembali = Convert.ToDateTime(cek.TanggalBooking),
+                        TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam)
+
+                    };
+                    return view;
+                }
+                return null;
+            }
+        }
+
     }
 }

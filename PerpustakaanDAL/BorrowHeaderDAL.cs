@@ -28,7 +28,26 @@ namespace PerpustakaanDAL
                 return cek;
             }
         }
-        
+
+        public TrBrwHeader GetDataByIdonly(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.TrBrwHeader.FirstOrDefault(n => n.ID == id);
+
+                return cek;
+            }
+        }
+
+        public TrBrwHeader GetDataByIdAnggota(int id)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.TrBrwHeader.FirstOrDefault(n => n.IDAnggota == id);
+
+                return cek;
+            }
+        }
 
     }
 }

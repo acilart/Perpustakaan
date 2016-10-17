@@ -90,6 +90,8 @@ namespace PerpustakaanDAL
                     if(lemari != null)
                     { buku.LokasiD = lemari.Lokasi; } 
                     
+                   
+                    
                     return buku;
                 }
                 return null;
@@ -140,7 +142,7 @@ namespace PerpustakaanDAL
             }
         }
 
-
+       
 
     }
 }

@@ -247,6 +247,18 @@ namespace PerpustakaanDAL
 
         }
 
+        public static List<MstAnggota> searchAnggotaByAlamat(string alamat)
+        {
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstAnggota.Where(n => n.Alamat.Contains(alamat)).ToList();
+                return cek;
+            }
+
+        }
+
+       
+        
         public static MstAnggota GetAnggotaBySearch(string kode, string nama)
         {
             using (var db = new PerpustakaanDbContext())
