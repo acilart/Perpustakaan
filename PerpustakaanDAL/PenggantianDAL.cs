@@ -112,11 +112,12 @@ namespace PerpustakaanDAL
             }
         }
 
-        public bool SimpanPenggantian(TrRpcHeader header, List<TrRpcDetail> details, List<TrReturnDetail> detailReturn)
+        public static bool SimpanPenggantian(TrRpcHeader header, List<TrRpcDetail> details, List<TrReturnDetail> detailReturn)
         {
             using (var db = new PerpustakaanDbContext())
             {
                 var listHeader = db.TrPlcHeader.ToList();
+                
                 int id = 1;
                 if (listHeader.Count > 0)
                 {
@@ -124,19 +125,40 @@ namespace PerpustakaanDAL
                 }
                 header.NoRegistrasi = AutoNumberDAL.PenggantianBukuNoRegAutoNumber();
                 header.ID = id;
+                header.IDAnggota = header.IDAnggota;
+                header.Tanggal = header.Tanggal;
+                header.NoReferensi = header.NoReferensi;
                 header.CreatedOn = DateTime.Now;
+                header.CreatedBy = header.CreatedBy;
                 header.ModifiedOn = DateTime.Now;
                 db.TrRpcHeader.Add(header);
                 foreach (var item in details)
-                {
+                {                    
+                    int iddetails = 1;
+                    if (details.Count > 0)
+                    {
+                        iddetails = details[details.Count - 1].ID + 1;
+                    }
                     item.HeaderID = id;
+                    item.ID = iddetails;
+                    item.IDBuku = item.IDBuku;
+                    item.Alasan = item.Alasan;
+                    item.IDOpsiPenggantian = item.IDOpsiPenggantian;
+                    item.HargaPenggantian = item.HargaPenggantian;
+                    item.BiayaAdmin = item.BiayaAdmin;
                     item.CreatedOn = DateTime.Now;
+                    item.CreatedBy = header.CreatedBy;
                     item.ModifiedOn = DateTime.Now;
                 }
                 db.TrRpcDetail.AddRange(details);
                 foreach (var item in detailReturn)
                 {
-                    item.SudahDiganti = true;
+                    var cek = db.TrReturnDetail.FirstOrDefault(n => n.ID == item.ID && n.IDBuku == item.IDBuku);
+                    if (cek != null)
+                    {
+                        cek.SudahDiganti = true;
+                    }
+
                 }
                 try
                 {
@@ -187,13 +209,13 @@ namespace PerpustakaanDAL
                 {
                     var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == cek.IDAnggota);
                     if (anggota != null)
-                             {
+                    {
                         var penggantian = new Penggantian()
-                                 {
+                    {
                         ID = cek.ID,
                         IDAnggota = anggota.ID,
                         NamaAnggota = anggota.Nama,
-                        NoReferensi = cek.NoReferensi,
+                        NoReferensi = cek.NoRegistrasi,
                     };
                     return penggantian;
                     }
@@ -201,5 +223,34 @@ namespace PerpustakaanDAL
                 return null;
             }
         }
+
+        //untuk mengambil data buku yang akan diganti
+        public static List<Penggantian> GetBukuHilang(int id)
+        {
+            List<Penggantian> result = new List<Penggantian>();
+            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
+            {                
+                var header = db.TrReturnHeader.FirstOrDefault(n => n.ID == id);
+                var detail = db.TrReturnDetail.Where(n => n.HeaderID == id && n.LaporKehilangan == true);
+                foreach (var item in detail)
+                {                
+                    var dal = new BukuDAL();
+                    var buku = dal.GetBukuByID(item.IDBuku);                    
+                    var penggantian = new Penggantian()
+                    {
+                        IDdetail = item.ID,
+                        IDBuku = buku.ID,
+                        KodeBuku = buku.Kode,
+                        JudulBuku = buku.JudulBuku,
+                        HargaPenggantian = buku.Value,
+                        BiayaAdmin = 5000
+                    };
+                    result.Add(penggantian);                
+                }
+                return result;
+            }
+        }
+                
+        
     }
 }

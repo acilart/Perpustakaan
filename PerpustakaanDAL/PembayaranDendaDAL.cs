@@ -1,4 +1,5 @@
-﻿using PerpustakaanModel;
+﻿using Perpustakaan.ViewModel;
+using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +9,17 @@ using System.Threading.Tasks;
 namespace PerpustakaanDAL
 {
     public class PembayaranDendaDAL
-    {
-        public int ID { get; set; }
-        public string NoReferensi { get; set; }
-        public string NamaAnggota { get; set; }
-        public DateTime TanggalPinjam { get; set; }
-        public Nullable<int> IDAnggota { get; set; }
-        public DateTime TanggalKembali { get; set; }
-        public DateTime TanggalDikembalikan { get; set; }
-        public static List<PembayaranDendaDAL> GetPengembalian()
+    {      
+        public static List<PembayaranDendaViewModel> GetPengembalian()
         {
             using (var db = new PerpustakaanDbContext())
             {
-                var list = new List<PembayaranDendaDAL>();
+                var list = new List<PembayaranDendaViewModel>();
                 var headerkembali = db.TrReturnHeader.Where(n => n.Denda == true && n.SudahDibayar < 1).ToList();
                 foreach (var item in headerkembali)
                 {
                     var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == item.IDAnggota);
-                    var pembayaran = new PembayaranDendaDAL()
+                    var pembayaran = new PembayaranDendaViewModel()
                     {
                         ID = item.ID,
                         NamaAnggota = anggota.Nama,
@@ -39,47 +33,47 @@ namespace PerpustakaanDAL
                  return list;
                 }
                
-            }         
-        
-        public static List<PembayaranDendaDAL> GetPengembalianBySearch(string search)
-        {
-            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
-            {
-                //masih ngeload semua datanya abis search
-                var headerkembali = db.TrReturnHeader.Where(n => n.Denda == true && n.SudahDibayar < 1).ToList();
-                foreach (var item in headerkembali)
-                {
-                    var result = (from rtr in db.TrReturnHeader
-                                  join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
-                                  select new
-                                  {
-                                      ID = rtr.ID,
-                                      NoReferensi = rtr.NoReferensi,
-                                      NamaAnggota = nama.Nama,
-                                      TanggalPinjam = rtr.TanggalPinjam,
-                                      TanggalKembali = rtr.TanggalKembali,
-                                      TanggalDikembalikan = rtr.TanggalDikembalikan,
-                                  }).Where(a => (a.NoReferensi + a.NamaAnggota).Contains(search)).ToList();
-                    var list = new List<PembayaranDendaDAL>();
-                    foreach (var cek in result)
-                    {
-                        var dal = new PembayaranDendaDAL()
-                        {
-                            NoReferensi = cek.NoReferensi,
-                            NamaAnggota = cek.NamaAnggota,
-                            TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam),
-                            TanggalKembali = Convert.ToDateTime(cek.TanggalKembali),
-                            TanggalDikembalikan = Convert.ToDateTime(cek.TanggalDikembalikan)
-                        };
-                        list.Add(dal);
-                    }
-                    return list;
-                }
-                return null;
             }
-        }
 
-        public static PembayaranDendaDAL GetPeminjamanById(int id)
+        //public static List<PembayaranDendaViewModel> GetPengembalianBySearch(string search)
+        //{
+        //    using (PerpustakaanDbContext db = new PerpustakaanDbContext())
+        //    {
+        //        //masih ngeload semua datanya abis search
+        //        var headerkembali = db.TrReturnHeader.Where(n => n.Denda == true && n.SudahDibayar < 1).ToList();
+        //        foreach (var item in headerkembali)
+        //        {
+        //            var result = (from rtr in db.TrReturnHeader
+        //                          join nama in db.MstAnggota on rtr.IDAnggota equals nama.ID
+        //                          select new
+        //                          {
+        //                              ID = rtr.ID,
+        //                              NoReferensi = rtr.NoReferensi,
+        //                              NamaAnggota = nama.Nama,
+        //                              TanggalPinjam = rtr.TanggalPinjam,
+        //                              TanggalKembali = rtr.TanggalKembali,
+        //                              TanggalDikembalikan = rtr.TanggalDikembalikan,
+        //                          }).Where(a => (a.NoReferensi + a.NamaAnggota).Contains(search)).ToList();
+        //            var list = new List<PembayaranDendaViewModel>();
+        //            foreach (var cek in result)
+        //            {
+        //                var dal = new PembayaranDendaViewModel()
+        //                {
+        //                    NoReferensi = cek.NoReferensi,
+        //                    NamaAnggota = cek.NamaAnggota,
+        //                    TanggalPinjam = Convert.ToDateTime(cek.TanggalPinjam),
+        //                    TanggalKembali = Convert.ToDateTime(cek.TanggalKembali),
+        //                    TanggalDikembalikan = Convert.ToDateTime(cek.TanggalDikembalikan)
+        //                };
+        //                list.Add(dal);
+        //            }
+        //            return list;
+        //        }
+        //        return null;
+        //    }
+        //}
+
+        public static PembayaranDendaViewModel GetPeminjamanById(int id)
         {
             using (PerpustakaanDbContext db = new PerpustakaanDbContext())
             {
@@ -89,7 +83,7 @@ namespace PerpustakaanDAL
                     var anggota = db.MstAnggota.FirstOrDefault(n => n.ID == cek.IDAnggota);
                     if (anggota != null)
                     {
-                        var pembayaran = new PembayaranDendaDAL()
+                        var pembayaran = new PembayaranDendaViewModel()
                     {
                         ID = cek.ID,
                         IDAnggota = cek.IDAnggota,
@@ -108,6 +102,31 @@ namespace PerpustakaanDAL
             }
         }
 
+        public static List<PengembalianViewModel> GetBukuDenda(int id)
+        {
+            List<PengembalianViewModel> result = new List<PengembalianViewModel>();
+            using (PerpustakaanDbContext db = new PerpustakaanDbContext())
+            {
+                var header = db.TrReturnHeader.FirstOrDefault(n => n.ID == id);
+                var detail = db.TrReturnDetail.Where(n => n.HeaderID == id);
+                foreach (var item in detail)
+                {
+                    var ts = new TimeSpan();
+                    ts = (Convert.ToDateTime(header.TanggalDikembalikan)).Subtract(Convert.ToDateTime(header.TanggalKembali));
+                    var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
+                    var pembayaran = new PengembalianViewModel()
+                    {
+                        IDBuku = buku.ID,
+                        Judul = buku.JudulBuku,
+                        KodeMstBuku = buku.Kode,
+                        Terlambat=ts.Days,
+                        denda = ts.Days * 5000,
+                    };
+                    result.Add(pembayaran);
+                }
+                return result;
+            }
+        }
 
         public static bool SimpanPembayaranDenda(TrDendaHeader header,List<TrDendaDetail> details, TrReturnHeader retHeader)
         {
@@ -124,8 +143,9 @@ namespace PerpustakaanDAL
                 header.NoReferensi = header.NoReferensi;
                 header.ID = id;                
                 header.IDAnggota = header.IDAnggota;                
-                header.CreatedOn = DateTime.Now;
+                header.CreatedOn = DateTime.Now;                
                 header.ModifiedOn = DateTime.Now;
+                header.CreatedBy = header.CreatedBy;
                 db.TrDendaHeader.Add(header);
                 foreach (var item in details)
                 {
@@ -137,12 +157,13 @@ namespace PerpustakaanDAL
                         item.IDBuku = item.IDBuku;
                         item.Jumlah = item.Jumlah;
                         item.CreatedOn = DateTime.Now;
+                        item.CreatedBy = header.CreatedBy;
                         item.ModifiedOn = DateTime.Now;
                         db.TrDendaDetail.Add(item);
                     }                                                        
                 }
                 
-                var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == header.ID);
+                var cek = db.TrReturnHeader.FirstOrDefault(n => n.ID == retHeader.ID);
                 if (cek != null)
                 {
                     cek.SudahDibayar = 1;

@@ -97,7 +97,12 @@ namespace PerpustakaanDAL
                     if (buku != null)
                     {
                         var dal = new LemariDAL();
-                        buku.LokasiD = dal.GetLemariByIDCell(Convert.ToInt16(buku.Lokasi)).Lokasi;
+                        var lokasi = dal.GetLemariByIDCell(Convert.ToInt16(buku.Lokasi));
+                        if (lokasi != null)
+                        {
+                            buku.LokasiD = lokasi.Lokasi;
+                        }
+                       
                         list.Add(buku);
                     }
                 }
