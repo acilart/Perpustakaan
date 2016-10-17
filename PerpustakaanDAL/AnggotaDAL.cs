@@ -149,7 +149,7 @@ namespace PerpustakaanDAL
                     {
                         HeaderID = header.ID,
                         IDTipeIuran = item.ID,
-                        Jumlah = item.Jumlah,
+                        Jumlah = Convert.ToDecimal(item.Jumlah),
                         CreatedOn = DateTime.Now,
                         ModifiedOn=DateTime.Now
                     };

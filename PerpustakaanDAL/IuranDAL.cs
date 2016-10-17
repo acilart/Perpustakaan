@@ -41,7 +41,7 @@ namespace PerpustakaanDAL
                         {
                             ID = tipe2.ID,
                             MasaBerlaku = "3 Bulan",
-                            Jumlah = Convert.ToInt16(tipe2.Jumlah),
+                            Jumlah = Convert.ToDecimal(tipe2.Jumlah),
                             TipeIuran = tipe2.TipeIuran
                         };
                         list.Add(iuranV1);
