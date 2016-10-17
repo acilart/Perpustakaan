@@ -11,7 +11,7 @@ namespace Perpustakaan.ViewModel
         public int ID { get; set; }
         public string TipeIuran { get; set; }
         public string MasaBerlaku { get; set; }
-        public int Jumlah { get; set; }
+        public decimal Jumlah { get; set; }
 
     }
 }
