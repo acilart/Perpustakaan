@@ -361,7 +361,15 @@
        
       
         $(document).ready(function () {
-            Choose(Id);
+
+            var id = sessionStorage.getItem('IDAnggotaList');
+        
+        if (id != null) {
+            Choose(id);
+         }
+                
+
+
         });
 
         

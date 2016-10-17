@@ -26,7 +26,7 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod(EnableSession=true)]
-        public static bool RemoveSession()
+        public bool RemoveSession()
         {
             return LoginDAL.RemoveSession();
         }

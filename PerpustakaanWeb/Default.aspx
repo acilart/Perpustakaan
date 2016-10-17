@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/SiteCoba.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="PerpustakaanWeb._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/SiteMasterPetugas.master.cs" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="PerpustakaanWeb._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 

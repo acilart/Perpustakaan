@@ -112,7 +112,7 @@
         var dprovinsi;
         var dkota;
         var dkecamatan;
-
+        var IDAnggota
         var tempID;
         var tempMasaBerlakuKartu;
         var tempMasaBerlakuAnggota;
@@ -122,15 +122,8 @@
         $(document).ready(function () {
             LoadAnggota();
         });
-
-        
-        //function perpanjangAnggota() {
-          
-        //    $("modal-edit").modal("hide");
-
-        //}
-
-        //menampilkan seluruh anggota
+       
+        //load seluruh data anggota perpustakaan dari Table Anggota.
         function LoadAnggota() {
             $.ajax({
                 url: '../Service/ListAnggotaService.asmx/getAnggota',
@@ -161,50 +154,54 @@
         }
 
         //apabila klik edit, maka akan menampilkan modal untuk edit anggota
-
         function getAnggotaByID(ID) {
 
+            IDAnggota = ID;
+
+            sessionStorage.setItem('IDAnggota', IDAnggota);
+            window.location.href = '/Petugas/FormAnggotaEdit.aspx';
+
             //antara keluar modal atau keluar form baru?? masih harus ditanyakan
+            //$.ajax({
+            //    url: '../Service/ListAnggotaService.asmx/getAnggotaByID',
+            //    data: '{"ID":"' + JSON.stringify(ID) + '"}',
+            //    type: 'POST',
+            //    dataType: 'JSON',
+            //    contentType: 'application/json; charset=utf-8',
+            //    success: function (anggota) {
 
+            //        SavedateAnggota = convertDateSave(anggota.d.MasaBerlakuAnggota);
+            //        SavedateKartu = convertDateSave(anggota.d.MasaBerlakuKartu);
 
-            $.ajax({
-                url: '../Service/ListAnggotaService.asmx/getAnggotaByID',
-                data: '{"ID":"' + JSON.stringify(ID) + '"}',
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: 'application/json; charset=utf-8',
-                success: function (anggota) {
+            //        var dateKartu = convertDateShow(anggota.d.MasaBerlakuKartu);
+            //        var dateAnggota = convertDateShow(anggota.d.MasaBerlakuAnggota);
 
-                    SavedateAnggota = convertDateSave(anggota.d.MasaBerlakuAnggota);
-                    SavedateKartu = convertDateSave(anggota.d.MasaBerlakuKartu);
+            //        tempID = anggota.d.ID,
+            //        $('#txt-masa-berlaku-kartu').val(dateKartu),
+            //        $('#txt-masa-berlaku-anggota').val(dateAnggota),
 
-                    var dateKartu = convertDateShow(anggota.d.MasaBerlakuKartu);
-                    var dateAnggota = convertDateShow(anggota.d.MasaBerlakuAnggota);
+            //        $('#txt-kode-anggota').val(anggota.d.KodeAnggota),
 
-                    tempID = anggota.d.ID,
-                    $('#txt-masa-berlaku-kartu').val(dateKartu),
-                    $('#txt-masa-berlaku-anggota').val(dateAnggota),
+            //        $('#txt-nama').val(anggota.d.Nama),
+            //        $('#txt-alamat').val(anggota.d.Alamat),
+            //        $('#txt-telp').val(anggota.d.NoTelepon),
+            //        $('#txt-email').val(anggota.d.Email),
 
-                    $('#txt-kode-anggota').val(anggota.d.KodeAnggota),
+            //        dpropinsi = anggota.d.IDProvinsi,
+            //        loadPropinsi(dpropinsi),
 
-                    $('#txt-nama').val(anggota.d.Nama),
-                    $('#txt-alamat').val(anggota.d.Alamat),
-                    $('#txt-telp').val(anggota.d.NoTelepon),
-                    $('#txt-email').val(anggota.d.Email),
+            //        dkota = anggota.d.IDKota,
+            //        loadKota(dkota)
 
-                    dpropinsi = anggota.d.IDProvinsi,
-                    loadPropinsi(dpropinsi),
-
-                    dkota = anggota.d.IDKota,
-                    loadKota(dkota)
-
-                    dkecamatan = anggota.d.IDKecamatan,
-                    loadKecamatan(dkecamatan)
+            //        dkecamatan = anggota.d.IDKecamatan,
+            //        loadKecamatan(dkecamatan)
                  
-                }
-            });
+            //    }
+            //});
 
-            $('#modal-edit').modal('show');
+            //$('#modal-edit').modal('show');
+
+
         }
 
         //konversi tanggal dan ditampilkan format dd mm YY
@@ -254,109 +251,106 @@
                 });
 
             }
-            else {
- 
-                //do nothing
-            }
-
+             
             
         }
 
-        function editAnggota() {
-            var anggota = {};
-            anggota.KodeAnggota = $('#txt-kode-anggota').val();
-            anggota.Nama = $('#txt-nama').val();
-            anggota.Alamat = $('#txt-alamat').val();
-            anggota.IDProvinsi = $('#dpropinsi').val();
-            anggota.IDKota= $('#dkota').val();
-            anggota.IDKecamatan = $('#dkecamatan').val();
-            anggota.Email = $('#txt-email').val();
-            anggota.NoTelepon= $('#txt-telp').val();
-            anggota.MasaBerlakuKartu = SavedateKartu;
-            anggota.MasaBerlakuAnggota = SavedateAnggota;
-            anggota.ID = tempID;
+
+        //function editAnggota() {
+        //    var anggota = {};
+        //    anggota.KodeAnggota = $('#txt-kode-anggota').val();
+        //    anggota.Nama = $('#txt-nama').val();
+        //    anggota.Alamat = $('#txt-alamat').val();
+        //    anggota.IDProvinsi = $('#dpropinsi').val();
+        //    anggota.IDKota= $('#dkota').val();
+        //    anggota.IDKecamatan = $('#dkecamatan').val();
+        //    anggota.Email = $('#txt-email').val();
+        //    anggota.NoTelepon= $('#txt-telp').val();
+        //    anggota.MasaBerlakuKartu = SavedateKartu;
+        //    anggota.MasaBerlakuAnggota = SavedateAnggota;
+        //    anggota.ID = tempID;
           
-            anggota.Email = $('#txt-email').val();
+        //    anggota.Email = $('#txt-email').val();
             
 
-            $.ajax({
-                type: "POST",
-                url: "../Service/ListAnggotaService.asmx/updateAnggota",
-                data: '{anggota: ' + JSON.stringify(anggota) + '}',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    alert("Berhasil di update.");
-                    LoadAnggota();
-                }
-            });
-            $('#modal-edit').modal('hide');
-        }
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "../Service/ListAnggotaService.asmx/updateAnggota",
+        //        data: '{anggota: ' + JSON.stringify(anggota) + '}',
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            alert("Berhasil di update.");
+        //            LoadAnggota();
+        //        }
+        //    });
+        //    $('#modal-edit').modal('hide');
+        //}
          
-        function loadPropinsi(ID) {
+        //function loadPropinsi(ID) {
 
-            $.ajax({
-                url: "../Service/ListAnggotaService.asmx/getPropinsi",
-                contentType: "application/json; charset=utf-8",
-                type: "POST",
-                dataType: "json",
-                success: function (id) {
-                    var out = "";
-                    $.each(id.d, function (index, item) {
+        //    $.ajax({
+        //        url: "../Service/ListAnggotaService.asmx/getPropinsi",
+        //        contentType: "application/json; charset=utf-8",
+        //        type: "POST",
+        //        dataType: "json",
+        //        success: function (id) {
+        //            var out = "";
+        //            $.each(id.d, function (index, item) {
 
-                        out += '<option value="' + item.ID + '">' + item.NamaProvinsi + '</option>';
-                    });
-                    $('#dpropinsi').html(out).val(ID);
-                }
-            });
-        }
+        //                out += '<option value="' + item.ID + '">' + item.NamaProvinsi + '</option>';
+        //            });
+        //            $('#dpropinsi').html(out).val(ID);
+        //        }
+        //    });
+        //}
    
-        function loadKota(ID) {
+        //function loadKota(ID) {
 
-            if (ID == null ) {
-                dpropinsi = $("#dpropinsi").val();
-            }
+        //    if (ID == null ) {
+        //        dpropinsi = $("#dpropinsi").val();
+        //    }
 
-            $.ajax({
-                url: "../Service/ListAnggotaService.asmx/getKota",
-                data: '{id: '+ dpropinsi +'}',
-                contentType: "application/json; charset=utf-8",
-                type: "POST",
-                dataType: "json",
-                success: function (id) {
-                    var out = "";
-                    $.each(id.d, function (index, item) {
+        //    $.ajax({
+        //        url: "../Service/ListAnggotaService.asmx/getKota",
+        //        data: '{id: '+ dpropinsi +'}',
+        //        contentType: "application/json; charset=utf-8",
+        //        type: "POST",
+        //        dataType: "json",
+        //        success: function (id) {
+        //            var out = "";
+        //            $.each(id.d, function (index, item) {
 
-                        out += '<option value="' + item.ID + '">' + item.NamaKota + '</option>';
-                    });
-                    $('#dkota').html(out).val(ID);
-                }
-            });
-        }
+        //                out += '<option value="' + item.ID + '">' + item.NamaKota + '</option>';
+        //            });
+        //            $('#dkota').html(out).val(ID);
+        //        }
+        //    });
+        //}
  
-        function loadKecamatan(ID) {
+        //function loadKecamatan(ID) {
 
-            if (ID == null) {
-                dkota = $("#dkota").val();
-            }
+        //    if (ID == null) {
+        //        dkota = $("#dkota").val();
+        //    }
 
 
-            $.ajax({
-                url: "../Service/ListAnggotaService.asmx/getKecamatan",
-                data: '{id: ' + dkota + '}',
-                contentType: "application/json; charset=utf-8",
-                type: "POST",
-                dataType: "json",
-                success: function (id) {
-                    var out = "";
-                    $.each(id.d, function (index, item) {
+        //    $.ajax({
+        //        url: "../Service/ListAnggotaService.asmx/getKecamatan",
+        //        data: '{id: ' + dkota + '}',
+        //        contentType: "application/json; charset=utf-8",
+        //        type: "POST",
+        //        dataType: "json",
+        //        success: function (id) {
+        //            var out = "";
+        //            $.each(id.d, function (index, item) {
 
-                        out += '<option value="' + item.ID + '">' + item.NamaKecamatan + '</option>';
-                    });
-                    $('#dkecamatan').html(out).val(ID);
-                }
-            });
-        }
+        //                out += '<option value="' + item.ID + '">' + item.NamaKecamatan + '</option>';
+        //            });
+        //            $('#dkecamatan').html(out).val(ID);
+        //        }
+        //    });
+        //}
     
         function searchAnggotaByNama(nama) {
             $.ajax({
@@ -483,7 +477,6 @@
         function searchAnggotaByAlamat(Alamat) {
 
             $.ajax({
-
                 url: '../Service/ListAnggotaService.asmx/searchAnggotaByAlamat',
                 data: '{"alamat":"' + Alamat + '"}',
                 type: 'POST',
@@ -511,19 +504,19 @@
 
         }
          
-        $("#dpropinsi").click(function () {
-            loadKota();
-            loadKecamatan();
-        }).change(function () {
-            loadKota();
-            loadKecamatan();
-        });
+        //$("#dpropinsi").click(function () {
+        //    loadKota();
+        //    loadKecamatan();
+        //}).change(function () {
+        //    loadKota();
+        //    loadKecamatan();
+        //});
 
-        $("#dkota").click(function () {
-            loadKecamatan();
-        }).change(function () {
-            loadKecamatan();
-        });
+        //$("#dkota").click(function () {
+        //    loadKecamatan();
+        //}).change(function () {
+        //    loadKecamatan();
+        //});
 
         $("#txt-search").keyup(function () {
 

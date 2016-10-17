@@ -208,6 +208,7 @@
 
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+ 
     <script>
 
         var dprovinsi;
@@ -387,7 +388,7 @@
         function edit(id) {
             $.ajax({
                 url: '../Service/ListAnggotaService.asmx/getAnggotaByID',
-                data: '{"ID":"' + JSON.stringify(id) + '"}',
+                data: '{"ID":"' + id + '"}',
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
@@ -423,10 +424,16 @@
         }
 
         $(document).ready(function () {
-            id = 3; //GET ID DISINI
-            edit(id);
-            loadIuran(id);
-        });
+ 
+            var id = sessionStorage.getItem("IDAnggota");
+
+            if (id!=null) {
+                edit(id);
+                loadIuran(id);
+
+            }
+               
+         });
 
     </script>
     <%

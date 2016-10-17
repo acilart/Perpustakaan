@@ -95,7 +95,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/Petugas/PeminjamanDariBooking"><i class="fa fa-circle-o"></i>Peminjaman By Booking</a></li>
+                             <li><a href="/Anggota/ListPinjaman"><i class="fa fa-circle-o"></i>List Peminjaman</a></li>
+                             <li><a href="/Petugas/PeminjamanDariBooking"><i class="fa fa-circle-o"></i>Peminjaman By Booking</a></li> 
                             <li><a href="/Petugas/TransaksiPeminjaman"><i class="fa fa-circle-o"></i>Peminjaman</a></li>
                             <li><a href="/Petugas/TransaksiPengembalian"><i class="fa fa-circle-o"></i>Pengembalian</a></li>
                             <li><a href="/Petugas/TransaksiBooking"><i class="fa fa-circle-o"></i>Booking</a></li>
@@ -282,12 +283,7 @@
         <%-- <% HttpContext.Current.Session.Clear();%>
      })--%>
  </script>
-
-<<<<<<< .mine
-
-||||||| .r124
-=======
-
+     
     <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -325,6 +321,5 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
->>>>>>> .r144
-</body>
+ </body>
 </html>

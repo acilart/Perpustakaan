@@ -1,9 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterAnggota.Master" AutoEventWireup="true" CodeBehind="ListPinjaman.aspx.cs" Inherits="PerpustakaanWeb.Anggota.ListPinjaman" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    
-    
+    <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && (HttpContext.Current.Session["Role"].ToString() == "anggota" || HttpContext.Current.Session["Role"].ToString() == "petugas")) 
+       {
+            %>
+
     <%-- panel --%>
-     <div class="panel panel-primary">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">List Peminjaman</h1>
         </div>
@@ -14,7 +17,7 @@
                     <select class="form-control" id="searchby">
                         <option value="no">No Registrasi</option>
                         <option value="nama">Nama Anggota</option>
-                       
+
 
                     </select>
                 </div>
@@ -48,7 +51,7 @@
     </div>
 
 
- <%--  modalpopout--%>
+    <%--  modalpopout--%>
 
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -59,7 +62,7 @@
                 </div>
                 <div class="modal-body">
 
-                         <table class="table table-bordered">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <td>No</td>
@@ -67,7 +70,7 @@
                                 <td>Judul Buku</td>
                                 <td>Terlambat (Hari)</td>
                                 <td>Denda (Rp)</td>
-                       
+
                             </tr>
                         </thead>
                         <tbody id="tbl-list-detail">
@@ -78,29 +81,34 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" id="btn-kembalikan" class="btn btn-primary" >Kembalikan</button>
-                    <button type="button" class="btn btn-primary"data-dismiss="modal">Tutup</button>
+                    <button type="button" id="btn-kembalikan" class="btn btn-primary">Kembalikan</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
 
- <%--  akhir modalpopout--%>
+    <%--  akhir modalpopout--%>
 
 
     <script>
-        
-        var login = "1";
 
-         
+        var login = '<%= Session["ID"] %>';
+        var petugas = '<%= Session["Role"] %>';
+        var IDAnggota;
         $(document).ready(function () {
-            if (login == "1") {
+ 
+            if (petugas == "petugas") {
                 LoadList();
+                
             } else {
                 LoadListAnggotaOnly(login);
                 $("#btn-kembalikan").hide();
+                
+                
+                
             }
-             
+
         });
 
 
@@ -124,15 +132,14 @@
                             + '<td>' + convertDate(item.TglPinjam) + '</td>'
                             + '<td>' + convertDate(item.TglKembali) + '</td>'
                             + '<td>' + item.JumlahBuku + '</td>'
-                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID('+item.ID+')></td>'
+                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + item.ID + ')></td>'
                         '</tr>'
-                     
                     });
                     $('#tbl-list-anggota').html(listProp);
                 }
             });
         }
-        
+
         function LoadListAnggotaOnly(ID) {
 
             $.ajax({
@@ -142,26 +149,30 @@
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
                 success: function (anggota) {
-                    var listProp = "";
-                    var id = "1";
-                         listProp += '<tr>'
-                            + '<td>' + id + '</td>'
-                            + '<td>' + anggota.d.NoRegistrasi + '</td>'
-                            + '<td>' + anggota.d.Nama + '</td>'
-                            + '<td>' + convertDate(anggota.d.TglPinjam) + '</td>'
-                            + '<td>' + convertDate(anggota.d.TglKembali) + '</td>'
-                            + '<td>' + anggota.d.JumlahBuku + '</td>'
-                            + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + anggota.d.ID + ')></td>'
+
+                    if (anggota.d != null) {
+
+                        var listProp = "";
+                        var id = "1";
+                        listProp += '<tr>'
+                           + '<td>' + id + '</td>'
+                           + '<td>' + anggota.d.NoRegistrasi + '</td>'
+                           + '<td>' + anggota.d.Nama + '</td>'
+                           + '<td>' + convertDate(anggota.d.TglPinjam) + '</td>'
+                           + '<td>' + convertDate(anggota.d.TglKembali) + '</td>'
+                           + '<td>' + anggota.d.JumlahBuku + '</td>'
+                           + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick=getDataByID(' + anggota.d.ID + ')></td>'
                         '</tr>'
-                     
-                    $('#tbl-list-anggota').html(listProp);
+
+                        $('#tbl-list-anggota').html(listProp);
+                    }
+
                 }
             });
         }
 
-
         function getDataByID(ID) {
-
+            IDAnggota = ID;
             $.ajax({
                 url: '../Service/ListPinjamanService.asmx/getListDetail',
                 data: '{"ID":"' + JSON.stringify(ID) + '"}',
@@ -179,14 +190,14 @@
                             + '<td>' + item.JudulBuku + '</td>'
                             + '<td>' + item.Terlambat + '</td>'
                             + '<td>' + item.Denda + '</td>'
-                         '</tr>'
+                        '</tr>'
                     });
                     $('#modal-edit').modal('show');
                     $('#tbl-list-detail').html(listProp);
                 }
             });
 
-            
+
         }
 
         function convertDate(tanggal) {
@@ -269,25 +280,36 @@
 
 
         }
+ 
+
+         
 
 
         $('#txt-search').keypress(function () {
 
-             if ($("#searchby").val() == "nama") {
-                 searchByNama($('#txt-search').val())
-             }
+            if ($("#searchby").val() == "nama") {
+                searchByNama($('#txt-search').val())
+            }
 
-             else if ($("#searchby").val() == "no") {
-                 searchByNo($('#txt-search').val())
-             }
+            else if ($("#searchby").val() == "no") {
+                searchByNo($('#txt-search').val())
+            }
 
         });
 
-        $('btn-kembalikan').click(function () {
-
-            //kirim paramater ke sesion, ID langsung keluar di form pembayaran
+        $('#btn-kembalikan').click(function () {
+             
+            sessionStorage.setItem('IDAnggotaList', IDAnggota);
+            window.location.href = '/Petugas/TransaksiPengembalian.aspx';
         });
 
     </script>
-    
+
+    <%
+        }
+       else
+       {
+           Response.Redirect("../LoginAnggota.aspx");
+       }
+    %>
 </asp:Content>

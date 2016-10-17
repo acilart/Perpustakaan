@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterAnggota.Master" AutoEventWireup="true" CodeBehind="Booking.aspx.cs" Inherits="PerpustakaanWeb.Anggota.Booking" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+ <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "anggota")
+        { %>
     <link href="../Content/Zebra_Datepicker-master/public/css/metallic.css" rel="stylesheet" />
 
 
@@ -99,7 +101,7 @@
     <script src="../Content/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
     <script>
 
-        var selectedAnggotaById = 28; //data sementara sebelum dimasukan login. masih berupa test
+        var selectedAnggotaById = '<%= Session["ID"] %>';; //data sementara sebelum dimasukan login. masih berupa test
         var No = 1;
         var stok;
         //menampilkan anggota yang sudah login, lalu ditampilkan di halaman booking
@@ -110,7 +112,7 @@
 
             GetSelectedBookingAktifByID(selectedAnggotaById);
             CurrentDate();
-
+              
             $('input.datepicker').Zebra_DatePicker();
         });
 
@@ -119,7 +121,7 @@
             direction: true,
             disabled_dates: ['* * * 0,6']
         }).click(function () {
-           dateSave = $('#txt-tgl-pinjam').val();
+            dateSave = $('#txt-tgl-pinjam').val();
         });
 
         
@@ -255,7 +257,7 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = day + "-" + month + "-" + year;
+            var date = year + "-" + month + "-" + day;
             dateSave = year + "-" + month + "-" + day;
             return date;
          }
@@ -323,46 +325,26 @@
                             + '<td>' + list.d.JudulBuku + '</td>'
                             + '<td>' + list.d.Pengarang + '</td>'
                             + '<td> <input type="button" class="btn btn-danger" id="btn-hapus" value="hapus" onClick="RemoveKode(' + list.d.ID + ')">'
-<<<<<<< .mine
-                             
+                              
                             + '<td><input type="hidden" value="' + list.d.ID + '"/></td>' 
-||||||| .r112
-                             
-                            + '<td><input type="hidden" value="' + list.d.ID + '"/></td>' 
-
-
-=======
-                            + '<td><input type="hidden" value="' + list.d.ID + '"/></td>'
->>>>>>> .r129
-                        '</tr>'
+                              
+                         '</tr>'
                         No++;
                         $('#tbl-list-booking-selected').append(listProp);
                     }
                 });
-<<<<<<< .mine
-||||||| .r112
-
-
-=======
-
-               
-
->>>>>>> .r129
-            }
-<<<<<<< .mine
-||||||| .r112
-            
-=======
-
->>>>>>> .r129
-        }
+         }
 
         function RemoveKode(ID) {
 
-            var kodeBuku = '#id' + ID;
-            $(kodeBuku).remove();
-            No--;
-            AddListToBooking(ID);
+            var answer = confirm("Yakin akan menghapus data ini?");
+            if (answer) {
+                var kodeBuku = '#id' + ID;
+                $(kodeBuku).remove();
+                No--;
+                AddListToBooking(ID);
+             }
+
         }
 
         function AddListToBooking(ID) {
@@ -387,4 +369,12 @@
         }
 
     </script>
+      <%
+      }
+       else
+       {
+           Response.Redirect("../LoginAnggota.aspx");
+       }
+    %>
+
 </asp:Content>

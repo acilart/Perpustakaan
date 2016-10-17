@@ -68,21 +68,10 @@
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
-<<<<<<< .mine
-    <script src="../Scripts/jquery-1.10.2.min.js"></script>
-    <script src="Scripts/jquery-3.1.1.min.js"></script>
-    <script src="../Scripts/bootstrap.min.js"></script>
-    
-    <script src="../dist/js/jquery.validate.js"></script>
-||||||| .r124
+
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
     <script src="../dist/js/jquery.validate.js"></script>
-=======
-    <script src="/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="/Scripts/bootstrap.min.js"></script>
-    <script src="/dist/js/jquery.validate.js"></script>
->>>>>>> .r144
     <script>
 
         //$("#formLogin").submit(function (e) {
