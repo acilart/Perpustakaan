@@ -22,8 +22,9 @@ namespace PerpustakaanDAL
                 if (cek != null)
                 {
                     //ini untuk ngedaftarain session diisi oleh email (nilai default)
-                    HttpContext.Current.Session["Email"] = email;
+                    HttpContext.Current.Session["Email"] = cek.Email;
                     HttpContext.Current.Session["ID"] = cek.ID;
+                    HttpContext.Current.Session["Role"] = "petugas";
                     return cek;
                 }
                 return null;
@@ -37,7 +38,9 @@ namespace PerpustakaanDAL
                 var cek = db.MstAnggota.FirstOrDefault(n => n.Email == email && n.Password == password);
                 if (cek != null)
                 {
-                    HttpContext.Current.Session["Email"] = email;
+                    HttpContext.Current.Session["Email"] = cek.Email;
+                    HttpContext.Current.Session["ID"] = cek.ID;
+                    HttpContext.Current.Session["Role"] = "anggota";
                     return cek;
                 }
                 return null;
