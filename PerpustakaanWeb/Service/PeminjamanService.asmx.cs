@@ -26,11 +26,6 @@ namespace PerpustakaanWeb.Service
             return "Hello World";
         }
 
-        //[WebMethod]
-        //public List<TrBrwHeader> GetAllHeader()
-        //{
-        //    return PeminjamanDAL.GetAllHeader();
-        //}
         [WebMethod]
         public List<MstAnggota> GetAllAnggota()
         {
@@ -42,11 +37,24 @@ namespace PerpustakaanWeb.Service
         {
             return AnggotaDAL.GetAnggotaByID(id);
         }
-        //[WebMethod]
-        //public BrwHeaderViewModel GetPeminjamanByID(int id)
-        //{
-        //    return PeminjamanDAL.GetPeminjamanByID(id);
-        //}
+
+        [WebMethod]
+        public int GetLamaAnggotaByID(int id)
+        {
+            return AnggotaDAL.GetLamaAnggotaByID(id);
+        }
+
+        [WebMethod]
+        public List<MstAnggota> searchAnggotaByNama(string nama)
+        {
+            return AnggotaDAL.searchAnggotaByNama(nama);
+        }
+
+        [WebMethod]
+        public static List<MstBuku> searchBukuByNama(string nama)
+        {
+            return BukuDAL.searchBukuByNama(nama);
+        }
 
         [WebMethod]
         public List<MstBuku> GetBukuAvailable()

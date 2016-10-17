@@ -323,17 +323,38 @@
                             + '<td>' + list.d.JudulBuku + '</td>'
                             + '<td>' + list.d.Pengarang + '</td>'
                             + '<td> <input type="button" class="btn btn-danger" id="btn-hapus" value="hapus" onClick="RemoveKode(' + list.d.ID + ')">'
+<<<<<<< .mine
+                             
+                            + '<td><input type="hidden" value="' + list.d.ID + '"/></td>' 
+||||||| .r112
+                             
+                            + '<td><input type="hidden" value="' + list.d.ID + '"/></td>' 
+
+
+=======
                             + '<td><input type="hidden" value="' + list.d.ID + '"/></td>'
+>>>>>>> .r129
                         '</tr>'
                         No++;
                         $('#tbl-list-booking-selected').append(listProp);
                     }
                 });
+<<<<<<< .mine
+||||||| .r112
+
+
+=======
 
                
 
+>>>>>>> .r129
             }
+<<<<<<< .mine
+||||||| .r112
+            
+=======
 
+>>>>>>> .r129
         }
 
         function RemoveKode(ID) {

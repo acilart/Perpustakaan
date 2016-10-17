@@ -20,7 +20,9 @@
 
 </head>
 <body>
-    <%--1.GENERATE PASSWORD DEFAULT--%>
+
+    <%--1.GENERATE PASSWORD DEFAULT
+        2.SIMPANANGGOTA TAMBAHIN PASSWORD-%>
 
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -150,6 +152,7 @@
         }
 
         $(document).ready(function () {
+            //loadPassword();
             $("#txt-telp").keydown(function (e) {
                 NumberOnly(e);
             });

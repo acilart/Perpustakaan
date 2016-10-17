@@ -37,8 +37,14 @@
         </div>
     </div>
         </form>
+<<<<<<< .mine
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+||||||| .r112
+=======
 
 
      <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
+>>>>>>> .r129
 </asp:Content>

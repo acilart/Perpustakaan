@@ -149,6 +149,8 @@
                             + '<td>' + item.Alamat + '</td>'
                             + '<td>' + item.NoTelepon + '</td>'
                             + '<td>' + item.Email + '</td>'
+
+                           // + '<td><input type="button" class="btn btn-warning" id="btn-edit" value="Edit" href="/Petugas/FormAnggotaEdit/<?=' + item.ID + '?>">'
                             + '<td> <input type="button" class="btn btn-warning" id="btn-edit" value="Edit" onclick="getAnggotaByID(' + item.ID + ')" >  '
                             + '<input type="button" class="btn btn-danger" id="btn-edit" value="Delete" onclick="hapusAnggotaByID(' + item.ID + ')"> </td>'
                         '</tr>'

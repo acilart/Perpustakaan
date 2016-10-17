@@ -12,14 +12,14 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <link href="dist/css/AdminLTE.css" rel="stylesheet" />
     <link href="dist/css/skins/_all-skins.css" rel="stylesheet" />
-    <script src="dist/js/jquery-1.9.1.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
+    <%--<script src="dist/js/jquery-1.9.1.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>--%>
     <script src="Scripts/modernizr-2.6.2.js"></script>
 
 </head>
 <body class="hold-transition login-page">
 
-    <%--2.LOGOUT & CLEAR SESSION--%>
+    <%--1.LOGOUT & CLEAR SESSION--%>
 
     <div class="login-box">
         <div class="login-logo">
@@ -30,7 +30,7 @@
             <p class="login-box-msg">Sign in to start your session</p>
 
 
-            <form id="formLogin">
+            <form id="formLogin"  method="POST" action="#">
                 <select class="form-control" id="dlogin">
                     <option value="Petugas">Petugas</option>
                     <option value="Anggota">Anggota</option>
@@ -38,11 +38,11 @@
                 <br />
 
                 <div class="form-group has-feedback">
-                    <input type="email" class="form-control" id="email-id" placeholder="Email" />
+                    <input type="email" class="form-control" id="email-id" placeholder="Email" required/>
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" id="pass-id" placeholder="Password" />
+                    <input type="password" class="form-control" id="pass-id" placeholder="Password" required/>
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -68,12 +68,19 @@
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
-    <script src="../Scripts/jquery-1.10.2.min.js"></script>
-    <script src="../Scripts/bootstrap.min.js"></script>
-    <script src="../dist/js/jquery.validate.js"></script>
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/dist/js/jquery.validate.js"></script>
     <script>
 
-        $().ready(function () {
+        //$("#formLogin").submit(function (e) {
+        //    e.preventDefault();
+        //    var LogId = $('#dlogin').val();
+
+        //    alert("adasd");
+        //})
+
+        $(document).ready(function () {
             $("#formLogin").validate({
                 rules: {
                     email: {
@@ -82,30 +89,48 @@
                     },
                     password: {
                         required: true,
-                        password:true
+                        password : true
+
                     },
                 },
                 messages: {
                     email: "Please enter a valid email address",
-                    password: "Username/Password incorrect",
+                    password: "huahua",
                 }
 
+            });
+
+
+            $("#formLogin").submit(function (e) {
+                e.preventDefault();
+                var LogId = $('#dlogin').val();
+
+                if (LogId == 'Petugas') {
+                    cekPassPetugas();
+                }
+                else {
+                    cekPassAnggota();
+                }
             })
-        })
+            
+            $("#email-id").val(''); // BIAR VALUE NYA KOSONG
+            $("#pass-id").val(''); 
+            $.ajax({
+                url: '../Service/LoginService.asmx/RemoveSession',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.d) {
+                        alert("You're logout");
+                    } else {
+                        alert("Welcome");
+                    }
+                }
+            });
 
+        })
         //---------------------------------LOGIN------------------------------//
-
-        $("#formLogin").submit(function (e) {
-            e.preventDefault();
-            var LogId = $('#dlogin').val();
-
-            if (LogId == 'Petugas') {
-                cekPassPetugas();
-            }
-            else {
-                cekPassAnggota();
-            }
-        })
 
         function cekPassPetugas() {
             var username = $("#email-id").val();

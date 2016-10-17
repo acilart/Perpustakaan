@@ -245,6 +245,7 @@
     <Content Include="dist\js\app.min.js" />
     <Content Include="dist\js\bootstrap-datepicker.js" />
     <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\jquery.form-validator.min.js" />
     <Content Include="dist\js\jquery.validate.js" />
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
@@ -332,7 +333,6 @@
     <Content Include="Bundle.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Site.Master" />
     <Content Include="Web.config" />
     <Content Include="SiteMasterPetugas.Master" />
     <Content Include="SiteMasterAnggota.Master" />

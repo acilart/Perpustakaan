@@ -27,12 +27,18 @@ namespace PerpustakaanWeb.Service
         }
 
         //Buat input Baru
-        //[WebMethod]
-        //public List<IuranViewModel> GetIuranNonDenda()
-        //{
-        //    var dal = new IuranDAL();
-        //    return dal.GetIuranNonDenda();
-        //}
+        [WebMethod]
+        public List<IuranViewModel> GetIuranNonDenda()
+        {
+            var dal = new IuranDAL();
+            return dal.GetIuranNonDenda();
+        }
+
+        [WebMethod]
+        public List<IuranViewModel> GetIuranNonDendaByIdAnggota(int id)
+        {
+            return IuranDAL.GetIuranNonDendaByIdAnggota(id);
+        }
 
 
         [WebMethod]
@@ -54,16 +60,17 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod]
-        public bool SimpanAnggota(MstAnggota anggota)
+        public bool SimpanAnggotaIuran(MstAnggota anggota, List<IuranViewModel> iurans)
         {
-            return AnggotaDAL.SimpanAnggota(anggota);
+            return AnggotaDAL.SimpanAnggotaIuran(anggota, iurans);
         }
 
-        //[WebMethod]
-        //public List<IuranViewModel> GetIuranById(int id)
-        //{
-        //    return IuranDAL.GetIuranNonDendaByIdAnggota(id);
-        //}
+        [WebMethod]
+        public static int GetLamaAnggotaByID(int id)
+        {
+            return AnggotaDAL.GetLamaAnggotaByID(id);
+        }
+
 
     }
 }

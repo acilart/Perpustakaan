@@ -26,6 +26,12 @@ namespace PerpustakaanWeb.Service
         }
 
         [WebMethod(EnableSession=true)]
+        public static bool RemoveSession()
+        {
+            return LoginDAL.RemoveSession();
+        }
+
+        [WebMethod(EnableSession=true)]
         public MstPetugas GetPetugasByEmailPass(string email, string password)
         {
             return LoginDAL.GetPetugasByEmailPass(email, password);
