@@ -14,5 +14,6 @@ namespace Perpustakaan.ViewModel
         public string NoBooking { get; set; }
         public DateTime TanggalPinjam { get; set; }
         public DateTime TanggalKembali { get; set; }
+
     }
 }
