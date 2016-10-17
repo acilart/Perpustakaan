@@ -14,6 +14,17 @@ namespace PerpustakaanDAL
     public class LoginDAL
     {
 
+        public static bool RemoveSession()
+        {
+            bool result = false;
+            if (HttpContext.Current.Session["Email"] != null)
+            {
+                HttpContext.Current.Session.Clear();
+                result = true;
+            }
+           return result;
+        }
+
         public static MstPetugas GetPetugasByEmailPass(string email, string password)
         {
             using (var db = new PerpustakaanDbContext())

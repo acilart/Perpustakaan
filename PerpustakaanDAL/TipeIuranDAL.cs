@@ -19,10 +19,10 @@ namespace PerpustakaanDAL
                 {
                     if (Convert.ToDateTime(anggota.MasaBerlakuKartu) < DateTime.Now)
                     {
-                        list.Add(listIuran.FirstOrDefault(n => n.ID == 2));
+                        list.Add(listIuran.FirstOrDefault(n => n.ID == 4));
                         if (Convert.ToDateTime(anggota.MasaBerlakuAnggota) < DateTime.Now)
                         {
-                            list.Add(listIuran.FirstOrDefault(n => n.ID == 1));
+                            list.Add(listIuran.FirstOrDefault(n => n.ID == 2));
                         }
 
                     }

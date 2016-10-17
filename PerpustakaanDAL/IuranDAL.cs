@@ -9,7 +9,7 @@ namespace PerpustakaanDAL
 {
     public class IuranDAL
     {
-        //Ambil iuran yang tanpa denda...
+        //
         public static List<IuranViewModel> GetIuranNonDendaByIdAnggota(int id)
         {
             var list = new List<IuranViewModel>();
@@ -19,9 +19,10 @@ namespace PerpustakaanDAL
                 var anggota = AnggotaDAL.GetAnggotaByID(id);
                 if (anggota != null)
                 {
+                    //CEK MASA BERLAKU, JIKA MASIH AKTIF MAKA TAMPILKAN JUMLAH UANG DAN IURAN
                     if (Convert.ToDateTime(anggota.MasaBerlakuKartu) < DateTime.Now)
                     {
-                        var tipe1 = listIuran.FirstOrDefault(n => n.ID == 2);
+                        var tipe1 = listIuran.FirstOrDefault(n => n.ID == 4);
                         var iuranV1 = new IuranViewModel()
                         {
                             ID = tipe1.ID,
@@ -35,7 +36,7 @@ namespace PerpustakaanDAL
 
                     if (Convert.ToDateTime(anggota.MasaBerlakuAnggota) < DateTime.Now)
                     {
-                        var tipe2 = listIuran.FirstOrDefault(n => n.ID == 1);
+                        var tipe2 = listIuran.FirstOrDefault(n => n.ID == 2);
                         var iuranV1 = new IuranViewModel()
                         {
                             ID = tipe2.ID,

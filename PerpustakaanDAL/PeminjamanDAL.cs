@@ -86,6 +86,7 @@ namespace PerpustakaanDAL
                 header.TanggalKembali = DateTime.Now.AddDays(3);
                 header.CreatedOn = DateTime.Now;
                 header.ModifiedOn = DateTime.Now;
+                header.Status = false;
                 db.TrBrwHeader.Add(header);
                 #endregion
                 

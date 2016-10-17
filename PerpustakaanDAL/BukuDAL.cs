@@ -10,6 +10,18 @@ namespace PerpustakaanDAL
   
     public class BukuDAL
     {
+        public static List<MstBuku> searchBukuByNama(string nama)
+        {
+
+            using (var db = new PerpustakaanDbContext())
+            {
+                var cek = db.MstBuku.Where(n => (n.Kode + n.JudulBuku + n.Pengarang).Contains(nama)).ToList();
+                return cek;
+
+            }
+
+        }
+
         public static List<MstBuku> GetAllBuku()
         {
 

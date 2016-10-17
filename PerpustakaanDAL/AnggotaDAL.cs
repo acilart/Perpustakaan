@@ -27,7 +27,7 @@ namespace PerpustakaanDAL
                 {
                     var ts = new TimeSpan();
                     // menghitung selisih antara hari ini dan createdon
-                    ts = DateTime.Now.Subtract(cek.CreatedOn.GetValueOrDefault());
+                    ts = DateTime.Now.Subtract(Convert.ToDateTime(cek.CreatedOn));
                     lama = ts.Days;
                 }
             }
@@ -110,7 +110,6 @@ namespace PerpustakaanDAL
                     {
                         cek.MasaBerlakuKartu = DateTime.Now.AddYears(1);
                     }
-                   
                     cek.ModifiedBy = anggota.ModifiedBy;
                     cek.ModifiedOn = DateTime.Now;
                     cek.NoTelepon = anggota.NoTelepon;
@@ -133,6 +132,8 @@ namespace PerpustakaanDAL
                     id += 1;
                     anggota.ID = id;
                     header.ID = id;
+                    header.IDAnggota = anggota.ID;
+                    anggota.CreatedBy = anggota.CreatedBy; //BARU AKU TAMBAHIN
                     anggota.KodeAnggota = AutoNumberDAL.KodeAnggotaAutoNumber();
                     anggota.CreatedOn = DateTime.Now;
                     anggota.MasaBerlakuKartu = DateTime.Now.AddMonths(3);
@@ -148,6 +149,7 @@ namespace PerpustakaanDAL
                     {
                         HeaderID = header.ID,
                         IDTipeIuran = item.ID,
+                        Jumlah = item.Jumlah,
                         CreatedOn = DateTime.Now,
                         ModifiedOn=DateTime.Now
                     };

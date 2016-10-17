@@ -86,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Perpustakaan.ViewModel\Perpustakaan.ViewModel.csproj">
-      <Project>{69ec4599-3011-4b4e-8b76-7e049940ae99}</Project>
+      <Project>{27fe780a-cb4d-4d35-9c55-34b974826962}</Project>
       <Name>Perpustakaan.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\PerpustakaanModel\PerpustakaanModel.csproj">
