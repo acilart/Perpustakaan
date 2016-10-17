@@ -5,10 +5,9 @@
         { %>
     
     <%--    1. NERIMA ID DARI PAGE LISTANGGOTA
-            2. TAMPIL IURAN BERDASARKAN MASA BERLAKU
-            3. SIMPAN EDIT ANGGOTA BERDASARKAN IURAN
-            4. CHECK BERDASARKAN CHECKBOX
-            5. VALIDASI FORM--%>
+            2. MENAMPILKAN IURAN YANG PERLU SAJA
+            3. CHECK BERDASARKAN CHECKBOX
+            4. VALIDASI FORM--%>
 
     <%--$theName = $_REQUEST('ID');--%>
 
@@ -31,7 +30,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2" for="Nama">Nama</label>
                         <div class="col-md-10">
-                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" value="" />
+                            <input class="form-control text-box single-line" id="Nama" name="Nama" type="text" required="required" />
                             <span class="field-validation-valid text-danger" data-valmsg-for="Nama" data-valmsg-replace="true"></span>
                         </div>
                     </div>
@@ -322,9 +321,10 @@
 
         })
 
-        function loadIuran() {
+        function loadIuran(id) {
             $.ajax({
-                url: '../Service/AnggotaService.asmx/GetIuranNonDenda',
+                url: '../Service/AnggotaService.asmx/GetIuranNonDendaByIdAnggota',
+                data: '{id: ' + id + '}',
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json; charset=utf-8',
@@ -424,10 +424,9 @@
         }
 
         $(document).ready(function () {
-            id = 3;
+            id = 3; //GET ID DISINI
             edit(id);
-            loadIuran();
-            // loadDataPropinsi();
+            loadIuran(id);
         });
 
     </script>
