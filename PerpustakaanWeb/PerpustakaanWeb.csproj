@@ -269,6 +269,8 @@
     <Content Include="Content\Zebra_Datepicker-master\package.json" />
     <Content Include="Content\Zebra_Datepicker-master\README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Petugas\FormPetugas.aspx" />
+    <Content Include="Petugas\FormPetugasEdit.aspx" />
     <Content Include="Petugas\Home.aspx" />
     <Content Include="Petugas\ListAnggota.aspx" />
     <Content Include="Petugas\PembayaranBuku.aspx" />
@@ -324,6 +326,7 @@
     <Content Include="Service\PeminjamanService.asmx" />
     <Content Include="Service\PengembalianService.asmx" />
     <Content Include="Service\PenggantianService.asmx" />
+    <Content Include="Service\PetugasService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Bundle.config" />
@@ -538,6 +541,20 @@
       <DependentUpon>LoginAnggota.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Petugas\FormPetugas.aspx.cs">
+      <DependentUpon>FormPetugas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\FormPetugas.aspx.designer.cs">
+      <DependentUpon>FormPetugas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Petugas\FormPetugasEdit.aspx.cs">
+      <DependentUpon>FormPetugasEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Petugas\FormPetugasEdit.aspx.designer.cs">
+      <DependentUpon>FormPetugasEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Petugas\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -662,6 +679,10 @@
     </Compile>
     <Compile Include="Service\PenggantianService.asmx.cs">
       <DependentUpon>PenggantianService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\PetugasService.asmx.cs">
+      <DependentUpon>PetugasService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Site.Master.cs">

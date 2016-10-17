@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="PembayaranDenda.aspx.cs" Inherits="PerpustakaanWeb.Petugas.PembayaranDenda" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+     <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+        { %>
     <div class="box box-info">
         <div class="box-header">
             <h2>Form Pembayaran Denda</h2>
@@ -16,7 +18,7 @@
                             <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly />
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
-                               <button type="button" name="search" id="search-btn" class="btn btn-flat">
+                               <button type="button" name="search" id="search-denda" class="btn btn-flat">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
@@ -68,7 +70,7 @@
 
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">List Buku Pinjaman</h3>
+            <h3 class="box-title">List Buku Pinjaman Dengan</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -81,7 +83,7 @@
                         <th style="width: 10%">Denda(Rp)</th>
                     </tr>
                 </thead>
-                <tbody id="buku-borrow"></tbody>                
+                <tbody id="buku-pinjam"></tbody>                
             </table>
         </div>
         <!-- /.box-body -->
@@ -103,11 +105,11 @@
                     <h4> Data Pengembalian Buku</h4>
                 </div>
                 <div class="modal-body">                    
-                    <div class="row">
+                    <%--<div class="row">
                         <div class="col-md-4">
                             <input type="text" id="search-rtr" class="form-control" />
                         </div>
-                    </div>
+                    </div>--%>
                     <div class="col-md-12">
                         <table class="table table-stripped text-center">
                             <thead>
@@ -138,7 +140,7 @@
 
 
         //untuk munculin pop up
-        $('#search-btn').click(function () {
+        $('#search-denda').click(function () {
             $('#modal-rtr').modal('show');
             LoadReturn();
         })
@@ -223,12 +225,11 @@
         //load buku yg dipinjam
         function LoadBukuPinjam(id) {
             $.ajax({
-                url: '../Service/PengembalianService.asmx/GetBukuPinjam',
+                url: '../Service/DendaService.asmx/GetBukuDenda',
                 data: '{"id":"' + id + '"}',
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
-
                 success: function (data) {
                     var listbuku = '';
                     var totaldenda = 0;
@@ -243,14 +244,13 @@
                             '</tr>';
                         totaldenda = (totaldenda + item.denda)
                     });
-                    $('#buku-borrow').html(listbuku);
-                    $('#buku-borrow').append('<tr><td></td><td>Jumlah</td><td></td><td>' + totaldenda + '</td></tr>');
+                    $('#buku-pinjam').html(listbuku);
+                    $('#buku-pinjam').append('<tr><td></td><td>Jumlah</td><td></td><td>' + totaldenda + '</td></tr>');
                 }
             })
         }
 
-        function convertDate(tanggal) {
-          
+        function convertDate(tanggal) {          
             var dateString = tanggal.substr(6);
             var currentTime = new Date(parseInt(dateString));
             var month = currentTime.getMonth() + 1;
@@ -264,7 +264,8 @@
         function SaveDenda() {
             var header = {};
             header.IDAnggota =  $("#DendaAnggotaID").val();
-            header.NoReferensi = $("#NoRef").val();  
+            header.NoReferensi = $("#NoRef").val();
+            header.CreatedBy = '<%= Session["ID"] %>';
             
             var rtr = {};
             rtr.ID = $("#DendaID").val();

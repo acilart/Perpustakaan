@@ -316,10 +316,29 @@
         //---------------------------------EDIT IURAN------------------------------//
 
         $(document).ready(function () {
+
+
+            var dateAnggota = new Date();
+            var dateKartu = new Date();
+            var dateA = dateAnggota.setDate(dateAnggota.getDate() + 90);
+            var dateK = dateKartu.setMonth(dateKartu.getMonth() + 12);
+
+            $(MasaBerlakuKartu).val(dateKartu);
+            $(MasaBerlakuAnggota).val(dateAnggota);
+
+
+            var dateAnggota = new Date();
+            var dateKartu = new Date();
+            var dateA = dateAnggota.setDate(dateAnggota.getDate() + 90);
+            var dateK = dateKartu.setMonth(dateKartu.getMonth() + 12);
+
+            $(MasaBerlakuKartu).val(dateKartu.format("dd-MMM-yyyy"));
+            $(MasaBerlakuAnggota).val(dateAnggota.format("dd-MMM-yyyy"));
+
             //This field is required.
             //IF "BEBAS" = NULL SESSIONNYA
             $("#AnggotaId").val(0);
-            loadIuran();
+           loadIuran();
             loadDataPropinsi();
 
             

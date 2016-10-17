@@ -1,4 +1,5 @@
-﻿using PerpustakaanDAL;
+﻿using Perpustakaan.ViewModel;
+using PerpustakaanDAL;
 using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
@@ -25,21 +26,27 @@ namespace PerpustakaanWeb.Service
             return "Hello World";
         }
         [WebMethod]
-        public List<PembayaranDendaDAL> GetPengembalian()
+        public List<PembayaranDendaViewModel> GetPengembalian()
         {
             return PembayaranDendaDAL.GetPengembalian();
         }
 
-        [WebMethod]
-        public List<PembayaranDendaDAL> GetPengembalianBySearch(string search)
-        {
-            return PembayaranDendaDAL.GetPengembalianBySearch(search);
-        }
+
+        //public List<PembayaranDendaViewModel> GetPengembalianBySearch(string search)
+        //{
+        //    return PembayaranDendaDAL.GetPengembalianBySearch(search);
+        //}
         
         [WebMethod]
-        public PembayaranDendaDAL GetPeminjamanById(int id)
+        public PembayaranDendaViewModel GetPeminjamanById(int id)
         {
             return PembayaranDendaDAL.GetPeminjamanById(id);
+        }
+
+        [WebMethod]
+        public List<PengembalianViewModel> GetBukuDenda(int id)
+        {
+            return PembayaranDendaDAL.GetBukuDenda(id);
         }
 
         [WebMethod]

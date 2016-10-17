@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMasterPetugas.Master" AutoEventWireup="true" CodeBehind="Penggantian.aspx.cs" Inherits="PerpustakaanWeb.Petugas.Penggantian" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+     <% if (HttpContext.Current.Session["Email"] != null && HttpContext.Current.Session["ID"] != null && HttpContext.Current.Session["Role"].ToString() == "petugas")
+        { %>
+
     <link href="../dist/css/datepicker3.css" rel="stylesheet" />
 <div class="box box-info">
         <div class="box-header">
@@ -11,12 +14,12 @@
                 <div class="form-horizontal">
                     <input id="ReplaceID" type="hidden" />
                     <div class="form-group">                       
-                        <label class="control-label col-md-2" for="NoRef">No Referensi</label>
+                        <label class="control-label col-md-2" for="NoReferensi">No Referensi</label>
                         <div class="input-group col-md-10">
-                            <input class="form-control text-box single-line" id="NoRef" name="NoRef" type="text" value="" readonly/>
+                            <input class="form-control text-box single-line" id="NoReferensi" name="NoRef" type="text" value="" readonly/>
                             <span class="field-validation-valid text-danger" data-valmsg-for="NoRef" data-valmsg-replace="true"></span>
                             <span class="input-group-btn">
-                                <button type="button" name="search" id="search-btn" class="btn btn-flat">
+                                <button type="button" name="search" id="search-rtr" class="btn btn-flat">
                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
@@ -61,21 +64,22 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                    <th style="width: 10%">Kode Buku</th>
-                    <th style="width: 35%">Judul Buku</th>
-                    <th style="width: 20%">Alasan Kehilangan</th>
-                    <th style="width: 15%">Pilihan Penggantian</th>
-                    <th style="width: 10%">Nilai Buku(Rp)</th>
-                    <th style="width: 10%">Biaya Admin(Rp)</th>
+                    <th style="width: 10%" class="text-center">Kode Buku</th>
+                    <th style="width: 35%" class="text-center">Judul Buku</th>
+                    <th style="width: 20%" class="text-center">Alasan Kehilangan</th>
+                    <th style="width: 15%" class="text-center">Pilihan Penggantian</th>
+                    <th style="width: 10%" class="text-center">Nilai Buku(Rp)</th>
+                    <th style="width: 10%" class="text-center">Biaya Admin(Rp)</th>
+                    <th class="hidden"></th>
                     </tr>
                 </thead>
-                <tbody id="databuku"></tbody>
+                <tbody id="data-buku"></tbody>
             </table>
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-            <input type="submit" value="Clear" class="btn btn-primary" />
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="button" value="Clear" id="btn-clear" class="btn btn-primary" />
+            <input type="button" value="Save" class="btn btn-primary" onclick ="SavePembayaran()"/>
         </div>
     </div>
     <!-- /.box -->
@@ -104,7 +108,7 @@
                                     <th>Nama Anggota</th>
                                 </tr>
                             </thead>
-                            <tbody id="data-return"></tbody>
+                            <tbody id="data-return"></tbody>                                        
                         </table>
                     </div>
                 </div>
@@ -114,17 +118,17 @@
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
     <script src="../dist/js/bootstrap-datepicker.js"></script>
-
+    <script src="../dist/js/jquery.validate.js"></script>
     <%-- SCRIPT --%>
     <script>
         //untuk datepicker
-        $('#Tanggal').datepicker({
-            format: "dd/mm/yyyy",
-            autoclose: true
-        });
+        //$('#Tanggal').datepicker({
+        //    format: "dd/mm/yyyy",
+        //    autoclose: true
+        //});
 
         //untuk memunculkan pop up data pengembalian 
-        $('#search-btn').click(function () {
+        $('#search-rtr').click(function () {
             $('#modal-return').modal('show');
             LoadReturn();
         })
@@ -144,7 +148,7 @@
                             '<td>' + ++icount + '</td>' +
                             '<td>' + item.NoReferensi + '</td>' +
                             '<td>' + item.NamaAnggota + '</td>' +
-                            '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + '); "/>' + '</td>' +
+                            '<td> <input type="button" text="Pilih" value="Choose" class="btn btn-primary" onclick="Choose(' + item.ID + ')"/>' + '</td>' +
                                  '</tr>'
                     });
                     $('#data-return').html(list);
@@ -156,22 +160,118 @@
         function Choose(id) {
             $.ajax({
                 url: '../Service/PenggantianService.asmx/GetPengembalianById',
+                data: '{"id":"' + id + '"}',
                 type: 'POST',
                 dataType: 'JSON',
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
-                    var list = "";
-                    $.each(data.d, function (index, item) {
-                        $("#ReplaceID").val(id);
-                        $("#NoRef").val(item.NoReferensi);
-                        $("#Nama").val(item.NamaAnggota);
+                    var tanggal = new Date();
+                        $("#ReplaceID").val(data.d.IDAnggota);
+                        $("#NoReferensi").val(data.d.NoReferensi);
+                        $("#Nama").val(data.d.NamaAnggota);
+                        $("#Tanggal").val(convertDateNow(tanggal));
                         $('#modal-return').modal('hide');
-                    })
+                    
+                        $.ajax({
+                            url: '../Service/PenggantianService.asmx/GetBukuHilang',
+                            data: '{"id":"' + id + '"}',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            contentType: 'application/json;charset=utf-8',
+                            success: function (data) {
+                                var listbuku = '';
+                                var jumlahbiaya = '';
+                                var totalbayar = 0;
+
+                                $.each(data.d, function (index, item) {
+                                    var totalBuku = item.BiayaAdmin;
+                                    var totalBy = item.HargaPenggantian + item.BiayaAdmin;
+                                    tota =
+                                    listbuku += '<tr>' +
+                                        '<td>' + item.KodeBuku + '</td>' +
+                                        '<td>' + item.JudulBuku + '</td>' +
+                                        '<td><input type="text" id="Alasan" /></td>' +
+                                        '<td><select class="form-control" data-val="true" changed="pilihOpsi(' + item.ID + ')" name="Option">' +
+                                        '<option value = "1">Buku Baru</option>' +
+                                        '<option value = "2">Uang Tunai</option></select></td>' +
+                                        '<td>' + item.HargaPenggantian + '</td>' +
+                                        '<td>' + item.BiayaAdmin + '</td>' +
+                                        '<td class="hidden">' + totalbayar + '</td>' +
+                                        '<td><input type="hidden" value="' + item.IDBuku + '"</input></td>' +
+                                        '<td><input type="hidden" value="' + item.IDDetail + '"</input></td>' +
+                                        '</tr>';
+                                    totalbayar = (totalbayar + item.HargaPenggantian + item.BiayaAdmin);
+                                });
+                                $('#data-buku').html(listbuku);
+                            }
+                        })
                 }
             })        
         }
 
-        //fungsi tampilin buku yang hilang
+        function convertDateNow(tanggal) {
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+         //fungsi simpan
+        function SavePembayaran() {
+            var header = {};
+            header.IDAnggota = $("#ReplaceID").val();
+            header.NoReferensi = $("#NoReferensi").val();
+            header.CreatedBy = '<%= Session["ID"] %>';
+            //header.Tanggal = $("#Tanggal").val();
+
+            var detail = [];
+            $("#data-buku tr").each(function () {
+                var data = {};
+                data.IDBuku = $(this).find('td:nth-child(8)').find("input[type=hidden]").val();
+                data.Alasan = $(this).find('td:nth-child(3)').find("input[type=text]").text();
+                data.IDOpsiPenggantian = $(this).find('td:nth-child(4)').find("select").val();
+                data.HargaPenggantian = $(this).find('td:nth-child(5)').text();
+                data.BiayaAdmin = $(this).find('td:nth-child(6)').text();
+                detail.push(data);
+            });
+            var rtr = [];
+            $("#data-buku tr").each(function () {
+                var data = {};
+                data.IDBuku = $(this).find('td:nth-child(8)').find("input[type=hidden]").val();
+                data.ID = $(this).find('td:nth-child(9)').find("input[type=hidden]").val();
+                rtr.push(data);
+            });
+            var param = { header: header, details: detail, detailReturn: rtr };
+            $.ajax({
+                url: '../Service/PenggantianService.asmx/SimpanPenggantian',
+                data: JSON.stringify(param),
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json;charset=utf-8',
+                success: function (response) {
+                    alert("Transaksi Pengembalian Berhasil Disimpan");
+                }
+            })
+
+        }
+        
+        $("#btn-clear").click(function () {
+
+            $("#ReplaceID").val('');
+            $("#NoReferensi").val('');
+            $("#Nama").val('');
+
+            $("#data-buku").html(null);
+        });
     </script>
     
+    <%
+      }
+        else
+        {
+            Response.Redirect("../LoginAnggota.aspx");
+        }
+                    %>
 </asp:Content>

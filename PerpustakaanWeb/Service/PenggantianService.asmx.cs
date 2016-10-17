@@ -1,4 +1,5 @@
 ﻿using PerpustakaanDAL;
+using PerpustakaanModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,10 +36,16 @@ namespace PerpustakaanWeb.Service
             return PenggantianDAL.GetPengembalianById(id);
         }
 
-        //[WebMethod]
-        //public List<PenggantianDAL> GetBukuHilang(int id)
-        //{
-        //    return PenggantianDAL.GetBukuHilang(id);
-        //}
+        [WebMethod]
+        public List<Penggantian> GetBukuHilang(int id)
+        {
+            return PenggantianDAL.GetBukuHilang(id);
+        }
+        
+        [WebMethod]
+        public bool SimpanPenggantian(TrRpcHeader header, List<TrRpcDetail> details, List<TrReturnDetail> detailReturn)
+        {
+            return PenggantianDAL.SimpanPenggantian(header, details, detailReturn);
+        }
     }
 }

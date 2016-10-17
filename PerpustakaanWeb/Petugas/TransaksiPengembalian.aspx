@@ -329,7 +329,7 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = day + "/" + month + "/" + year;
+            var date = month + "/" + day + "/" + year;
             return date;
         }
         //fungsi convert tanggal khusus tanggal system
@@ -338,7 +338,7 @@
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
             var year = currentTime.getFullYear();
-            var date = day + "/" + month + "/" + year;
+            var date = month + "/" + day + "/" + year;
             return date;
         }
         
