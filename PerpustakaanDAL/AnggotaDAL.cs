@@ -54,6 +54,7 @@ namespace PerpustakaanDAL
                     cek.IDKota = anggota.IDKota;
                     cek.Alamat = anggota.Alamat;
                     cek.Email = anggota.Email;
+                    cek.Password = anggota.Password;
                 }
                 else
                 {

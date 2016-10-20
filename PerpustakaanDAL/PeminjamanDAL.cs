@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PerpustakaanModel;
 using Perpustakaan.ViewModel;
+using System.Web;
 namespace PerpustakaanDAL
 {
     public class PeminjamanDAL
@@ -71,6 +72,7 @@ namespace PerpustakaanDAL
 
         public bool SimpanPeminjaman(TrBrwHeader header, List<TrBrwDetail> details)
         {
+            
             using (var db = new PerpustakaanDbContext())
             {
                 #region Simpan Header Penyimpanan Buku
@@ -99,6 +101,7 @@ namespace PerpustakaanDAL
                     //item.CreatedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
                     //item.ModifiedBy = Convert.ToInt16(HttpContext.Current.Session["ID"]);
                     item.CreatedOn = DateTime.Now;
+                  //  item.CreatedBy = petugas;
                     item.ModifiedOn = DateTime.Now;
                     #region Update Status Buku
                     var buku = db.MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
@@ -226,8 +229,7 @@ namespace PerpustakaanDAL
                         HeaderID = idBrw,
                         IDBuku = item.IDBuku,
                         CreatedOn = DateTime.Now,
-                        ModifiedOn = DateTime.Now
-
+                        ModifiedOn = DateTime.Now,
                     };
                     listBorrow.Add(det);
                 }

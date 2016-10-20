@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PerpustakaanModel;
+using System.Web;
 namespace PerpustakaanDAL
 {
     public class PembayaranBukuDAL
@@ -38,6 +39,10 @@ namespace PerpustakaanDAL
                             bayarKe += 1;
                         }
                         sisa = Convert.ToDouble(detail.Value) - bayarSebelum;
+                        if (sisa < 0)
+                        {
+                            sisa = 0;
+                        }
                         if (sisa == 0)
                         {
                             completed = true;
@@ -99,7 +104,6 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-
                 var cekHeader = db.TrPmtBukuHeader.FirstOrDefault(n => n.ID == header.ID);
                 if (cekHeader == null)
                 {
@@ -114,8 +118,9 @@ namespace PerpustakaanDAL
                     header.Tanggal = DateTime.Now;
                     header.NoRegistrasi = AutoNumberDAL.PembayaranNoRegAutoNumber();
                     header.ID = id;
+                   // header.ModifiedBy = petugas;
                     header.CreatedOn = DateTime.Now;
-                    header.ModifiedOn = DateTime.Now;
+                   // header.ModifiedOn = DateTime.Now;
                     db.TrPmtBukuHeader.Add(header);
                     #endregion
                 

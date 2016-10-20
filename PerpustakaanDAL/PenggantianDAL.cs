@@ -116,7 +116,7 @@ namespace PerpustakaanDAL
         {
             using (var db = new PerpustakaanDbContext())
             {
-                var listHeader = db.TrPlcHeader.ToList();
+                var listHeader = db.TrRpcHeader.ToList();
                 
                 int id = 1;
                 if (listHeader.Count > 0)

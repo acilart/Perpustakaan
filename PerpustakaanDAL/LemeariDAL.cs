@@ -127,8 +127,8 @@ namespace PerpustakaanDAL
                 }
 
 
-             //   db.MstCabinet.AddRange(listCab);
-              //  db.MstCabinetRow.AddRange(listRow);
+                //db.MstCabinet.AddRange(listCab);
+                //db.MstCabinetRow.AddRange(listRow);
                 db.MstCabinetCell.AddRange(listCell);
                 try
                 {

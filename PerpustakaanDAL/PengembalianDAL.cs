@@ -25,7 +25,7 @@ namespace PerpustakaanDAL
                               select new
                               {
                                   ID = Brw.ID,
-                                  NoReferensi = Brw.NoReferensi,
+                                  NoReferensi = Brw.NoRegistrasi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
                                   TanggalKembali = Brw.TanggalKembali
@@ -59,7 +59,7 @@ namespace PerpustakaanDAL
                               {
                                   ID = Brw.ID,
                                   IDAnggota = Brw.IDAnggota,
-                                  NoReferensi = Brw.NoReferensi,
+                                  NoReferensi = Brw.NoRegistrasi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
                                   TanggalKembali = Brw.TanggalKembali
@@ -95,7 +95,7 @@ namespace PerpustakaanDAL
                               join cat in db.MstAnggota on Brw.IDAnggota equals cat.ID
                               select new
                               {
-                                  NoReferensi = Brw.NoReferensi,
+                                  NoReferensi = Brw.NoRegistrasi,
                                   NamaAnggota = cat.Nama,
                                   TanggalPinjam = Brw.TanggalPinjam,
                                   TanggalKembali = Brw.TanggalKembali
@@ -130,15 +130,20 @@ namespace PerpustakaanDAL
                 {                    
                     var ts = new TimeSpan();
                     ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
+                    var day = ts.Days;
+                    if (day < 0)
+                    {
+                        day = 0;  
+                    }
                     var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
                     var pengembalian = new PengembalianViewModel()
                     {
                         IDBuku=buku.ID,
                         Judul = buku.JudulBuku,
                         IsKehilangan = false,
-                        Terlambat = ts.Days,
+                        Terlambat = day,
                         KodeMstBuku = buku.Kode,
-                        denda = ts.Days * 5000,                        
+                        denda = day * 5000,                        
                     };
                     result.Add(pengembalian);                    
                 }

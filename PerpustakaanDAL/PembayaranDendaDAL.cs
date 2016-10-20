@@ -112,7 +112,7 @@ namespace PerpustakaanDAL
                 foreach (var item in detail)
                 {
                     var ts = new TimeSpan();
-                    ts = (Convert.ToDateTime(header.TanggalDikembalikan)).Subtract(Convert.ToDateTime(header.TanggalKembali));
+                    ts = DateTime.Now.Subtract(Convert.ToDateTime(header.TanggalKembali));
                     var buku = new PerpustakaanDbContext().MstBuku.FirstOrDefault(n => n.ID == item.IDBuku);
                     var pembayaran = new PengembalianViewModel()
                     {

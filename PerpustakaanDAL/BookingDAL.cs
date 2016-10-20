@@ -10,7 +10,7 @@ namespace PerpustakaanDAL
 {
     public class BookingDAL
     {
-
+        //save 
         public static bool SimpanBooking(TrBookingHeader book, List<TrBookingDetail> details)
         {
             using (var db = new PerpustakaanDbContext())
@@ -23,37 +23,42 @@ namespace PerpustakaanDAL
                 //update
                 if (cek != null)
                 {
-                    //update modifiedOn
+                    //update modifiedOn karena di update
                     cek.ModifiedOn = DateTime.Now;
-                    
-                    
                     cek.TanggalPinjam = Convert.ToDateTime(book.TanggalPinjam);
-                    var det = db.TrBookingDetail.Where(n => n.HeaderID == cek.ID);
+                    
+                    var listDeleted = new List<TrBookingDetail>();
                     
                     //lanjut update di bookingdetailnya
-                    var listDeleted = new List<TrBookingDetail>();
+                    var det = db.TrBookingDetail.Where(n => n.HeaderID == cek.ID);
                     
                     foreach (var item in det)
                     {
-                        
+                        //cek ada buku detail yg dibooking
                         var cekDet = details.FirstOrDefault(n => n.IDBuku == item.IDBuku);
+                        
+                        //apabila null, statusnya di false
                         if (cekDet == null)
-                        {
+                        { 
+                            
                             item.Active = false;
                             item.ModifiedOn = DateTime.Now;
                             listDeleted.Add(item);
                         }
                         
+                            //apabila buku yang di booking ada didalam detail, update activenya menjadi true
                         else {
                             item.Active = true;
                             item.ModifiedOn= DateTime.Now;  
                         }
                     }
                     
-                    //cek input detail
+                    //cek detail khusus update stok
                     foreach (var item in details)
                     {
                         var cekDet = db.TrBookingDetail.FirstOrDefault(n => n.HeaderID == cek.ID && n.IDBuku == item.IDBuku);
+                        
+                        //masukin lg ke detail buku yang di update
                         if (cekDet == null)
                         {
                             item.Active = true;
@@ -61,13 +66,15 @@ namespace PerpustakaanDAL
                             item.CreatedOn = DateTime.Now;
                             db.TrBookingDetail.Add(item);
                         }
+                        
+                        //update stok buku yang dipinjam
                         var cekStok = db.TrStock.FirstOrDefault(n => n.IDBuku == item.IDBuku);
                         if (cekStok != null)
                         {
                             cekStok.InStock = false;
                         }
                    }
-
+                    
                     //pengecekan stok buku 
                     foreach (var item in listDeleted)
                     {
@@ -77,10 +84,9 @@ namespace PerpustakaanDAL
                             cekStok.InStock = true;
                         }
                     }
-                       
-                }
+                 }
 
-                //else
+                //else save data baru
                 else
                 {
                     int id = 1;
@@ -134,6 +140,7 @@ namespace PerpustakaanDAL
             }
         }
         
+        
         public static List<BookingViewModel> GetBookingAktifByID(int id)
         {
             var list = new List<BookingViewModel>();
@@ -160,7 +167,7 @@ namespace PerpustakaanDAL
             }
             return list;
         }
-
+         
         public List<TrBookingHeader> GetBookingHeaderAktifByIDAnggota(int id)
         {
             using (var db = new PerpustakaanDbContext())
