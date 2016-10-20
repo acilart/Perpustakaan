@@ -19,6 +19,7 @@ namespace Perpustakaan.ViewModel
         public DateTime TglTelat { get; set; }
         public int Denda { get; set; }
         public int Terlambat { get; set; }
+        public int IDAnggota { get; set; }
 
 
        
